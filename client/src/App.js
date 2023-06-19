@@ -1,11 +1,9 @@
-import { Logo1, Logo2 } from "./constants/images";
+
 
 function App() {
   return (
-    <div className="App bg-base">
-      <img src={Logo1} alt="" />
-      <img src={Logo2} alt="" />
-      <p className="font-bold">Welcome</p>
+    <div className="App">
+      
     </div>
   );
 }
