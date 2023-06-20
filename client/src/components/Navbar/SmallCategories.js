@@ -1,4 +1,3 @@
-import NavLink from "../Links/NavLinks"
 import { useDispatch } from "react-redux"
 import { changeCategory } from "../../reducers/productReducer";
 
@@ -6,7 +5,8 @@ export default function SmallCategories(props) {
     const dispatch = useDispatch();
 
     function handleCategoryChange(item) {
-        dispatch(changeCategory({categoryName: item}))
+        dispatch(changeCategory({ categoryName: item }))
+        document.getElementById("CategoriesBar").addClass("hidden");
     }
 
     return (
