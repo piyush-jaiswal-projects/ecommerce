@@ -74,8 +74,8 @@ export default function Navbar(props) {
                 />
                 :
                 <div className='flex justify-between items-center'>
-                    {width >= 700 ? "" : <label className='' onClick={openCategories}>Categories</label>} 
-                    <img onClick={openIcons} className='w-[15px] mx-4' src={Menu} alt="" />
+                    {width >= 700 ? "" : <label className='cursor-pointer' onClick={openCategories}>Categories</label>} 
+                    <img onClick={openIcons} className='cursor-pointer w-[15px] mx-4' src={Menu} alt="" />
                 </div>
             }
             </header>

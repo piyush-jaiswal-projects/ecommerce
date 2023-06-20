@@ -1,12 +1,13 @@
 import { useDispatch } from "react-redux"
 import { changeCategory } from "../../reducers/productReducer";
+import $ from 'jquery'
 
 export default function SmallCategories(props) {
     const dispatch = useDispatch();
 
     function handleCategoryChange(item) {
         dispatch(changeCategory({ categoryName: item }))
-        document.getElementById("CategoriesBar").addClass("hidden");
+        $("#CategoriesBar").toggleClass("hidden");
     }
 
     return (
