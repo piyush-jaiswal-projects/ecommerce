@@ -5,4 +5,8 @@ export { default as Wishlist } from './heart.svg'
 export { default as Bag } from './bag.svg'
 export { default as User } from './user.svg'
 export { default as Menu } from './bars.svg'
+export { default as Star } from './star.svg'
+export { default as RedHeart } from './redHeart.svg'
 
+//Products
+export {default as Tshirt} from './products/men/tshirt.png'

@@ -90,11 +90,11 @@ export default function Navbar(props) {
             
             <SmallCategories links={links} />
 
-            <div className='mt-[100px]'>
+            {/* <div className='mt-[100px]'>
                 <button onClick={signInUser}>Test Log In</button>
                 <br />
             <button onClick={signOutUser}>Test Log Out</button>
-            </div>
+            </div> */}
 
         </Fragment>
     )

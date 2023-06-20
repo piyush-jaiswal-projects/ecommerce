@@ -4,6 +4,8 @@ const initialState = {
     userLoggedIn: false,
     userId: "",
     userName: "",
+    cart: [],
+    wishlist: [],
     error: null
 }
 
@@ -23,10 +25,24 @@ const userReducer = createSlice({
                 ...state,
                 userLoggedIn: false
             }
+        },
+        addToCart(state, action) {
+            const newCart = [...state.cart, action.payload.product];
+            return {
+                ...state,
+                cart: newCart
+            }
+        },
+        addToWishlist(state, action) {
+            const newWishlist = [...state.wishlist, action.payload.product];
+            return {
+                ...state,
+                wishlist: newWishlist
+            }
         }
     }
 })
 
 export default userReducer.reducer;
 
-export const {logInUser, logOutUser} = userReducer.actions
+export const {logInUser, logOutUser, addToCart, addToWishlist} = userReducer.actions
