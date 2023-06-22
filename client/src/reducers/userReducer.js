@@ -36,6 +36,8 @@ const userReducer = createSlice({
         },
         signUpUser(state, action) {
             // set userid after signup success
+            const { name, id, cart, wishlist } = action.payload;
+            setCookie(true, name, id, cart, wishlist);
             return {
                 ...state,
                 userLoggedIn: true,
@@ -61,4 +63,4 @@ const userReducer = createSlice({
 
 export default userReducer.reducer;
 
-export const {logInUser, logOutUser, addToCart, addToWishlist} = userReducer.actions
+export const {logInUser, logOutUser, signUpUser, addToCart, addToWishlist} = userReducer.actions
