@@ -76,7 +76,7 @@ export default function Login() {
         
             <div className='flex items-center justify-center'>
 
-                <div className='relative left-[6.5vw] sm:left-0 w-[25rem] h-[25rem] mt-10 p-5 rounded-lg border border-secondary'>
+                <div className='sm:left-0 w-[20rem] sm:w-[25rem] h-[25rem] mt-10 p-5 rounded-lg border border-secondary'>
                     
                     <div className='my-1'>
                         <h1 className='text-secondary font-bold text-[1.5rem]'>Login</h1>
