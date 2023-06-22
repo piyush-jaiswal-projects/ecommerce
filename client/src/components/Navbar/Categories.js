@@ -3,8 +3,12 @@ import { changeCategory } from "../../reducers/productReducer";
 
 export default function Categories(props) {
     const dispatch = useDispatch();
+    const path = window.location.pathname;
 
     function handleCategoryChange(item) {
+        if (path === "/") {
+            window.location.replace(`/products/${item}`);
+        }
         dispatch(changeCategory({categoryName: item}))
     }
 

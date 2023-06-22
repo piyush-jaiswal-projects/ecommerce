@@ -4,9 +4,13 @@ import $ from 'jquery'
 
 export default function SmallCategories(props) {
     const dispatch = useDispatch();
+    const path = window.location.pathname;
 
     function handleCategoryChange(item) {
-        dispatch(changeCategory({ categoryName: item }))
+        if (path === "/") {
+            window.location.replace(`/products/${item}`);
+        }
+        dispatch(changeCategory({categoryName: item}))
         $("#CategoriesBar").toggleClass("hidden");
     }
 

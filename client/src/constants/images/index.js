@@ -7,6 +7,9 @@ export { default as User } from './user.svg'
 export { default as Menu } from './bars.svg'
 export { default as Star } from './star.svg'
 export { default as RedHeart } from './redHeart.svg'
+export { default as Show } from './show.svg'
+export { default as Hide } from './hide.svg'
+
 
 //Products
 export {default as Tshirt} from './products/men/tshirt.png'

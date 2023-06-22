@@ -19,6 +19,8 @@ import SmallCategories from './SmallCategories'
 
 export default function Navbar(props) {
 
+    const path = window.location.pathname;
+
     const links = ["Men", "Women", "Kids", "Sports", "Casual"]
     const userIcons = [Wishlist, Bag, User]
 
@@ -55,6 +57,7 @@ export default function Navbar(props) {
 
     return (
         <Fragment>
+            {path === "/signup" || path === "/login" ? "" :
             <header className='fixed top-0 bg-base w-[100vw] flex items-center justify-between py-2 px-2'>
             <section className='flex items-center justify-around'>
             <div className="">
@@ -78,7 +81,7 @@ export default function Navbar(props) {
                     <img onClick={openIcons} className='cursor-pointer w-[15px] mx-4' src={Menu} alt="" />
                 </div>
             }
-            </header>
+            </header>}
             
             
             <SmallIconBar
