@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import { Logo1, Show, Hide } from '../../constants/images'
 import { useDispatch } from 'react-redux'
+import $ from 'jquery'
 import { signUpUser } from '../../reducers/userReducer'
 
 export default function Signup() {
@@ -11,6 +12,8 @@ export default function Signup() {
         username: "",
         password: ""
     })
+
+    const [otpData, setOTPData] = useState();
 
     const [pass, setPass] = useState({
         type: "password",
@@ -42,6 +45,15 @@ export default function Signup() {
     function Signup() {
         //add thunk middleware - which on success redirects to home and on failure set status failed
         // on signup page
+        //1. otp validation
+        $("#signup").addClass("hidden");
+        $("#otp").removeClass("hidden")
+        //2. then dispatch after otp validated successfully
+        // dispatch(signUpUser({ name: "Piyush" }))
+        // window.location.replace("/");
+    }
+
+    function ValidateOTP() {
         dispatch(signUpUser({ name: "Piyush" }))
         window.location.replace("/");
     }
@@ -55,7 +67,7 @@ export default function Signup() {
                 </a>
             </div>
         
-            <div className='flex items-center justify-center'>
+            <div id='signup' className='flex items-center justify-center'>
 
                 <div className='sm:left-0 w-[20rem] sm:w-[25rem] h-[25rem] mt-10 p-5 rounded-lg border border-secondary'>
                     
@@ -115,7 +127,45 @@ export default function Signup() {
 
 
             </div>
-        </div>
+            </div>
+            
+            {/* OTP Validator */}
+            <div id="otp" className='hidden'>
+            <div className='flex items-center justify-center'>
+            <div className='sm:left-0 w-[20rem] sm:w-[25rem] h-[25rem] mt-10 p-5 rounded-lg border border-secondary'>
+                    
+                    <div className='my-1'>
+                        <h1 className='text-secondary font-bold text-[1.5rem]'>Verify your email / phone number</h1>
+                    </div>
+
+                    <label>Please enter OTP sent on {formData.username}</label>
+
+                    <div className='my-2'>
+                        <label>Enter OTP</label>
+                        <br />
+                        <input
+                            className='bg-base border w-[100%] rounded-md p-2 outline-secondary'
+                            type='text'
+                            name='otp'
+                            value={otpData}
+                            onChange={(e)=>{setOTPData(e.target.value)}} />
+                    </div>
+
+                <div className=' mb-2 mt-6'>
+                        <button
+                            onClick={ValidateOTP}
+                            className='w-[100%] font-bold border border-secondary hover:bg-base hover:text-secondary h-[2.5rem] p-2 bg-secondary rounded-lg'
+                        >Verify</button>
+                </div>
+
+                <div className='flex justify-center'>
+                    <label>Go back? <a href="/signup" className='underline'>Signup</a></label>
+                </div>
+
+
+            </div>
+                </div>
+                </div>
         </div>
     )
 }
