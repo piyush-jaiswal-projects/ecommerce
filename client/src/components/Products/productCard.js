@@ -1,26 +1,12 @@
 import React from 'react'
 import { Star, RedHeart, Tshirt } from '../../constants/images'
 import { useSelector, useDispatch } from 'react-redux'
-import { addToCart, addToWishlist } from '../../reducers/userReducer';
+import { addToWishlist } from '../../reducers/userReducer';
 
 export default function ProductCard(props) {
-    const isUser = useSelector((state) => state.user.userLoggedIn);
-    const dispatch = useDispatch();
 
     function OpenProductPage() {
-        window.open("/"+props.product.category+"/"+ props.id, '_blank')
-    }
-
-    function AddToCart() {
-        if (isUser) {
-            //dispatch add to cart
-            dispatch(addToCart({ product: props.product }))
-            alert('Added To Cart');
-        }
-        else {
-            // window.location.replace("/signup");
-            alert('Please Login or Signup')
-        }
+        window.open("/product/"+ props.product.id, '_blank')
     }
 
     return (
@@ -30,12 +16,12 @@ export default function ProductCard(props) {
             </div>
 
 
-            <div className='border-t-2 border-t-base p-2 cursor-pointer' onClick={OpenProductPage}>
-                <h3 className='font-bold'>{props.product.name}</h3>
-                <p className='text-[grey]'>{props.product.desc}</p>
+            <div className='border-t-2 border-t-base p-2 cursor-pointer text-center' onClick={OpenProductPage}>
+                <h3 className='font-bold hover:text-secondary'>{props.product.name}</h3>
+                <p className='text-[grey]'>{props.product.desc.substring(0,100)}</p>
                 <p>Rs. {props.product.price}</p>
             </div>
-            <button onClick={AddToCart} className='bg-secondary text-[white] font-bold px-2 py-1 w-[90%] mx-4  rounded-md'>Add to cart</button>
+            {/* <button onClick={AddToCart} className='bg-secondary text-[white] font-bold px-2 py-1 w-[90%] mx-4  rounded-md'>Add to cart</button> */}
             
         </div>
     )
@@ -57,7 +43,7 @@ function CardTop(props) {
     }
 
     function OpenProductPage() {
-        window.open("/"+props.props.product.category+"/"+ props.props.id, '_blank')
+        window.open("/product/"+ props.props.product.id, '_blank')
     }
 
     function AddToWishlist() {

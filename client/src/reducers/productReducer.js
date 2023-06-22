@@ -29,3 +29,8 @@ const productReducer = createSlice({
 export const {changeCategory} = productReducer.actions;
 
 export default productReducer.reducer;
+
+//selector functions
+export function GetProductFromId(id) {
+    return products.find((product)=> product.id === Number(id))
+}

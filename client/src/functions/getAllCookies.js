@@ -9,6 +9,5 @@ export default function getAllCookies() {
         wishlist: getCookie("wishlist")
     }
 
-    console.log("GETALLCOOKIES: ---- " + data.userLoggedIn);
     return data;
 }

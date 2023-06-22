@@ -7,7 +7,7 @@ export default function SmallCategories(props) {
     const path = window.location.pathname;
 
     function handleCategoryChange(item) {
-        if (path === "/") {
+        if (path.substring(1, 9) !== "products") {
             window.location.replace(`/products/${item}`);
         }
         dispatch(changeCategory({categoryName: item}))

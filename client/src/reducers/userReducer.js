@@ -1,14 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit'
 import setCookie from '../functions/setCookie'
 import getAllCookies from '../functions/getAllCookies'
+import { initialCart } from '../data';
 
 const userData = getAllCookies();
+
+//get user cart from server
 
 const initialState = {
     userLoggedIn: userData.userLoggedIn,
     userId: userData.userId,
     userName: userData.userName,
-    cart: userData.cart,
+    cart: initialCart,
     wishlist: userData.wishlist,
     error: null
 }
@@ -45,7 +48,13 @@ const userReducer = createSlice({
             }
         },
         addToCart(state, action) {
-            const newCart = [...state.cart, action.payload.product];
+            const newProduct = {
+                product: action.payload.product,
+                selectedSize: action.payload.size,
+                quantity: action.payload.quantity
+            }
+            const newCart = [...state.cart, newProduct];
+            document.cookie = "cart=" + newCart;
             return {
                 ...state,
                 cart: newCart
