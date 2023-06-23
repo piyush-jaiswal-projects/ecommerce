@@ -119,7 +119,7 @@ export default function ProductPage(props) {
                         <h1 className='text-[2.1rem] mb-2'>Price: Rs {product.price}</h1>
 
                         <div className='sm:flex items-center justify-between'>
-                        <div className='w-[100%] sm:w-[40%] mx-2'>
+                        <div className='w-[100%] text-center sm:text-left sm:w-[40%] mx-2'>
                         <h2>Available Sizes(select one): </h2>
                         <div id="sizebox" className='flex justify-start items-center mb-4'>
                             {product.size.map((size) => {
