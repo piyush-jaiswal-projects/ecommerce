@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { Navigate, useParams } from 'react-router'
+import { useParams } from 'react-router'
 import Reviews from './reviews';
 import $ from 'jquery'
 import { GetProductFromId } from '../../reducers/productReducer';

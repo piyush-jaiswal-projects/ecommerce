@@ -11,7 +11,10 @@ const initialState = {
     userLoggedIn: userData.userLoggedIn,
     userId: userData.userId,
     userName: userData.userName,
+    addresses: ["Select Your Delivery Address", "New Delhi, India", "Chandigarh, India"],
+    placedOrder: [],
     cart: initialCart,
+    currAddressCharge: 0,
     wishlist: userData.wishlist,
     error: null
 }
@@ -60,11 +63,44 @@ const userReducer = createSlice({
                 cart: newCart
             }
         },
+        removeFromCart(state, action) {
+            const newCart = state.cart.filter((item) => item.product.id !== action.payload.productId)
+            return {
+                ...state,
+                cart: newCart
+            }
+        },
         addToWishlist(state, action) {
             const newWishlist = [...state.wishlist, action.payload.product];
             return {
                 ...state,
                 wishlist: newWishlist
+            }
+        },
+        removeFromWishlist(state, action) {
+            const newWishlist = state.wishlist.filter((item) => item.product.id === action.payload.productId)
+            return {
+                ...state,
+                cart: newWishlist
+            }
+        },
+        setDeliveryCharge(state, action) {
+            return {
+                ...state,
+                currAddressCharge: action.payload.charge
+            }
+        },
+        placeOrder(state, action) {
+            return {
+                ...state,
+                placedOrder: [...state.placedOrder, action.payload.orderedItem]
+            }
+        },
+        emptyCart(state, action) {
+            return {
+                ...state,
+                cart: [],
+                currAddressCharge: 0
             }
         }
     }
@@ -72,4 +108,15 @@ const userReducer = createSlice({
 
 export default userReducer.reducer;
 
-export const {logInUser, logOutUser, signUpUser, addToCart, addToWishlist} = userReducer.actions
+export const {
+    logInUser,
+    logOutUser,
+    signUpUser,
+    addToCart,
+    removeFromCart,
+    addToWishlist,
+    removeFromWishlist,
+    setDeliveryCharge,
+    placeOrder,
+    emptyCart
+} = userReducer.actions
