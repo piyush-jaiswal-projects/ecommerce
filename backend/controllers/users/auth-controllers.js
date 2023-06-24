@@ -31,7 +31,6 @@ const signup = async function (req, res) {
 }
 
 const login = async function (req, res) {
-    console.log("Login Requested");
     try {
         const { username, password } = req.body;
         const user = await User.findOne({ userName: username });
@@ -39,7 +38,7 @@ const login = async function (req, res) {
             res.status(400).send({ message: "User doesn't exist!" });
             return;
         }
-        
+
         if (user.password === password) {
             res.status(200).send({message: "Login Success"});
         }
