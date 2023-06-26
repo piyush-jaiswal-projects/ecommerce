@@ -7,7 +7,7 @@ const signup = async function (req, res) {
         const existingUser = await User.findOne({ userName: username });
 
     if (existingUser) {
-        res.status(400).send({ message: "User Already Exists" })
+        res.status(400).send({ message: "User Already Exists", success: false})
         return;
     }
 
@@ -22,11 +22,11 @@ const signup = async function (req, res) {
     })
         
         await newUser.save();
-        res.status(200).send({message: "Registration Success"});
+        res.status(200).send({message: "Registration Success", success: true});
     }
     catch (err) {
         console.log(err);
-        res.status(500).send({message: "Registration Failed!"});
+        res.status(500).send({message: "Registration Failed!", success: false});
     }
 }
 
@@ -35,17 +35,17 @@ const login = async function (req, res) {
         const { username, password } = req.body;
         const user = await User.findOne({ userName: username });
         if (!user) {
-            res.status(400).send({ message: "User doesn't exist!" });
+            res.status(400).send({ message: "User doesn't exist!", success: false });
             return;
         }
 
         if (user.password === password) {
-            res.status(200).send({message: "Login Success"});
+            res.status(200).send({message: "Login Success", user: user, success: true});
         }
     }
     catch (err) {
         console.log(err);
-        res.status(500).send({message: "Login Failed!"});
+        res.status(500).send({message: "Login Failed!", success: false});
     }
 
 }

@@ -12,7 +12,11 @@ const userSchema = new mongoose.Schema({
         quantity: {type: Number}
     }],
     placedOrders: [],
-    wishlist: []
+    wishlist: [{
+        product: {},
+        selectedSize: { type: String },
+        quantity: {type: Number}
+    }]
 })
 
 module.exports = mongoose.model("User", userSchema);
