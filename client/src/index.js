@@ -8,7 +8,10 @@ import './index.css';
 
 import App from './App';
 
-import {Navbar} from './components'
+import { Navbar } from './components'
+
+import GetData from './api/getData';
+GetData();
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

@@ -1,11 +1,14 @@
 import React, {useState} from 'react'
 import { Logo1, Show, Hide } from '../../constants/images'
-import { useDispatch } from 'react-redux'
-import { logInUser } from '../../reducers/userReducer'
+import { useDispatch, useSelector } from 'react-redux'
+import { loginAsync } from '../../reducers/userReducer'
+import getCookie from '../../functions/getCookie'
 
 export default function Login() {
+    if (getCookie("userLoggedIn") === "true") { window.location.replace("/"); }
 
     const dispatch = useDispatch();
+    const message = useSelector((state) => state.user.message);
 
     const [formData, setFormData] = useState({
         username: "",
@@ -60,9 +63,7 @@ export default function Login() {
     }
 
     function Login() {
-        //add thunk middleware - which on success redirects to home and on failure set status failed on
-        dispatch(logInUser({ name: "Piyush" }))
-        window.location.replace("/");
+        dispatch(loginAsync({ userData: {username: formData.username, password: formData.password} }))
     }
 
 
@@ -81,9 +82,10 @@ export default function Login() {
                     <div className='my-1'>
                         <h1 className='text-secondary font-bold text-[1.5rem]'>Login</h1>
                     </div>
+                    <label>{message}</label>
 
                 <div className='my-2'>
-                        <label>Email / Mobile Number</label>
+                        <label>Username</label>
                         <br />
                         <input
                             className='bg-base border w-[100%] rounded-md p-2 outline-secondary'

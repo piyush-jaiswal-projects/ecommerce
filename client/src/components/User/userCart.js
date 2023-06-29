@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { removeFromCart, setDeliveryCharge, placeOrder, emptyCart } from '../../reducers/userReducer'
 import $ from 'jquery'
 
-export default function UserCart() {
+export default function UserCart(props) {
     const cart = useSelector((state) => state.user.cart)
     const addresses = useSelector((state) => state.user.addresses)
     const currDelCharge = useSelector((state)=>state.user.currAddressCharge)
@@ -38,10 +38,10 @@ export default function UserCart() {
     }
 
     return (
-        <div className='mt-[8vw] md:mt-[5vw] p-4 bg-white'>
+        <div className={props.embed === true ? "p-4 bg-white" : "mt-[8vw] md:mt-[5vw] p-4 bg-white"}>
             <br />
             <div className='flex justify-center flex-wrap'>
-                <div className='w-[100%] lg:w-[60%] bg-base lg:mx-5 px-5 min-h-[100vh] rounded-lg'>
+                <div className='w-[100%] lg:w-[60%] bg-base lg:mx-5 px-5 h-[auto] rounded-lg'>
                  <h1 className='text-secondary text-[1.5rem] lg:text-[2rem] text-center lg:text-left font-bold'>Your Cart ({cart.length})</h1>
                     {cart.map((item, index) => {
                         return (
@@ -79,6 +79,7 @@ export default function UserCart() {
 function Card(props) {
     const item = props.item;
     const dispatch = useDispatch();
+    console.log(item.product);
     function RemoveProduct(productId) {
         dispatch(removeFromCart({productId: productId}))
     }
@@ -86,7 +87,7 @@ function Card(props) {
     return (
         <div key={item} className='flex flex-wrap justify-between bg-[white] m-2 my-5 lg:m-4 mx-auto p-2 lg:p-4 items-center w-[100%] lg:w-[90%] shadow-lg rounded-lg'>
                         <div className='w-[100%] sm:w-[20%]'>
-                                    <a href={"/product/"+ item.product.id} target='_blank' rel="noreferrer">
+                                    <a href={"/product/"+ item.product.productId} target='_blank' rel="noreferrer">
                                     <img src="http://res.cloudinary.com/deo80u7qs/image/upload/v1687442791/jamneknds0sxyjcc7bgf.png" alt=" " />
                                     </a>
                         </div>
@@ -98,7 +99,7 @@ function Card(props) {
                                         <p className='text-[1.2rem]'>Size: {item.selectedSize}</p>
                             </div>
                             <div className='text-center sm:text-left'>
-                                <button className='text-secondary text-[1.1rem]' onClick={()=>RemoveProduct(item.product.id)}>Remove from cart</button>
+                                <button className='text-secondary text-[1.1rem]' onClick={()=>RemoveProduct(item.product.productId)}>Remove from cart</button>
                             </div>
                         </div>
                     </div>

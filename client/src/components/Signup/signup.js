@@ -1,11 +1,14 @@
 import React, {useState} from 'react'
 import { Logo1, Show, Hide } from '../../constants/images'
-import { useDispatch } from 'react-redux'
-import $ from 'jquery'
-import { signUpUser } from '../../reducers/userReducer'
+import { useDispatch, useSelector } from 'react-redux'
+import { signupAsync} from '../../reducers/userReducer'
+import getCookie from '../../functions/getCookie'
 
 export default function Signup() {
+    if (getCookie("userLoggedIn") === "true") window.location.replace("/")
+    
     const dispatch = useDispatch();
+    const message = useSelector((state) => state.user.message);
 
     const [formData, setFormData] = useState({
         name: "",
@@ -42,19 +45,12 @@ export default function Signup() {
         }
     }
 
-    function Signup() {
-        //add thunk middleware - which on success redirects to home and on failure set status failed
-        // on signup page
-        //1. otp validation
-        $("#signup").addClass("hidden");
-        $("#otp").removeClass("hidden")
-        //2. then dispatch after otp validated successfully
-        // dispatch(signUpUser({ name: "Piyush" }))
-        // window.location.replace("/");
+    function signup() {
+            dispatch(signupAsync({ userData: formData }))
+        
     }
 
     function ValidateOTP() {
-        dispatch(signUpUser({ name: "Piyush" }))
         window.location.replace("/");
     }
 
@@ -66,14 +62,14 @@ export default function Signup() {
                     <img className="w-[25vw] sm:w-[18vw] md:w-[13vw] lg:w-[8vw]" src={Logo1} alt="16Ten" />
                 </a>
             </div>
-        
             <div id='signup' className='flex items-center justify-center'>
 
-                <div className='sm:left-0 w-[20rem] sm:w-[25rem] h-[25rem] mt-10 p-5 rounded-lg border border-secondary'>
+                <div className='sm:left-0 w-[20rem] sm:w-[25rem] h-[28rem] mt-10 p-5 rounded-lg border border-secondary'>
                     
                     <div className='my-1'>
                         <h1 className='text-secondary font-bold text-[1.5rem]'>Signup</h1>
                     </div>
+                    <label>{message}</label>
 
                     <div className='my-2'>
                         <label>Name</label>
@@ -87,7 +83,7 @@ export default function Signup() {
                     </div>
 
                     <div className='my-2'>
-                        <label>Email / Phone Number</label>
+                        <label>Phone Number(with country code)</label>
                         <br />
                         <input
                             className='bg-base border w-[100%] rounded-md p-2 outline-secondary'
@@ -105,7 +101,7 @@ export default function Signup() {
                             className='bg-base border-y border-l w-[20rem] h-[2.5rem] rounded-l-md p-2 outline-secondary'
                             type={pass.type}
                             name='password'
-                            value={formData.password    }
+                            value={formData.password}
                             onChange={handleChange} />
                                 <button onClick={changePasswordState} className='bg-base border-y border-r w-[2.3rem] h-[2.5rem] rounded-r-md p-2 '>
                                     <img src={pass.img} alt='(.)' />
@@ -116,7 +112,7 @@ export default function Signup() {
 
                 <div className=' mb-2 mt-6'>
                         <button
-                            onClick={Signup}
+                            onClick={signup}
                             className='w-[100%] font-bold border border-secondary hover:bg-base hover:text-secondary h-[2.5rem] p-2 bg-secondary rounded-lg'
                         >Signup</button>
                 </div>

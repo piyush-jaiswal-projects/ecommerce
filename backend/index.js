@@ -9,18 +9,18 @@ const productRouter = require('./routes/product-routes')
 
 dotenv.config()
 
-const port = 6000;
+const port = 7001;
 const uri = process.env.DB_URI;
 
 const app = express();
 
 // Allow Cross-Origin requests
 const corsOptions = {
-    origin: '*', // Allow all origins
-    methods: 'PUT, POST, GET, DELETE, PATCH, OPTIONS', // Allowed methods
-    allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept, Authorization', // Allowed headers
-    credentials: true,
-    maxAge: 800,
+    origin: '*' // Allow all origins
+    // methods: 'PUT, POST, GET, DELETE, PATCH, OPTIONS', // Allowed methods
+    // allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept, Authorization', // Allowed headers
+    // credentials: true,
+    // maxAge: 800,
   };
   
 app.use(cors(corsOptions));

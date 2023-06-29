@@ -1,9 +1,6 @@
 import React, { Fragment, useState } from 'react'
 import $ from 'jquery'
-import { useDispatch } from 'react-redux'
-
-//actions
-import { logInUser, logOutUser } from '../../reducers/userReducer'
+import { useSelector } from 'react-redux'
 
 //images
 import { Logo1, Wishlist, User, Bag, Menu } from '../../constants/images'
@@ -20,14 +17,14 @@ import SmallCategories from './SmallCategories'
 export default function Navbar(props) {
 
     const path = window.location.pathname;
+    const cart = useSelector((state) => state.user.cart);
+    const wishlist = useSelector((state) => state.user.wishlist);
 
     const links = ["Men", "Women", "Kids", "Sports", "Casual"]
-    const userIcons = [Wishlist, Bag, User]
+    const userIcons = [{image: Wishlist, length: wishlist.length, link: "/wishlist"}, {image: Bag, length: cart.length, link: "/cart"}, {image: User, length: -1, link: "/userportal"}]
 
     const [searchItem, setSearchItem] = useState("");
     const width = useInnerWidth();
-
-    const dispatch = useDispatch();
 
     function search() {
         alert("Working")
@@ -45,14 +42,6 @@ export default function Navbar(props) {
         if ($("CategoriesBar").hasClass("hidden") === false) {
             $("#CategoriesBar").addClass('hidden');
         }
-    }
-
-    function signInUser() {
-        dispatch(logInUser({name: "Piyush"}))
-    }
-
-    function signOutUser() {
-        dispatch(logOutUser())
     }
 
     return (

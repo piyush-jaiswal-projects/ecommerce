@@ -6,7 +6,7 @@ import { addToWishlist } from '../../reducers/userReducer';
 export default function ProductCard(props) {
 
     function OpenProductPage() {
-        window.open("/product/"+ props.product.id, '_blank')
+        window.open("/product/"+ props.product._id, '_blank')
     }
 
     return (

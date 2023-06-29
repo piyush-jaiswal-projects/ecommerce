@@ -41,23 +41,33 @@ const addToWishlist = async (req, res) => {
 
 const getCart = async (req, res) => {
     const { userId } = req.body;
-    const user = await User.findOne({ _id: userId });
-    if (!user) {
-        res.status(400).send({ message: "User doesn't exist", success: false });
+    if (!userId) {
+        res.status(400).send({ message: "Invalid User ID", cart: [], success: false });
     }
     else {
-        res.status(200).send({ message: "Cart Received", cart: user.cart, success: true });
+        const user = await User.findOne({ _id: userId });
+        if (!user) {
+            res.status(400).send({ message: "User doesn't exist", cart: [], success: false });
+        }
+        else {
+            res.status(200).send({ message: "Cart Received", cart: user.cart, success: true });
+        }   
     }
 }
 
 const getWishlist = async (req, res) => {
     const { userId } = req.body;
-    const user = await User.findOne({ _id: userId });
-    if (!user) {
-        res.status(400).send({ message: "User doesn't exist", success: false });
+    if (!userId) {
+        res.status(400).send({ message: "Invalid User ID", cart: [], success: false });
     }
     else {
-        res.status(200).send({ message: "Wishlist Received", wishlist: user.wishlist, success: true });
+        const user = await User.findOne({ _id: userId });
+        if (!user) {
+            res.status(400).send({ message: "User doesn't exist", wishlist: [], success: false });
+        }
+        else {
+            res.status(200).send({ message: "Wishlist Received", wishlist: user.wishlist, success: true });
+        }
     }
 }
 

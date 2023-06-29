@@ -7,7 +7,7 @@ export default function LargeIconBar(props) {
     const userName = useSelector((state) => state.user.userName);
 
     return (
-        <section className='flex items-center justify-around'>
+        <section className='flex items-center justify-around mr-[20px]'>
             <div className="flex items-center">
                 <input
                     type='text'
@@ -22,7 +22,7 @@ export default function LargeIconBar(props) {
             </div>
 
             
-            {isUser ?
+            {isUser === "true" ?
                     <div className='my-4'>
                     <NavLink text={userName} url="/userportal" />
                     </div>
@@ -38,9 +38,15 @@ export default function LargeIconBar(props) {
                 }
             
 
-            {isUser ? <div className='flex items-center justify-around'>
+            {isUser === "true" ? <div className='flex items-center justify-around'>
                     {props.userIcons.map((item) => {
-                        return <img key={item} className='mx-2 hover:text-secondary cursor-pointer' src={item} alt="" />
+                        return (
+                            <a href={item.link}>
+                            <label className="flex justify-center items-center mx-2">
+                                <img key={item.image} className=' hover:text-secondary cursor-pointer' src={item.image} alt="" />{item.length === -1 ? "" : "("+item.length+")"}
+                                </label>
+                                </a>
+                        )
                     })}
             </div> : ""}
                 </section>

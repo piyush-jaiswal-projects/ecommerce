@@ -40,7 +40,11 @@ export default function SmallIconBar(props) {
 
             {isUser ? <div className='flex items-center justify-around border-t-2 border-base pt-4'>
                     {props.userIcons.map((item) => {
-                        return <img key={item} className='mx-2 cursor-pointer w-[20px]' src={item} alt="" />
+                        return (
+                            <>
+                            <a href={item.link}><img key={item} className='mx-2 cursor-pointer w-[20px]' src={item.image} alt="" />({item.length})</a>
+                            </>
+                        )
                     })}
             </div> : ""}
          </section>

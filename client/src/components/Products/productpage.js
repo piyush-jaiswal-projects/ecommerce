@@ -15,6 +15,7 @@ export default function ProductPage(props) {
     const [size, setSize] = useState("");
     const [btnText, setBtnText] = useState("Add to Cart")
     const isUser = useSelector((state) => state.user.userLoggedIn);
+    console.log(product);
 
     function CalculateRating() {
         const reviews = product.reviews;

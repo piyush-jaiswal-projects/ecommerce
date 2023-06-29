@@ -1,11 +1,15 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import setCookie from '../functions/setCookie'
 import getAllCookies from '../functions/getAllCookies'
-import { initialCart } from '../data';
+import getUserCart from '../api/getUserCart'
+import getUserWishlist from '../api/getUserWishlist'
+import axios from 'axios';
+
+ var cart = getUserCart;
+var wishlist = getUserWishlist;
+    
 
 const userData = getAllCookies();
-
-//get user cart from server
 
 const initialState = {
     userLoggedIn: userData.userLoggedIn,
@@ -13,41 +17,57 @@ const initialState = {
     userName: userData.userName,
     addresses: ["Select Your Delivery Address", "New Delhi, India", "Chandigarh, India"],
     placedOrder: [],
-    cart: initialCart,
+    cart: cart,
     currAddressCharge: 0,
-    wishlist: userData.wishlist,
-    error: null
+    wishlist: wishlist,
+    isError: false,
+    message: "",
+    isLoading: false
 }
+
+export const signupAsync = createAsyncThunk('users/signup', async (payload, {rejectWithValue}) => {
+    const uri = process.env.REACT_APP_SERVER_URL + "/api/auth/signup"
+    const data = {
+        name: payload.userData.name,
+        username: payload.userData.username,
+        password: payload.userData.password
+    }
+    try {
+    const response = await axios.post(uri, data);
+    return response.data;
+    }
+    catch (error) {
+        console.log(error);
+        return rejectWithValue(error.response.data);
+    }
+}
+)
+
+export const loginAsync = createAsyncThunk('users/login', async (payload, { rejectWithValue }) => {
+    const uri = process.env.REACT_APP_SERVER_URL + "/api/auth/login"
+    const data = {
+        username: payload.userData.username,
+        password: payload.userData.password
+    }
+    try {
+        const response = await axios.post(uri, data);
+        return response.data;
+    }
+    catch (error) {
+        console.log(error);
+        return rejectWithValue(error.response.data);
+    }
+})
 
 const userReducer = createSlice({
     name: "users",
     initialState,
     reducers: {
-        logInUser(state, action) {
-            // set userid after after login success
-            const { name, id, cart, wishlist } = action.payload;
-            setCookie(true, name, id, cart, wishlist);
-            return {
-                ...state,
-                userLoggedIn: true,
-                userName: action.payload.name
-            }
-        },
         logOutUser(state, action) {
             setCookie(false, "", "", "", "");
             return {
                 ...state,
                 userLoggedIn: false
-            }
-        },
-        signUpUser(state, action) {
-            // set userid after signup success
-            const { name, id, cart, wishlist } = action.payload;
-            setCookie(true, name, id, cart, wishlist);
-            return {
-                ...state,
-                userLoggedIn: true,
-                userName: action.payload.name
             }
         },
         addToCart(state, action) {
@@ -103,20 +123,65 @@ const userReducer = createSlice({
                 currAddressCharge: 0
             }
         }
-    }
+    },
+    extraReducers: (builder) => {
+        builder
+          .addCase(signupAsync.pending, (state) => {
+            state.isLoading = true;
+              state.isError = false;
+              state.message = "processing..."
+
+          })
+          .addCase(signupAsync.fulfilled, (state, action) => {
+              state.isLoading = false;
+              state.isError = false;
+              state.message = action.payload.message;
+              const user = action.payload.user;
+              state.userLoggedIn = true;
+              state.userName = user.name;
+              setCookie(true, user.name, user._id, user.cart, user.wishlist);
+          })
+          .addCase(signupAsync.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.message = action.payload.message || "Some error occurred";
+
+            })
+            .addCase(loginAsync.pending, (state) => {
+                state.isLoading = true;
+                  state.isError = false;
+                  state.message = "processing..."
+    
+              })
+              .addCase(loginAsync.fulfilled, (state, action) => {
+                  state.isLoading = false;
+                  state.isError = false;
+                  state.message = action.payload.message;
+                  const user = action.payload.user;
+                  state.userLoggedIn = true;
+                  state.userName = user.name;
+                  setCookie(true, user.name, user._id, user.cart, user.wishlist);
+              })
+                .addCase(loginAsync.rejected, (state, action) => {
+                    state.isLoading = false;
+                    state.isError = true;
+                    state.message = action.payload.message || "Some error occurred";
+    
+              });
+      },
 })
 
 export default userReducer.reducer;
 
+
 export const {
     logInUser,
     logOutUser,
-    signUpUser,
     addToCart,
     removeFromCart,
     addToWishlist,
     removeFromWishlist,
     setDeliveryCharge,
     placeOrder,
-    emptyCart
+    emptyCart,
 } = userReducer.actions

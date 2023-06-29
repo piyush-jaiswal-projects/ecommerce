@@ -1,11 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { products } from "../data";
+import GetProducts from "../api/getProducts";
+
+const product = GetProducts;
 
 const initialState = {
-    products: products,
+    products: product,
     currentCategory: "General",
-    currentProducts: products,
-    categoryItemsCount: products.length,
+    currentProducts: product,
+    categoryItemsCount: product.length,
     error: null
 }
 
@@ -23,14 +25,24 @@ const productReducer = createSlice({
             currentCategory: action.payload.categoryName,
             categoryItemsCount: newCount
         }
-    }},
+        },
+        fetchProducts(state, action) {
+            const productList = action.payload.products;
+            return {
+                ...state,
+                products: productList,
+                currentCategory: productList,
+                categoryItemsCount: productList.length
+            }
+        }
+    },
 })
 
-export const {changeCategory} = productReducer.actions;
+export const {changeCategory, fetchProducts} = productReducer.actions;
 
 export default productReducer.reducer;
 
 //selector functions
 export function GetProductFromId(id) {
-    return products.find((product)=> product.id === Number(id))
+    return product.find((product)=> product._id === id)
 }
