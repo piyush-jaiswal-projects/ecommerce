@@ -1,7 +1,7 @@
 import React from 'react'
 import { Star, RedHeart, Tshirt } from '../../constants/images'
 import { useSelector, useDispatch } from 'react-redux'
-import { addToWishlist } from '../../reducers/userReducer';
+import { addWishlistAsync } from '../../reducers/userReducer';
 
 export default function ProductCard(props) {
 
@@ -31,6 +31,7 @@ export default function ProductCard(props) {
 
 function CardTop(props) {
     const isUser = useSelector((state) => state.user.userLoggedIn);
+    const uid = useSelector((state) => state.user.userId);
     const dispatch = useDispatch();
 
     function CalculateRating() {
@@ -49,12 +50,8 @@ function CardTop(props) {
     function AddToWishlist() {
         if (isUser) {
             //dispatch add to cart
-            dispatch(addToWishlist({ product: props.props.product }));
-            alert('Added to Wishlist');
-        }
-        else {
-            // window.location.replace("/signup");
-            alert('Please Login or Signup')
+            dispatch(addWishlistAsync({ userId: uid, product: { product: props.props.product, selectedSize: "", quantity: 1 } }));
+            alert("Added to Wishlist");
         }
     }
 

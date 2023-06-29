@@ -6,7 +6,6 @@ const id = getCookie("userId");
         await axios.post(process.env.REACT_APP_SERVER_URL + "/api/user/getCart", {userId: id})
             .then((res) => {
                 data = res.data.cart;
-                console.log("Cart: " + res.data);
             });
     
     } catch (error) {

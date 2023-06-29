@@ -1,4 +1,4 @@
-import { Product, Login, Signup, ProductPage, UserCart, UserPortal } from './components'
+import { Product, Login, Signup, ProductPage, UserCart, UserPortal, PaymentStatus } from './components'
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import UserWishlist from './components/User/userWishlist';
 
@@ -15,6 +15,8 @@ function App() {
           <Route path='/signup' element={<Signup />} />
           <Route path='/login' element={<Login />} />
           <Route path='/userportal' element={<UserPortal />} />
+          <Route path='/paymentsuccess' element={<PaymentStatus status="success" />} />
+          <Route path='/paymentfailed' element={<PaymentStatus status="failed" />} />
         </Routes>
       </Router>
     </div>

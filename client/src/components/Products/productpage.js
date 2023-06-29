@@ -5,7 +5,7 @@ import $ from 'jquery'
 import { GetProductFromId } from '../../reducers/productReducer';
 import { Star } from '../../constants/images';
 import { useSelector, useDispatch } from 'react-redux';
-import { addToCart, addToWishlist } from '../../reducers/userReducer';
+import { addCartAsync, addWishlistAsync } from '../../reducers/userReducer';
 
 export default function ProductPage(props) {
     const params = useParams();
@@ -15,7 +15,7 @@ export default function ProductPage(props) {
     const [size, setSize] = useState("");
     const [btnText, setBtnText] = useState("Add to Cart")
     const isUser = useSelector((state) => state.user.userLoggedIn);
-    console.log(product);
+    const uid = useSelector((state) => state.user.userId);
 
     function CalculateRating() {
         const reviews = product.reviews;
@@ -39,19 +39,12 @@ export default function ProductPage(props) {
         }
     }
 
-    function AddToCart(cta) {
+    async function AddToCart(cta) {
         if (isUser) {
             if (btnText !== "Go to Cart") {
                 if (size !== "") {
                     //dispatch add to cart
-                    dispatch(addToCart({ product: product, size: size, quantity: value  }))
-                    if (cta === "buynow") {
-                        window.location.replace("/cart");
-                    }
-                    else {
-                        alert('Added To Cart');
-                        setBtnText("Go to Cart")
-                    }
+                    await dispatch(addCartAsync({ userId: uid, product: {product: product, selectedSize: size, quantity: value}  }))
                 }
                 else {
                     alert("Please select size")
@@ -59,6 +52,14 @@ export default function ProductPage(props) {
             }
             else {
                 window.location.replace("/cart");
+            }
+
+            if (cta === "buynow") {
+                window.location.replace("/cart");
+            }
+            else {
+                alert('Added To Cart');
+                setBtnText("Go to Cart")
             }
         }
         else {
@@ -69,12 +70,8 @@ export default function ProductPage(props) {
     function AddToWishlist() {
         if (isUser) {
             //dispatch add to cart
-            dispatch(addToWishlist({ product: product }));
-            alert('Added to Wishlist');
-        }
-        else {
-            // window.location.replace("/signup");
-            alert('Please Login or Signup')
+            dispatch(addWishlistAsync({ userId: uid, product: { product: product, selectedSize: size, quantity: value } }));
+            alert("Added to Wishlist");
         }
     }
 

@@ -6,7 +6,6 @@ const id = getCookie("userId");
         await axios.post(process.env.REACT_APP_SERVER_URL + "/api/user/getWishlist", {userId: id})
             .then((res) => {
                 data = res.data.wishlist;
-                console.log("Wishlist: " + res.data.wishlist);
             });
     
     } catch (error) {

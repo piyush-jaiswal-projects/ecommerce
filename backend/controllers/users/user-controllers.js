@@ -5,6 +5,7 @@ const getDetails = async (req, res) => {
     const user = await User.findOne({ _id: userId });
     if (!user) {
         res.status(400).send({ message: "User doesn't exist", success: false });
+        return;
     }
     res.status(200).send({ message: "Details Received", user: user, success: true });
 }
@@ -18,7 +19,10 @@ const addToCart = async (req, res) => {
     const newCart = [...user.cart, product];
     const status = await User.updateOne({ _id: userId }, { $set: { cart: newCart } });
     if (status.acknowledged) {
-        res.status(200).send({ message: "Product added to cart", success: true });
+        const user = await User.findOne({ _id: userId });
+        if (user) {
+            res.status(200).send({ message: "Product added to cart",cart: user.cart, success: true });
+        }
         return;
     }
     res.status(400).send({ message: "Can't add product to cart", success: false });
@@ -33,10 +37,13 @@ const addToWishlist = async (req, res) => {
     const newWishlist = [...user.wishlist, product];
     const status = await User.updateOne({ _id: userId }, { $set: { wishlist: newWishlist } });
     if (status.acknowledged) {
-        res.status(200).send({ message: "Product added", success: true });
+        const user = await User.findOne({ _id: userId });
+        if (user) {
+            res.status(200).send({ message: "Product added",wishlist: user.wishlist, success: true });
+        }
         return;
     }
-    res.status(400).send({ message: "Can't add product to wishlist", success: false });
+    res.status(400).send({ message: "Can't add product to wishlist",wishlist:[], success: false });
 }
 
 const getCart = async (req, res) => {
@@ -76,8 +83,10 @@ const placeOrder = async (req, res) => {
     const user = await User.findOne({ _id: userId });
     if (!user) {
         res.status(400).send({ message: "User doesn't exist", success: false });
+        return;
     }
-    const status = await User.updateOne({ _id: userId }, { $set: { placedOrders: cart } });
+    const newCart = [...user.placedOrders, ...cart];
+    const status = await User.updateOne({ _id: userId }, { $set: { placedOrders: newCart, cart: [] } });
     if (status.acknowledged) {
         res.status(200).send({ message: "Order placed", success: true });
         return;
@@ -85,4 +94,46 @@ const placeOrder = async (req, res) => {
     res.status(400).send({ message: "Order not placed", success: false});
 }
 
-module.exports = {getDetails, addToCart, addToWishlist, getCart, getWishlist, placeOrder}
+const removeFromCart = async (req, res) => {
+    const { userId, productId } = req.body;
+    const user = await User.findOne({ _id: userId });
+    if (!user) {
+        res.status(400).send({ message: "Can't Remove From Cart (User doesn't exists)", success: false });
+        return;
+    }
+
+    const status = await User.updateOne({ _id: userId }, { $pull: { cart: { _id: productId } } });
+    if (status.acknowledged === true) {
+        const user = await User.findOne({ _id: userId });
+        if (user) {
+            res.status(200).send({ message: "Item Removed", cart: user.cart, success: true });
+        }
+    }
+    else {
+        res.status(400).send({ message: "Item Not Removed",cart:[], success: false});
+    }
+
+}
+
+const removeFromWishlist = async (req, res) => {
+    const { userId, productId } = req.body;
+    const user = await User.findOne({ _id: userId });
+    if (!user) {
+        res.status(400).send({ message: "Can't Remove From Wishlist (User doesn't exists)", success: false });
+        return;
+    }
+
+    const status = await User.updateOne({ _id: userId }, { $pull: { wishlist: { _id: productId } } });
+    if (status.acknowledged === true) {
+        const user = await User.findOne({ _id: userId });
+        if (user) {
+            res.status(200).send({ message: "Item Removed", wishlist: user.wishlist, success: true });
+        }
+    }
+    else {
+        res.status(400).send({ message: "Item Not Removed",wishlist:[], success: false});
+    }
+
+}
+
+module.exports = {getDetails, addToCart, addToWishlist, getCart, getWishlist, placeOrder, removeFromCart, removeFromWishlist}

@@ -9,5 +9,9 @@ router.post("/addToWishlist", userControllers.addToWishlist);
 router.post("/placeOrder", userControllers.placeOrder);
 router.post("/getCart", userControllers.getCart);
 router.post("/getWishlist", userControllers.getWishlist);
+router.post("/removeFromCart", userControllers.removeFromCart);
+router.post("/removeFromWishlist", userControllers.removeFromWishlist);
+router.post("/placeOrders", userControllers.placeOrder);
+
 
 module.exports = router;

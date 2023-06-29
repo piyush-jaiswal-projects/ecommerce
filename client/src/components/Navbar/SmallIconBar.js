@@ -42,7 +42,7 @@ export default function SmallIconBar(props) {
                     {props.userIcons.map((item) => {
                         return (
                             <>
-                            <a href={item.link}><img key={item} className='mx-2 cursor-pointer w-[20px]' src={item.image} alt="" />({item.length})</a>
+                            <a href={item.link}><img key={item} className='mx-2 cursor-pointer w-[20px]' src={item.image} alt="" />{item.length === -1 ? "" : "("+item.length+")"}</a>
                             </>
                         )
                     })}

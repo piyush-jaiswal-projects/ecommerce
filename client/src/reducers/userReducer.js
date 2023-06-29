@@ -4,6 +4,7 @@ import getAllCookies from '../functions/getAllCookies'
 import getUserCart from '../api/getUserCart'
 import getUserWishlist from '../api/getUserWishlist'
 import axios from 'axios';
+import { useSelector } from 'react-redux'
 
  var cart = getUserCart;
 var wishlist = getUserWishlist;
@@ -59,6 +60,90 @@ export const loginAsync = createAsyncThunk('users/login', async (payload, { reje
     }
 })
 
+export const removeCartAsync = createAsyncThunk('/users/removeFromCart', async(payload, { rejectWithValue }) => {
+    const uri = process.env.REACT_APP_SERVER_URL + "/api/user/removeFromCart"
+    const data = {
+        userId: payload.userId,
+        productId: payload.productId
+    }
+    try {
+        const response = await axios.post(uri, data);
+        return response.data;
+    }
+    catch (error) {
+        console.log(error);
+        return rejectWithValue(error.response.data);
+    }
+})
+
+export const removeWishlistAsync = createAsyncThunk('/users/removeFromWishlist', async(payload, { rejectWithValue }) => {
+    const uri = process.env.REACT_APP_SERVER_URL + "/api/user/removeFromWishlist"
+    const data = {
+        userId: payload.userId,
+        productId: payload.productId
+    }
+    try {
+        const response = await axios.post(uri, data);
+        return response.data;
+    }
+    catch (error) {
+        console.log(error);
+        return rejectWithValue(error.response.data);
+    }
+})
+
+export const addCartAsync = createAsyncThunk('/users/addToCart', async (payload, { rejectWithValue }) => {
+    const uri = process.env.REACT_APP_SERVER_URL + "/api/user/addToCart"
+    const data = {
+        userId: payload.userId,
+        product: payload.product
+    }
+    try {
+        const response = await axios.post(uri, data);
+        return response.data;
+    }
+    catch (error) {
+        console.log(error);
+        return rejectWithValue(error.response.data);
+    }
+})
+
+export const addWishlistAsync = createAsyncThunk('/users/addToWishlist', async (payload, { rejectWithValue }) => {
+    const uri = process.env.REACT_APP_SERVER_URL + "/api/user/addToWishlist"
+    const data = {
+        userId: payload.userId,
+        product: payload.product
+    }
+    try {
+        const response = await axios.post(uri, data);
+        return response.data;
+    }
+    catch (error) {
+        console.log(error);
+        return rejectWithValue(error.response.data);
+    }
+})
+
+export const placeOrderAsync = createAsyncThunk('/users/placeOrder', async (payload, { rejectWithValue }) => {
+    const uri = process.env.REACT_APP_SERVER_URL + "/api/user/placeOrders"
+    const uid = useSelector((state) => state.user.userId);
+    const cart = useSelector((state) => state.user.cart);
+    const data = {
+        userId: uid,
+        cart: cart
+    }
+    try {
+        const response = await axios.post(uri, data);
+        return response.data;
+    }
+    catch (error) {
+        console.log(error);
+        return rejectWithValue(error.response.data);
+    }
+})
+
+
+
 const userReducer = createSlice({
     name: "users",
     initialState,
@@ -70,38 +155,10 @@ const userReducer = createSlice({
                 userLoggedIn: false
             }
         },
-        addToCart(state, action) {
-            const newProduct = {
-                product: action.payload.product,
-                selectedSize: action.payload.size,
-                quantity: action.payload.quantity
-            }
-            const newCart = [...state.cart, newProduct];
-            document.cookie = "cart=" + newCart;
+        updateCart(state, action) {
             return {
                 ...state,
-                cart: newCart
-            }
-        },
-        removeFromCart(state, action) {
-            const newCart = state.cart.filter((item) => item.product.id !== action.payload.productId)
-            return {
-                ...state,
-                cart: newCart
-            }
-        },
-        addToWishlist(state, action) {
-            const newWishlist = [...state.wishlist, action.payload.product];
-            return {
-                ...state,
-                wishlist: newWishlist
-            }
-        },
-        removeFromWishlist(state, action) {
-            const newWishlist = state.wishlist.filter((item) => item.product.id === action.payload.productId)
-            return {
-                ...state,
-                cart: newWishlist
+                cart: action.payload.newCart
             }
         },
         setDeliveryCharge(state, action) {
@@ -126,22 +183,22 @@ const userReducer = createSlice({
     },
     extraReducers: (builder) => {
         builder
-          .addCase(signupAsync.pending, (state) => {
-            state.isLoading = true;
-              state.isError = false;
-              state.message = "processing..."
+            .addCase(signupAsync.pending, (state) => {
+                state.isLoading = true;
+                state.isError = false;
+                state.message = "processing..."
 
-          })
-          .addCase(signupAsync.fulfilled, (state, action) => {
-              state.isLoading = false;
-              state.isError = false;
-              state.message = action.payload.message;
-              const user = action.payload.user;
-              state.userLoggedIn = true;
-              state.userName = user.name;
-              setCookie(true, user.name, user._id, user.cart, user.wishlist);
-          })
-          .addCase(signupAsync.rejected, (state, action) => {
+            })
+            .addCase(signupAsync.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isError = false;
+                state.message = action.payload.message;
+                const user = action.payload.user;
+                state.userLoggedIn = true;
+                state.userName = user.name;
+                setCookie(true, user.name, user._id, user.cart, user.wishlist);
+            })
+            .addCase(signupAsync.rejected, (state, action) => {
                 state.isLoading = false;
                 state.isError = true;
                 state.message = action.payload.message || "Some error occurred";
@@ -149,25 +206,115 @@ const userReducer = createSlice({
             })
             .addCase(loginAsync.pending, (state) => {
                 state.isLoading = true;
-                  state.isError = false;
-                  state.message = "processing..."
+                state.isError = false;
+                state.message = "processing..."
     
-              })
-              .addCase(loginAsync.fulfilled, (state, action) => {
-                  state.isLoading = false;
-                  state.isError = false;
-                  state.message = action.payload.message;
-                  const user = action.payload.user;
-                  state.userLoggedIn = true;
-                  state.userName = user.name;
-                  setCookie(true, user.name, user._id, user.cart, user.wishlist);
-              })
-                .addCase(loginAsync.rejected, (state, action) => {
-                    state.isLoading = false;
-                    state.isError = true;
-                    state.message = action.payload.message || "Some error occurred";
+            })
+            .addCase(loginAsync.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isError = false;
+                state.message = action.payload.message;
+                const user = action.payload.user;
+                state.userLoggedIn = true;
+                state.userName = user.name;
+                setCookie(true, user.name, user._id, user.cart, user.wishlist);
+            })
+            .addCase(loginAsync.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.message = action.payload.message || "Some error occurred";
     
-              });
+            })
+            .addCase(removeCartAsync.pending, (state) => {
+                state.isLoading = true;
+                state.isError = false;
+                state.message = "processing..."
+        
+            })
+            .addCase(removeCartAsync.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isError = false;
+                state.message = "";
+                state.cart = action.payload.cart;
+            })
+            .addCase(removeCartAsync.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.message = action.payload.message || "Some error occurred";
+        
+            })
+            .addCase(removeWishlistAsync.pending, (state) => {
+                state.isLoading = true;
+                state.isError = false;
+                state.message = "processing..."
+            
+            })
+            .addCase(removeWishlistAsync.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isError = false;
+                state.message = "";
+                state.wishlist = action.payload.wishlist;
+            })
+            .addCase(removeWishlistAsync.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.message = action.payload.message || "Some error occurred";
+            
+            })
+            .addCase(addCartAsync.pending, (state) => {
+                state.isLoading = true;
+                state.isError = false;
+                state.message = "processing..."
+            
+            })
+            .addCase(addCartAsync.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isError = false;
+                state.message = "";
+                state.cart = action.payload.cart;
+            })
+            .addCase(addCartAsync.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.message = action.payload.message || "Some error occurred";
+            
+            })
+            .addCase(addWishlistAsync.pending, (state) => {
+                state.isLoading = true;
+                state.isError = false;
+                state.message = "processing..."
+                
+            })
+            .addCase(addWishlistAsync.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isError = false;
+                state.message = "";
+                state.wishlist = action.payload.wishlist;
+            })
+            .addCase(addWishlistAsync.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.message = action.payload.message || "Some error occurred";
+                
+            })
+            .addCase(placeOrderAsync.pending, (state) => {
+                state.isLoading = true;
+                state.isError = false;
+                state.message = "processing..."
+                    
+            })
+            .addCase(placeOrderAsync.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isError = false;
+                state.message = "";
+                state.cart = [];
+            })
+            .addCase(placeOrderAsync.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.message = action.payload.message || "Some error occurred";
+                    
+            });
       },
 })
 
@@ -175,12 +322,8 @@ export default userReducer.reducer;
 
 
 export const {
-    logInUser,
     logOutUser,
-    addToCart,
-    removeFromCart,
-    addToWishlist,
-    removeFromWishlist,
+    updateCart,
     setDeliveryCharge,
     placeOrder,
     emptyCart,

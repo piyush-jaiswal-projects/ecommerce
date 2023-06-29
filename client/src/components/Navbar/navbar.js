@@ -3,7 +3,7 @@ import $ from 'jquery'
 import { useSelector } from 'react-redux'
 
 //images
-import { Logo1, Wishlist, User, Bag, Menu } from '../../constants/images'
+import { Logo1, Wishlist, Bag, Menu } from '../../constants/images'
 
 //custom hook
 import useInnerWidth from '../../hooks/useInnerWidth'
@@ -21,7 +21,7 @@ export default function Navbar(props) {
     const wishlist = useSelector((state) => state.user.wishlist);
 
     const links = ["Men", "Women", "Kids", "Sports", "Casual"]
-    const userIcons = [{image: Wishlist, length: wishlist.length, link: "/wishlist"}, {image: Bag, length: cart.length, link: "/cart"}, {image: User, length: -1, link: "/userportal"}]
+    const userIcons = [{image: Wishlist, length: wishlist.length, link: "/wishlist"}, {image: Bag, length: cart.length, link: "/cart"}]
 
     const [searchItem, setSearchItem] = useState("");
     const width = useInnerWidth();

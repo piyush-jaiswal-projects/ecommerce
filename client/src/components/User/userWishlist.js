@@ -1,9 +1,10 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { removeFromWishlist} from '../../reducers/userReducer'
+import { removeWishlistAsync, addCartAsync} from '../../reducers/userReducer'
 
 export default function UserWishlist() {
     const wishlist = useSelector((state) => state.user.wishlist)
+    const msg = useSelector((state) => state.user.message);
 
     function calculatePrice() {
         var price = 0;
@@ -19,6 +20,8 @@ export default function UserWishlist() {
             <div className=''>
                 <div className='w-[100%] lg:w-[60%] bg-base ml-[50px] px-5 py-5 h-[auto] rounded-lg'>
                     <h1 className='text-secondary text-[1.5rem] lg:text-[2rem] text-center lg:text-left font-bold'>Your wishlist ({wishlist.length}) - Total Value : Rs. {calculatePrice()}</h1>
+                    
+                <label>{msg}</label>
                     {wishlist.map((item, index) => {
                         return (
                             <WishCard item={item} />
@@ -38,15 +41,21 @@ export default function UserWishlist() {
 function WishCard(props) {
     const item = props.item;
     const dispatch = useDispatch();
-    console.log(item.product);
+    const uid = useSelector((state) => state.user.userId);
+
+    function AddToCart() {
+        dispatch(addCartAsync({ userId: uid, product: { product: item.product, selectedSize: item.selectedSize, quantity: item.quantity } }))
+        dispatch(removeWishlistAsync({userId: uid,productId: item._id}))
+    }
+
     function RemoveProduct(productId) {
-        dispatch(removeFromWishlist({productId: productId}))
+        dispatch(removeWishlistAsync({userId: uid,productId: productId}))
     }
 
     return (
         <div key={item} className='flex flex-wrap justify-between bg-[white] m-2 my-5 lg:m-4 mx-auto p-2 lg:p-4 items-center w-[100%] lg:w-[90%] shadow-lg rounded-lg'>
                         <div className='w-[100%] sm:w-[20%]'>
-                                    <a href={"/product/"+ item.product.productId} target='_blank' rel="noreferrer">
+                                    <a href={"/product/"+ item.product._id} target='_blank' rel="noreferrer">
                                     <img src="http://res.cloudinary.com/deo80u7qs/image/upload/v1687442791/jamneknds0sxyjcc7bgf.png" alt=" " />
                                     </a>
                         </div>
@@ -58,10 +67,10 @@ function WishCard(props) {
                                         <p className='text-[1.2rem]'>Size: {item.selectedSize}</p>
                 </div>
                 <div className='text-center sm:text-left'>
-                                <button className='text-secondary text-[1.1rem]' onClick={()=>RemoveProduct(item.product.productId)}>Add to cart</button>
+                                <button className='text-secondary text-[1.1rem]' onClick={()=>AddToCart()}>Add to cart</button>
                             </div>
                             <div className='text-center sm:text-left'>
-                                <button className='text-secondary text-[1.1rem]' onClick={()=>RemoveProduct(item.product.productId)}>Remove from wishlist</button>
+                                <button className='text-secondary text-[1.1rem]' onClick={()=>RemoveProduct(item._id)}>Remove from wishlist</button>
                             </div>
                         </div>
                     </div>
