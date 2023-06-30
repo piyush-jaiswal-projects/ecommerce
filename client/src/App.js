@@ -1,4 +1,4 @@
-import { Product, Login, Signup, ProductPage, UserCart, UserPortal, PaymentStatus } from './components'
+import { Product, Login, Signup, ProductPage, UserCart, UserPortal, PaymentStatus, Home } from './components'
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import UserWishlist from './components/User/userWishlist';
 
@@ -7,7 +7,7 @@ function App() {
     <div className="App">
       <Router>
         <Routes>
-          <Route path='/' element={<h1>HOME</h1>} />
+          <Route path='/' element={<Home />} />
           <Route path='/products/:category' element={<Product />} />
           <Route path='/product/:productId' element={<ProductPage />} />
           <Route path='/cart' element={<UserCart />} />
