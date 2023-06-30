@@ -56,7 +56,7 @@ export default function Signup() {
 
 
     return (
-        <div className='mt-[8vw] md:mt-[5vw] p-4'>
+        <div className='mt-[8vw] md:mt-[5vw] p-4 mb-[150px]'>
             <div className="w-[25rem] mx-auto flex justify-center">
                 <a href='/'>
                     <img className="w-[25vw] sm:w-[18vw] md:w-[13vw] lg:w-[8vw]" src={Logo1} alt="16Ten" />

@@ -1,9 +1,14 @@
-import React from 'react'
+import React, { Fragment } from 'react'
+import Heroslider from './hero-slider'
+import Trending from './trending'
+import Banner from './banner'
 
 export default function Home() {
     return (
-         <div className='w-[95vw] h-[100vh] mx-auto border border-t-0 border-b-0 border-primary'>
-            
-         </div>
+        <Fragment>
+            <Heroslider />
+            <Trending />
+            <Banner />
+        </Fragment>
      )
 }

@@ -12,7 +12,7 @@ export default function PaymentSuccess(props) {
     }
     
     return (
-        <div className='text-center mt-[8vw] md:mt-[8vw] p-4 bg-white'>
+        <div className='text-center mt-[8vw] md:mt-[8vw] p-4 bg-white mb-[150px]'>
             <label className='text-left'>{props.status === "success" ? "Congratulations" : "Some Error Occurred" }</label>
             <h1 className='text-[3rem] text-secondary'>{props.status === "success" ? "Order Placed Successfully" : "Order Not Placed" }</h1>
             <p>Reference Number: {refNum}</p>
