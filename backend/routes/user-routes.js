@@ -12,6 +12,8 @@ router.post("/getWishlist", userControllers.getWishlist);
 router.post("/removeFromCart", userControllers.removeFromCart);
 router.post("/removeFromWishlist", userControllers.removeFromWishlist);
 router.post("/placeOrders", userControllers.placeOrder);
+router.post("/getAddresses", userControllers.getAddresses);
+router.post("/addAddress", userControllers.setAddress);
 
 
 module.exports = router;

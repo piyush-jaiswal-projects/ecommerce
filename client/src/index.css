@@ -21,3 +21,16 @@ code {
   color: red;
 }
 
+.animate-scale{
+  animation: scale 0.5s ease;
+}
+
+@keyframes scale {
+  from{
+    transform: scale(0);
+  }
+  to{
+    transform: scale(1);
+  }
+}
+

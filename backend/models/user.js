@@ -4,7 +4,11 @@ const mongoose = require('mongoose')
 const userSchema = new mongoose.Schema({
     name: { type: String, required: true },
     userName: { type: String, required: true },
-    addresses: [{ type: String }],
+    addresses: [{
+        location: { type: String },
+        pincode: { type: Number },
+        delCharge: {type: Number}
+    }],
     password: { type: String, requires: true},
     cart: [{
         product: {},

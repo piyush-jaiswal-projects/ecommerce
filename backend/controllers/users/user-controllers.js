@@ -1,5 +1,11 @@
 const User = require('../../models/user')
 
+function calculateDelCharge(pincode) {
+    const subString = pincode.substring(0, 2);
+    const price = [50, 100, 60, 40, 20, 30, 40, 20, 50, 100, 90, 150, 120, 30, 10, 15, 25, 23, 90, 80, 50, 60, 30, 20, 40, 90, 100]
+    return price[subString];
+}
+
 const getDetails = async (req, res) => {
     const { userId } = req.body;
     const user = await User.findOne({ _id: userId });
@@ -136,4 +142,42 @@ const removeFromWishlist = async (req, res) => {
 
 }
 
-module.exports = {getDetails, addToCart, addToWishlist, getCart, getWishlist, placeOrder, removeFromCart, removeFromWishlist}
+const getAddresses = async (req, res) => {
+    const { userId } = req.body;
+    const user = await User.findOne({ _id: userId });
+    if (!user) {
+        res.status(400).send({ message: "User doesn't exists", success: false });
+        return;
+    }
+    res.status(200).send({ message: "Addresses", addresses: user.addresses, success: true });
+
+}
+
+const setAddress = async (req, res) => {
+    const { userId, address, pincode } = req.body;
+    const user = await User.findOne({ _id: userId });
+    if (!user) {
+        res.status(400).send({ message: "User doesn't exists",addresses:[], success: false });
+        return;
+    }
+    const delCharge = calculateDelCharge(pincode);
+    const status = await User.updateOne({ _id: userId }, { $set: { addresses: [...user.addresses, {location: address, pincode: pincode, delCharge: delCharge}] } });
+    if (status.acknowledged) {
+        res.status(200).send({ message: "Addresses", addresses: user.addresses, success: true });
+        return;
+    }
+    res.status(400).send({ message: "Address Not Added",addresses:[], success: false });
+}
+
+module.exports = {
+    getDetails,
+    addToCart,
+    addToWishlist,
+    getCart,
+    getWishlist,
+    placeOrder,
+    removeFromCart,
+    removeFromWishlist,
+    getAddresses,
+    setAddress
+}

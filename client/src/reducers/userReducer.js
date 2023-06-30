@@ -16,7 +16,7 @@ const initialState = {
     userLoggedIn: userData.userLoggedIn,
     userId: userData.userId,
     userName: userData.userName,
-    addresses: ["Select Your Delivery Address", "New Delhi, India", "Chandigarh, India"],
+    addresses: [],
     placedOrder: [],
     cart: cart,
     currAddressCharge: 0,

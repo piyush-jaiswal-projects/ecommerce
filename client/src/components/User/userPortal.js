@@ -17,7 +17,7 @@ export default function UserPortal() {
                 <button onClick={() => {
                     dispatch(logOutUser());
                     window.location.replace("/");
-                }} className='font-bold hover:text-primary'>Log Out</button>
+                }} className='mx-4 font-bold hover:text-primary'>Log Out</button>
             </div>
             <UserCart embed={true} />
             <UserWishlist />
