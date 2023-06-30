@@ -8,7 +8,7 @@ import './index.css';
 
 import App from './App';
 
-import { Navbar } from './components'
+import { Navbar, Footer } from './components'
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -16,7 +16,8 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
     <Navbar />
-    <App />
+      <App />
+      <Footer />
     </Provider>
   </React.StrictMode>
 );

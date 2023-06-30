@@ -12,7 +12,7 @@ export default function UserPortal() {
     const dispatch = useDispatch();
 
     return (
-        <div className='mt-[8vw] md:mt-[8vw]'>
+        <div className='mt-[12vw] md:mt-[8vw]'>
             <div className='bg-secondary p-4'>
                 <button onClick={() => {
                     dispatch(logOutUser());

@@ -10,7 +10,7 @@ const twiliophonenumber = process.env.Twilio_Phone_Number;
 
 const client = require('twilio')(accountSid, authToken);
 
-const sendOtp = function (phoneNumber, otp) {
+const sendOtp = async function (phoneNumber, otp) {
     const message = `Greetings from 1610 Collections. Your OTP is: ${otp}`;
   
     client.messages
@@ -20,7 +20,7 @@ const sendOtp = function (phoneNumber, otp) {
         to: phoneNumber
       })
       .then(message => console.log(message.sid))
-      .catch(error => console.log(error));
+      .catch(error => console.log("Error: " + error));
 }
 
 const generateOtp = function (length) {
@@ -40,13 +40,14 @@ const otp = async function (req, res) {
         const { name, username, password } = req.body;
         const existingUser = await User.findOne({ userName: username });
 
-    if (existingUser) {
-        res.status(400).send({ message: "User Already Exists", success: false})
-        return;
-    }
+    // if (existingUser) {
+    //     res.status(400).send({ message: "User Already Exists", success: false})
+    //     return;
+    // }
         //create otp 
         const otp = generateOtp(4);
-        sendOtp(username, otp);
+        console.log(otp);
+        await sendOtp(username, otp);
     
         res.status(200).send({otp: "", message: "OTP Sent", success: true});
     }

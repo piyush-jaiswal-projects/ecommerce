@@ -143,6 +143,7 @@ const removeFromWishlist = async (req, res) => {
 }
 
 const getAddresses = async (req, res) => {
+    console.log("Error in get address");
     const { userId } = req.body;
     const user = await User.findOne({ _id: userId });
     if (!user) {

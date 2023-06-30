@@ -6,4 +6,6 @@ export { default as Signup } from './Signup/signup'
 export { default as ProductPage } from './Products/productpage'
 export { default as UserCart } from './User/userCart'
 export { default as UserPortal } from './User/userPortal'
-export { default as PaymentStatus} from './Payments/paymentSuccess'
+export { default as PaymentStatus } from './Payments/paymentSuccess'
+export { default as Footer } from './Footer/footer'
+

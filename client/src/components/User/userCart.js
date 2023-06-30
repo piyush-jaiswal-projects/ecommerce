@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { removeCartAsync, setDeliveryCharge } from '../../reducers/userReducer'
+import { removeCartAsync} from '../../reducers/userReducer'
 import $ from 'jquery'
 import axios from 'axios';
 import getUserAddresses from '../../api/getUserAddresses';
@@ -11,7 +11,6 @@ export default function UserCart(props) {
     const username = useSelector((state) => state.user.userName)
     const userId = useSelector((state) => state.user.userId);
     const msg = useSelector((state) => state.user.message);
-    const dispatch = useDispatch();
 
     const [currDelCharge, setDelCharge] = useState(40);
 
