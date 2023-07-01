@@ -47,7 +47,7 @@ export default function Navbar(props) {
     return (
         <Fragment>
             {path === "/signup" || path === "/login" ? "" :
-            <header className='fixed top-0 bg-base w-[100vw] flex items-center justify-between py-2 px-2'>
+            <header className='fixed navbar top-0 bg-base w-[100vw] flex items-center justify-between py-2 px-2'>
             <section className='flex items-center justify-around'>
             <div className="">
                 <a href='/'>

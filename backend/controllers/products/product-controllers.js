@@ -27,4 +27,19 @@ const addProduct = async (req, res) => {
     }
 }
 
-module.exports = { getProducts, addProduct };
+const getProductsFromId = async (req, res) => {
+    const { id } = req.body;
+    try {
+        const product = await Product.find({ _id: id });
+        if (!product) {
+            res.status(400).send({ message: "Wrong Product Id", success: false });
+            return;
+        }
+        res.status(200).send({ message: "Received a Product", products: product, success: true });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({message: "Some Error Occurred!", success: false});
+    }
+}
+
+module.exports = { getProducts, addProduct, getProductsFromId };

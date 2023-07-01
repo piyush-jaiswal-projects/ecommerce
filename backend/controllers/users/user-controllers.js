@@ -21,15 +21,16 @@ const addToCart = async (req, res) => {
     const user = await User.findOne({ _id: userId });
     if (!user) {
         res.status(400).send({ message: "User doesn't exist" });
+        return;
     }
     const newCart = [...user.cart, product];
     const status = await User.updateOne({ _id: userId }, { $set: { cart: newCart } });
     if (status.acknowledged) {
         const user = await User.findOne({ _id: userId });
         if (user) {
-            res.status(200).send({ message: "Product added to cart",cart: user.cart, success: true });
+            res.status(200).send({ message: "Product added to cart", cart: user.cart, success: true });
+            return;
         }
-        return;
     }
     res.status(400).send({ message: "Can't add product to cart", success: false });
 }
@@ -39,6 +40,7 @@ const addToWishlist = async (req, res) => {
     const user = await User.findOne({ _id: userId });
     if (!user) {
         res.status(400).send({ message: "User doesn't exist", success: false });
+        return;
     }
     const newWishlist = [...user.wishlist, product];
     const status = await User.updateOne({ _id: userId }, { $set: { wishlist: newWishlist } });
@@ -46,8 +48,8 @@ const addToWishlist = async (req, res) => {
         const user = await User.findOne({ _id: userId });
         if (user) {
             res.status(200).send({ message: "Product added",wishlist: user.wishlist, success: true });
+            return;
         }
-        return;
     }
     res.status(400).send({ message: "Can't add product to wishlist",wishlist:[], success: false });
 }
@@ -56,6 +58,7 @@ const getCart = async (req, res) => {
     const { userId } = req.body;
     if (!userId) {
         res.status(400).send({ message: "Invalid User ID", cart: [], success: false });
+        return;
     }
     else {
         const user = await User.findOne({ _id: userId });
@@ -143,8 +146,11 @@ const removeFromWishlist = async (req, res) => {
 }
 
 const getAddresses = async (req, res) => {
-    console.log("Error in get address");
     const { userId } = req.body;
+    if (!userId) {
+        res.status(400).send({ message: "User doesn't exists", success: false });
+        return;
+    }
     const user = await User.findOne({ _id: userId });
     if (!user) {
         res.status(400).send({ message: "User doesn't exists", success: false });

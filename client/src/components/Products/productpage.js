@@ -2,20 +2,41 @@ import React, {useState} from 'react'
 import { useParams } from 'react-router'
 import Reviews from './reviews';
 import $ from 'jquery'
-import { GetProductFromId } from '../../reducers/productReducer';
 import { Star } from '../../constants/images';
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import { Carousel } from 'react-responsive-carousel';
 import { useSelector, useDispatch } from 'react-redux';
 import { addCartAsync, addWishlistAsync } from '../../reducers/userReducer';
+import axios from 'axios'
 
 export default function ProductPage(props) {
     const params = useParams();
-    const dispatch = useDispatch();
-    const product = GetProductFromId(params.productId);
     const [value, setValue] = useState(1);
     const [size, setSize] = useState("");
     const [btnText, setBtnText] = useState("Add to Cart")
     const isUser = useSelector((state) => state.user.userLoggedIn);
     const uid = useSelector((state) => state.user.userId);
+    const dispatch = useDispatch();
+    const data = {
+        images: [],
+        size: [],
+        desc: "",
+        productId: '',
+        category: '',
+        price: 0,
+        stock: 0,
+        noOfPurchases: 0,
+        reviews: []
+    }
+    const [product, setProduct] = useState(data);
+
+    axios.post(process.env.REACT_APP_SERVER_URL + "/api/product/getProductFromId", { id: params.productId })
+        .then((res) => {
+            const [data] = res.data.products;
+            setProduct(() => data);
+        });
+    
+    
 
     function CalculateRating() {
         const reviews = product.reviews;
@@ -26,9 +47,9 @@ export default function ProductPage(props) {
         return rating/reviews.length;
     }
 
-    function toggleImageSize(imgId) {
-        $("#"+imgId).toggleClass("hidden");
-    }
+    // function toggleImageSize(imgId) {
+    //     $("#"+imgId).toggleClass("hidden");
+    // }
 
     function changeQty(symbol) {
         if (symbol === "-" && value>1) {
@@ -40,26 +61,28 @@ export default function ProductPage(props) {
     }
 
     async function AddToCart(cta) {
-        if (isUser) {
+        console.log(isUser);
+        if (isUser === "true") {
             if (btnText !== "Go to Cart") {
                 if (size !== "") {
                     //dispatch add to cart
-                    await dispatch(addCartAsync({ userId: uid, product: {product: product, selectedSize: size, quantity: value}  }))
+                    dispatch(addCartAsync({ userId: uid, product: { product: product, selectedSize: size, quantity: value } }))
+                    setBtnText("Go to Cart")
+                    $("#alert-cart").toggleClass("hidden");
+                    setTimeout(() => {
+                        $("#alert-cart").toggleClass("hidden");
+                    }, 3000);
                 }
                 else {
-                    alert("Please select size")
+                    $("#alert-size").toggleClass("hidden");
+                    setTimeout(() => {
+                        $("#alert-size").toggleClass("hidden");
+                    }, 3000);
+
                 }
             }
             else {
                 window.location.replace("/cart");
-            }
-
-            if (cta === "buynow") {
-                window.location.replace("/cart");
-            }
-            else {
-                alert('Added To Cart');
-                setBtnText("Go to Cart")
             }
         }
         else {
@@ -71,7 +94,10 @@ export default function ProductPage(props) {
         if (isUser) {
             //dispatch add to cart
             dispatch(addWishlistAsync({ userId: uid, product: { product: product, selectedSize: size, quantity: value } }));
-            alert("Added to Wishlist");
+            $("#alert-wish").toggleClass("hidden");
+            setTimeout(() => {
+                        $("#alert-wish").toggleClass("hidden");
+                    }, 3000);
         }
     }
 
@@ -79,17 +105,36 @@ export default function ProductPage(props) {
 
     return (
         <div className='mt-[8vw] md:mt-[5vw] p-4 overflow-x-hidden'>
+            <div id="alert-cart" className='hidden fixed top-[5rem] animate-scale right-[2rem] border-2 border-secondary text-center p-4 rounded-md z-50 w-[15rem] bg-base shadow-xl'>Added to cart</div>
+            <div id="alert-size" className='hidden fixed top-[5rem] animate-scale right-[2rem] border-2 border-secondary text-center p-4 rounded-md z-50 w-[15rem] bg-base shadow-xl'>Please select Size</div>
+            <div id="alert-wish" className='hidden fixed top-[5rem] animate-scale right-[2rem] border-2 border-secondary text-center p-4 rounded-md z-50 w-[15rem] bg-base shadow-xl'>Added to wishlist</div>
             
             <div className='flex flex-wrap justify-around'>
                 
-                <div className='overflow-hidden grid grid-cols-2 grid-rows-2 w-[90vw] h-[100vw] sm:w-[40rem] sm:h-[40rem]'>
-                    {product.images.map((img, index) => {
+                <div className='overflow-hidden w-[90vw] h-[80vh] md:h-[100vw] sm:w-[40rem] sm:h-[40rem]'>
+                    <section className='object-fill'>
+                    <Carousel
+                transitionTime={1000}
+                autoPlay={true}
+                centerMode={true}
+                showStatus={false}
+                showIndicators={true}
+                centerSlidePercentage={100}
+                showArrows={true}
+                interval={3000}
+                stopOnHover={true}
+                            showThumbs={false}
+                            width={"100%"}
+                        infiniteLoop={true}>
+                        {product.images.map((img, index) => {
                         return (
-                            <>
-                            <img src={img} className='cursor-pointer' alt="Product" onClick={() => toggleImageSize(String(index))} />
-                            <EnlargeImage key={String(index)} src={img} id={String(index)} />
-                        </>)
+                            <div className='h-[40rem] w-[100%]'>
+                            <img src={img} className='object-cover h-[100%] cursor-pointer' alt="Product"/>
+                            {/* <EnlargeImage key={String(index)} src={img} id={String(index)} /> */}
+                        </div>)
                     })}
+                </Carousel>
+                    </section>
                 </div>
 
                 <div className='w-[90vw] sm:w-[40rem]'>
@@ -97,6 +142,7 @@ export default function ProductPage(props) {
                     <div className='w-[90vw] sm:w-[35rem]'>
                         <h1 className='text-[2.5rem] leading-tight my-4'>{product.name}</h1>
                         <p className='text-[1rem] text-[grey]'>{product.desc}</p>
+                        <p className='text-[1rem] text-[grey]'>{product.brand}</p>
                         <br />
                         <div className='flex items-center bg-[white] rounded-sm my-1 py-1 justify-left'>
                             <span className='flex items-center border-r-2 px-2 border-r-base'>
@@ -137,10 +183,10 @@ export default function ProductPage(props) {
                         </div> 
                             </div>
                         </div>
-                        <div className='flex justify-center items-center'>
-                            <button onClick={()=>{AddToCart("buynow")}} className='bg-secondary text-[white] sm:text-[1.5rem] font-bold px-2 py-1 w-[50%] mx-4  rounded-md'>
+                        <div className='flex justify-start items-center'>
+                            {/* <button onClick={()=>AddToCart("buynow")} className='bg-secondary text-[white] sm:text-[1.5rem] font-bold px-2 py-1 w-[50%] mx-4  rounded-md'>
                                 Buy Now
-                            </button>
+                            </button> */}
                             <button onClick={AddToCart} className='bg-secondary text-[white] sm:text-[1.5rem] font-bold px-2 py-1 w-[50%] mx-4  rounded-md'>
                                 {btnText}
                             </button>
@@ -175,14 +221,14 @@ function SizeBox(props) {
     )
 }
 
-function EnlargeImage(props) {
-    return (
-        <div id={props.id} onClick={()=>{$("#"+props.id).toggleClass("hidden");}} className='hidden cursor-pointer fixed top-[5vw]'>
-            <div id="fixed" className='shadow-lg flex justify-center w-[100vw] h-[40rem] z-50 bg-base opacity-100'>
-            <div className='overflow-scroll'>
-            <img src={props.src} alt="" />
-        </div> 
-        </div>
-        </div>
-    )
-}
+// function EnlargeImage(props) {
+//     return (
+//         <div id={props.id} onClick={()=>{$("#"+props.id).toggleClass("hidden");}} className='hidden cursor-pointer fixed top-[5vw]'>
+//             <div id="fixed" className='shadow-lg flex justify-center w-[100vw] h-[40rem] z-50 bg-base opacity-100'>
+//             <div className='overflow-scroll'>
+//             <img src={props.src} alt="" />
+//         </div> 
+//         </div>
+//         </div>
+//     )
+// }

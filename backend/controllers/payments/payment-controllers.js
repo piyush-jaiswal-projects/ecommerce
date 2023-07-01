@@ -41,7 +41,7 @@ const paymentVerfication = function (req, res) {
         
         const redirectSuccessurl = process.env.FRONTEND_REDIRECT + `paymentsuccess/?reference=${razorpay_payment_id}`;
         res.redirect(redirectSuccessurl);
-        res.status(200).send({ rzpPaymentId: razorpay_payment_id, rzpOrderId: razorpay_order_id, paymentSuccess: true });
+        // res.status(200).send({ rzpPaymentId: razorpay_payment_id, rzpOrderId: razorpay_order_id, paymentSuccess: true }).redirect();
   }
   else {
     const redirectFailureurl = process.env.FRONTEND_REDIRECT + `paymentfailed/?reference=${razorpay_payment_id}`;

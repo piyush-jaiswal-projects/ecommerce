@@ -8,7 +8,7 @@ export default function LargeIconBar(props) {
 
     return (
         <section className='flex items-center justify-around mr-[20px]'>
-            <div className="flex items-center">
+            {/* <div className="flex items-center">
                 <input
                     type='text'
                     placeholder='Search...'
@@ -19,7 +19,7 @@ export default function LargeIconBar(props) {
                 <button onClick={props.search} className='bg-[white] p-1 h-[30px] rounded-r-lg'>
                     <img src={Search} className='w-[2vw] lg:w-[1.3vw]' alt="Search" />
                 </button>
-            </div>
+            </div> */}
 
             
             {isUser === "true" ?

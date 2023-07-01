@@ -6,6 +6,7 @@ const id = getCookie("userId");
         await axios.post(process.env.REACT_APP_SERVER_URL + "/api/user/getAddresses", {userId: id})
             .then((res) => {
                 data = [...data, ...res.data.addresses];
+                console.log(res.data.addresses);
             });
     
     } catch (error) {

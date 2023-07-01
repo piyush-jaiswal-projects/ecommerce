@@ -5,10 +5,10 @@ import Banner from './banner'
 
 export default function Home() {
     return (
-        <Fragment>
+        <>
             <Heroslider />
             <Trending />
             <Banner />
-        </Fragment>
+        </>
      )
 }

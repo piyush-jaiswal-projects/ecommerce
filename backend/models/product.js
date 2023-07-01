@@ -8,6 +8,7 @@ const productSchema = new mongoose.Schema({
     stock: { type: Number},
     noOfPurchases: { type: Number },
     size: [],
+    brand: {type: String},
     desc: { type: String, required: true },
     reviews: [{
         reviewerName: { type: String, required: true },

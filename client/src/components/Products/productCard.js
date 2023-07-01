@@ -1,5 +1,5 @@
 import React from 'react'
-import { Star, RedHeart, Tshirt } from '../../constants/images'
+import { Star, RedHeart } from '../../constants/images'
 import { useSelector, useDispatch } from 'react-redux'
 import { addWishlistAsync } from '../../reducers/userReducer';
 
@@ -10,7 +10,7 @@ export default function ProductCard(props) {
     }
 
     return (
-        <div key={props.id} className='justify-self-center m-2 h-[450px] w-[300px] border border-primary rounded-lg'>
+        <div key={props.id} className='justify-self-center m-2 h-[480px] w-[300px] border border-primary rounded-lg'>
             <div className='h-[300px]'>
                 <CardTop props={props} />
             </div>
@@ -18,6 +18,7 @@ export default function ProductCard(props) {
 
             <div className='border-t-2 border-t-base p-2 cursor-pointer text-center' onClick={OpenProductPage}>
                 <h3 className='font-bold hover:text-secondary'>{props.product.name}</h3>
+                <p>Brand: {props.product.brand}</p>
                 <p className='text-[grey]'>{props.product.desc.substring(0,100)}</p>
                 <p>Rs. {props.product.price}</p>
             </div>
@@ -59,7 +60,7 @@ function CardTop(props) {
         <>
             <div className='cursor-pointer h-[300px] w-[300px] rounded-t-lg absolute -z-10 p-1' onClick={OpenProductPage}>
                     {/* Carousel Images */}
-                    <img className='h-[100%] w-[100%] object-cover rounded-t-lg' src={Tshirt} alt="" />
+                    <img className='h-[100%] w-[100%] object-cover rounded-t-lg' src={props.props.product.images[0]} alt="" />
                 </div>
                 <div className='h-[300px] flex flex-col justify-between'>
                     

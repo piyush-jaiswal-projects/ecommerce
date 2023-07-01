@@ -3,11 +3,14 @@ import { useSelector, useDispatch } from 'react-redux'
 import { removeCartAsync} from '../../reducers/userReducer'
 import $ from 'jquery'
 import axios from 'axios';
-import getUserAddresses from '../../api/getUserAddresses';
 
 export default function UserCart(props) {
+    // const dispatch = useDispatch();
+    // dispatch(getUserCartAsync());
+
+
     const cart = useSelector((state) => state.user.cart)
-    const addresses = getUserAddresses;
+    var addresses = useSelector((state)=> state.user.addresses);
     const username = useSelector((state) => state.user.userName)
     const userId = useSelector((state) => state.user.userId);
     const msg = useSelector((state) => state.user.message);
@@ -22,7 +25,13 @@ export default function UserCart(props) {
         return price;
     }
 
-    function handleClick(e){
+    // function calculateDelCharge(pincode) {
+    //     const subString = pincode.substring(0, 2);
+    //     const price = [50, 100, 60, 40, 20, 30, 40, 20, 50, 100, 90, 150, 120, 30, 10, 15, 25, 23, 90, 80, 50, 60, 30, 20, 40, 90, 100]
+    //     return price[subString];
+    // }
+
+    function handleClick(e) {
         const currAdr = $('#address :selected').val()
         const adr = addresses.find((item) => item.location === currAdr);
         setDelCharge(() => adr.delCharge);
@@ -184,8 +193,10 @@ function AddressCard() {
             <br />
             <input className='w-[100%] p-4 outline-none' type='number' name='pincode' value={form.pincode} onChange={handleChange} />
             <br />
-            <button className='w-[100%] my-4 p-2 bg-secondary  rounded-lg text-[1.8rem]' onClick={handleSubmit}>Submit</button>
-        
+                <button className='w-[100%] my-4 p-2 bg-secondary  rounded-lg text-[1.8rem]' onClick={handleSubmit}>Submit</button>
+                <label onClick={() => {
+                    $("#newAddress").toggleClass("hidden");
+                }}>Close</label>
             </div>
             </div>
     )

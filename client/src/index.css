@@ -34,3 +34,7 @@ code {
   }
 }
 
+.navbar{
+  z-index: 100;
+}
+
