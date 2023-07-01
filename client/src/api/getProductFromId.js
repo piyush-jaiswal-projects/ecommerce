@@ -1,6 +1,4 @@
 import axios from 'axios'
-import getCookie from '../functions/getCookie';
-import { useState } from 'react';
 
 async function GetProductFromId(id) {
     try {

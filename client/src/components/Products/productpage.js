@@ -112,8 +112,8 @@ export default function ProductPage(props) {
             <div className='flex flex-wrap justify-around'>
                 
                 <div className='overflow-hidden w-[90vw] h-[80vh] md:h-[100vw] sm:w-[40rem] sm:h-[40rem]'>
-                    <section className='object-fill'>
-                    <Carousel
+                    {/* <section className='object-fill'> */}
+                    {/* <Carousel
                 transitionTime={1000}
                 autoPlay={true}
                 centerMode={true}
@@ -128,13 +128,16 @@ export default function ProductPage(props) {
                         infiniteLoop={true}>
                         {product.images.map((img, index) => {
                         return (
-                            <div className='h-[40rem] w-[100%]'>
+                            
                             <img src={img} className='object-cover h-[100%] cursor-pointer' alt="Product"/>
-                            {/* <EnlargeImage key={String(index)} src={img} id={String(index)} /> */}
-                        </div>)
+                            <EnlargeImage key={String(index)} src={img} id={String(index)} />
+                        )
                     })}
-                </Carousel>
-                    </section>
+                </Carousel> */}
+                <div className='overflow-hidden object-fill h-[auto] w-[100%]'>
+                <img src={product.images[0]} className='object-cover w-[100%] h-[100%] cursor-pointer' alt="Product"/>
+                        </div>
+                    {/* </section> */}
                 </div>
 
                 <div className='w-[90vw] sm:w-[40rem]'>
@@ -164,7 +167,7 @@ export default function ProductPage(props) {
 
                         <div className='sm:flex items-center justify-between'>
                         <div className='w-[100%] text-center sm:text-left sm:w-[40%] mx-2'>
-                        <h2>Available Sizes(select one): </h2>
+                        <h2 className='text-left'>Available Sizes(select one): </h2>
                         <div id="sizebox" className='flex justify-start items-center mb-4'>
                             {product.size.map((size) => {
                                 return <SizeBox key={size} text={size} setSize={setSize} />
@@ -173,8 +176,8 @@ export default function ProductPage(props) {
                             </div>
                             
                             <div className='w-[90%] text-center sm:text-left sm:w-[40%] mx-2'>
-                            <h2>Select Quantity: </h2>
-                            <div className='flex justify-around items-center w-[100%] sm:w-[40%] mb-4 m-2'>
+                            <h2 className='text-left'>Select Quantity: </h2>
+                            <div className='flex justify-start items-center w-[100%] sm:w-[40%] mb-4 m-2'>
                             <div className='flex justify-center items-center'>
                                         <button className='mx-2 border border-secondary rounded-sm h-[30px] w-[30px] sm:h-[30px] sm:w-[30px] flex items-center justify-center' onClick={() => changeQty("-")}>-</button>
                                         <label>{value}</label>
@@ -187,7 +190,7 @@ export default function ProductPage(props) {
                             {/* <button onClick={()=>AddToCart("buynow")} className='bg-secondary text-[white] sm:text-[1.5rem] font-bold px-2 py-1 w-[50%] mx-4  rounded-md'>
                                 Buy Now
                             </button> */}
-                            <button onClick={AddToCart} className='bg-secondary text-[white] sm:text-[1.5rem] font-bold px-2 py-1 w-[50%] mx-4  rounded-md'>
+                            <button onClick={AddToCart} className='bg-secondary text-[white] sm:text-[1.5rem] font-bold p-2 md:p-2 w-[100%] sm:w-[50%] mx-4  rounded-md'>
                                 {btnText}
                             </button>
                         </div>

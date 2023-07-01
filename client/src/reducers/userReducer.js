@@ -17,7 +17,7 @@ const initialState = {
     userLoggedIn: userData.userLoggedIn,
     userId: userData.userId,
     userName: userData.userName,
-    addresses: [{location: "Select Delivery Address", pincode: 0, delCharge: 40 }, ...addresses],
+    addresses: [...addresses],
     placedOrder: [],
     cart: cart,
     currAddressCharge: 0,
