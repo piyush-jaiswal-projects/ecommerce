@@ -13,7 +13,7 @@ const images = [
 export default function Heroslider() {
  
     return (
-        <div className='w-[100vw] h-[80vh] md:h-[100%] overflow-hidden mt-[8vw] md:mt-[5vw] mx-auto border border-t-0 border-b-0 border-primary'>
+        <div className='w-[100vw] h-[70vh] md:h-[100%] overflow-hidden mt-[8vw] md:mt-[5vw] mx-auto border border-t-0 border-b-0 border-primary'>
             <Carousel
                 transitionTime={1000}
                 autoPlay={true}
