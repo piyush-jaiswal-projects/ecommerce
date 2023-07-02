@@ -3,6 +3,7 @@ import { Logo1, Show, Hide } from '../../constants/images'
 import { useDispatch, useSelector } from 'react-redux'
 import { signupAsync} from '../../reducers/userReducer'
 import getCookie from '../../functions/getCookie'
+import OtpValidator from './otp-validator'
 
 export default function Signup() {
     if (getCookie("userLoggedIn") === "true") window.location.replace("/")
@@ -15,8 +16,6 @@ export default function Signup() {
         username: "",
         password: ""
     })
-
-    const [otpData, setOTPData] = useState();
 
     const [pass, setPass] = useState({
         type: "password",
@@ -47,28 +46,28 @@ export default function Signup() {
 
     function signup() {
             dispatch(signupAsync({ userData: formData }))
-        
     }
-
-    function ValidateOTP() {
-        window.location.replace("/");
-    }
-
 
     return (
         <div className='mt-[8vw] md:mt-[5vw] p-4 mb-[150px]'>
+            
             <div className="w-[25rem] mx-auto flex justify-center">
                 <a href='/'>
-                    <img className="w-[25vw] sm:w-[18vw] md:w-[13vw] lg:w-[8vw]" src={Logo1} alt="16Ten" />
+                    <img
+                        className="w-[25vw] sm:w-[18vw] md:w-[13vw] lg:w-[8vw]"
+                        src={Logo1}
+                        alt="16Ten"
+                    />
                 </a>
             </div>
-            <div id='signup' className='flex items-center justify-center'>
 
+            <div id='signup' className='flex items-center justify-center'>
                 <div className='sm:left-0 w-[20rem] sm:w-[25rem] h-[28rem] mt-10 p-5 rounded-lg border border-secondary'>
                     
                     <div className='my-1'>
                         <h1 className='text-secondary font-bold text-[1.5rem]'>Signup</h1>
                     </div>
+
                     <label>{message}</label>
 
                     <div className='my-2'>
@@ -94,8 +93,8 @@ export default function Signup() {
                     </div>
 
                     <div className='my-2'>
-                            <label>Password</label>
-                    <div>
+                        
+                        <label>Password</label>
                         <span className='flex items-center'>
                         <input
                             className='bg-base border-y border-l w-[20rem] h-[2.5rem] rounded-l-md p-2 outline-secondary'
@@ -107,7 +106,7 @@ export default function Signup() {
                                     <img src={pass.img} alt='(.)' />
                                 </button>
                         </span>
-                    </div>
+
                     </div>
 
                 <div className=' mb-2 mt-6'>
@@ -125,43 +124,10 @@ export default function Signup() {
             </div>
             </div>
             
-            {/* OTP Validator */}
+
             <div id="otp" className='hidden'>
-            <div className='flex items-center justify-center'>
-            <div className='sm:left-0 w-[20rem] sm:w-[25rem] h-[25rem] mt-10 p-5 rounded-lg border border-secondary'>
-                    
-                    <div className='my-1'>
-                        <h1 className='text-secondary font-bold text-[1.5rem]'>Verify your email / phone number</h1>
-                    </div>
-
-                    <label>Please enter OTP sent on {formData.username}</label>
-
-                    <div className='my-2'>
-                        <label>Enter OTP</label>
-                        <br />
-                        <input
-                            className='bg-base border w-[100%] rounded-md p-2 outline-secondary'
-                            type='text'
-                            name='otp'
-                            value={otpData}
-                            onChange={(e)=>{setOTPData(e.target.value)}} />
-                    </div>
-
-                <div className=' mb-2 mt-6'>
-                        <button
-                            onClick={ValidateOTP}
-                            className='w-[100%] font-bold border border-secondary hover:bg-base hover:text-secondary h-[2.5rem] p-2 bg-secondary rounded-lg'
-                        >Verify</button>
-                </div>
-
-                <div className='flex justify-center'>
-                    <label>Go back? <a href="/signup" className='underline'>Signup</a></label>
-                </div>
-
-
+                <OtpValidator username={formData.username} />
             </div>
-                </div>
-                </div>
         </div>
     )
 }

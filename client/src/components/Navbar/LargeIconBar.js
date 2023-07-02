@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { Search } from '../../constants/images'
+// import { Search } from '../../constants/images'
 import NavLink from '../Links/NavLinks'
 
 export default function LargeIconBar(props) {
@@ -38,17 +38,23 @@ export default function LargeIconBar(props) {
                 }
             
 
-            {isUser === "true" ? <div className='flex items-center justify-around'>
+            {isUser === "true" ?
+                <div className='flex items-center justify-around'>
                     {props.userIcons.map((item) => {
                         return (
                             <a href={item.link}>
-                            <label className="flex justify-center items-center mx-2">
-                                <img key={item.image} className=' hover:text-secondary cursor-pointer' src={item.image} alt="" />{item.length === -1 ? "" : "("+item.length+")"}
+                                <label className="flex justify-center items-center mx-2">
+                                    <img
+                                        key={item.image}
+                                        className=' hover:text-secondary cursor-pointer'
+                                        src={item.image}
+                                        alt="" />
+                                    {item.length === -1 ? "" : "(" + item.length + ")"}
                                 </label>
                                 </a>
                         )
                     })}
-            </div> : ""}
+                </div> : ""}
                 </section>
     )
 }

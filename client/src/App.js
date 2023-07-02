@@ -1,5 +1,16 @@
-import { Product, Login, Signup, ProductPage, UserCart, UserPortal, PaymentStatus, Home } from './components'
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+
+import {
+  Product,
+  Login,
+  Signup,
+  ProductPage,
+  UserCart,
+  UserPortal,
+  PaymentStatus,
+  Home
+} from './components'
+
 import UserWishlist from './components/User/userWishlist';
 
 function App() {

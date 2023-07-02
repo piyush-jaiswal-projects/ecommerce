@@ -1,5 +1,6 @@
 import React from 'react'
-import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
 
 const images = [
@@ -8,7 +9,8 @@ const images = [
     "http://res.cloudinary.com/deo80u7qs/image/upload/v1688166344/f1ixwxv2oxrngfwgak7u.jpg",
     "http://res.cloudinary.com/deo80u7qs/image/upload/v1688166370/vhjrsrujah2vszemxqs0.jpg",
     "http://res.cloudinary.com/deo80u7qs/image/upload/v1688166399/bchaskxexutj9aogx7er.jpg",
-    "http://res.cloudinary.com/deo80u7qs/image/upload/v1688166419/tnmmj0onluaxazx3pfq4.jpg"];
+    "http://res.cloudinary.com/deo80u7qs/image/upload/v1688166419/tnmmj0onluaxazx3pfq4.jpg"
+];
 
 export default function Heroslider() {
  
@@ -26,13 +28,18 @@ export default function Heroslider() {
                 stopOnHover={false}
                 showThumbs={false}
                 infiniteLoop={true}>
+
                 {images.map((item) => {
                     return (
-                        <img className='object-cover md:object-fill w-[100vw] h-[80vh] md:h-[100%]' src={item} alt='' />
+                        <img
+                            className='object-cover md:object-fill w-[100vw] h-[80vh] md:h-[100%]'
+                            src={item}
+                            alt='' 
+                            />
                     )
                 })}
+
                 </Carousel>
-            
          </div>
     )
 }

@@ -48,14 +48,19 @@ export default function Navbar(props) {
         <Fragment>
             {path === "/signup" || path === "/login" ? "" :
             <header className='fixed navbar top-0 bg-base w-[100vw] flex items-center justify-between py-2 px-2'>
-            <section className='flex items-center justify-around'>
-            <div className="">
-                <a href='/'>
-                    <img className="w-[25vw] sm:w-[18vw] md:w-[13vw] lg:w-[8vw]" src={Logo1} alt="16Ten" />
-                </a>
-            </div>
-                {width >= 700 ? <Categories links={links} /> : ""} 
-            </section>
+            
+                    <section className='flex items-center justify-around'>
+                        <div className="">
+                            <a href='/'>
+                                <img
+                                    className="w-[25vw] sm:w-[18vw] md:w-[13vw] lg:w-[8vw]"
+                                    src={Logo1}
+                                    alt="16Ten" 
+                                />
+                            </a>
+                        </div>
+                        {width >= 700 ? <Categories links={links} /> : ""} 
+                    </section>
 
             {width >= 950 ?
                 <LargeIconBar
@@ -81,12 +86,6 @@ export default function Navbar(props) {
                 />
             
             <SmallCategories links={links} />
-
-            {/* <div className='mt-[100px]'>
-                <button onClick={signInUser}>Test Log In</button>
-                <br />
-            <button onClick={signOutUser}>Test Log Out</button>
-            </div> */}
 
         </Fragment>
     )

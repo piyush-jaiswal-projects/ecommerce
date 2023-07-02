@@ -1,7 +1,8 @@
 import React, {useState} from 'react'
-import { Logo1, Show, Hide } from '../../constants/images'
 import { useDispatch, useSelector } from 'react-redux'
+
 import { loginAsync } from '../../reducers/userReducer'
+import { Logo1, Show, Hide } from '../../constants/images'
 import getCookie from '../../functions/getCookie'
 
 export default function Login() {
@@ -21,7 +22,7 @@ export default function Login() {
         img: Show
     })
 
-    function handleChange(e) {
+    function handleInputChange(e) {
         setFormData({
             ...formData,
             [e.target.name]: e.target.value
@@ -44,7 +45,7 @@ export default function Login() {
     }
 
     function forgetPassword() {
-        
+        //forget password
     }
 
     function rememberMe(e) {
@@ -69,9 +70,14 @@ export default function Login() {
 
     return (
         <div className='mt-[8vw] md:mt-[5vw] p-4 mb-[150px]'>
+            
             <div className="w-[25rem] mx-auto flex justify-center">
                 <a href='/'>
-                    <img className="w-[25vw] sm:w-[18vw] md:w-[13vw] lg:w-[8vw]" src={Logo1} alt="16Ten" />
+                    <img
+                        className="w-[25vw] sm:w-[18vw] md:w-[13vw] lg:w-[8vw]"
+                        src={Logo1}
+                        alt="16Ten" 
+                    />
                 </a>
             </div>
         
@@ -84,7 +90,7 @@ export default function Login() {
                     </div>
                     <label>{message}</label>
 
-                <div className='my-2'>
+                    <div className='my-2'>
                         <label>Username</label>
                         <br />
                         <input
@@ -92,23 +98,31 @@ export default function Login() {
                             type='text'
                             name='username'
                             value={formData.username}
-                            onChange={handleChange} />
-                </div>
+                            onChange={handleInputChange} />
+                    </div>
 
-                <div className='my-4'>
+                
+                    <div className='my-4'>
                         <span className='flex justify-between'>
                             <label>Password</label>
                             <label onClick={forgetPassword}>Forgot Password?</label>
-                </span>
-                    <div>
-                        <span className='flex items-center'>
-                        <input
-                            className='bg-base border-y border-l w-[20rem] h-[2.5rem] rounded-l-md p-2 outline-secondary'
-                            type={pass.type}
-                            name='password'
-                            value={formData.password    }
-                            onChange={handleChange} />
-                                <button onClick={changePasswordState} className='bg-base border-y border-r w-[2.3rem] h-[2.5rem] rounded-r-md p-2 '>
+                
+                        </span>
+
+                        <div>
+                            <span className='flex items-center'>
+                                <input
+                                    className='bg-base border-y border-l w-[20rem] h-[2.5rem] rounded-l-md p-2 outline-secondary'
+                                    type={pass.type}
+                                    name='password'
+                                    value={formData.password}
+                                    onChange={handleInputChange} 
+                                    
+                                />
+                                
+                                <button
+                                    onClick={changePasswordState}
+                                    className='bg-base border-y border-r w-[2.3rem] h-[2.5rem] rounded-r-md p-2 '>
                                     <img src={pass.img} alt='(.)' />
                                 </button>
                         </span>

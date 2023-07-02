@@ -19,6 +19,7 @@ export default function UserPortal() {
                     window.location.replace("/");
                 }} className='mx-4 font-bold hover:text-primary'>Log Out</button>
             </div>
+            
             <UserCart embed={true} />
             <UserWishlist />
         </div>

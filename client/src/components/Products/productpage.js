@@ -1,22 +1,24 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import { useParams } from 'react-router'
 import Reviews from './reviews';
 import $ from 'jquery'
 import { Star } from '../../constants/images';
-import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
-import { Carousel } from 'react-responsive-carousel';
 import { useSelector, useDispatch } from 'react-redux';
 import { addCartAsync, addWishlistAsync } from '../../reducers/userReducer';
 import axios from 'axios'
+import Popup from '../Popup/popup';
 
 export default function ProductPage(props) {
     const params = useParams();
+
     const [value, setValue] = useState(1);
     const [size, setSize] = useState("");
     const [btnText, setBtnText] = useState("Add to Cart")
+
     const isUser = useSelector((state) => state.user.userLoggedIn);
     const uid = useSelector((state) => state.user.userId);
     const dispatch = useDispatch();
+
     const data = {
         images: [],
         size: [],
@@ -30,13 +32,15 @@ export default function ProductPage(props) {
     }
     const [product, setProduct] = useState(data);
 
-    axios.post(process.env.REACT_APP_SERVER_URL + "/api/product/getProductFromId", { id: params.productId })
+    axios.post(
+        process.env.REACT_APP_SERVER_URL + "/api/product/getProductFromId",
+        { id: params.productId })
         .then((res) => {
             const [data] = res.data.products;
             setProduct(() => data);
         });
-    
-    
+
+
 
     function CalculateRating() {
         const reviews = product.reviews;
@@ -44,46 +48,41 @@ export default function ProductPage(props) {
         for (let index = 0; index < reviews.length; index++) {
             rating = rating + reviews[index].rating;
         }
-        return rating/reviews.length;
+        return rating / reviews.length;
     }
 
-    // function toggleImageSize(imgId) {
-    //     $("#"+imgId).toggleClass("hidden");
-    // }
-
     function changeQty(symbol) {
-        if (symbol === "-" && value>1) {
-            setValue(() => value-1)
+        if (symbol === "-" && value > 1) {
+            setValue(() => value - 1)
         }
-        else if (symbol === "+" && value<10) {
-            setValue(()=>value+1)
+        else if (symbol === "+" && value < 10) {
+            setValue(() => value + 1)
         }
     }
 
     async function AddToCart(cta) {
         console.log(isUser);
         if (isUser === "true") {
-            if (btnText !== "Go to Cart") {
-                if (size !== "") {
-                    //dispatch add to cart
-                    dispatch(addCartAsync({ userId: uid, product: { product: product, selectedSize: size, quantity: value } }))
-                    setBtnText("Go to Cart")
-                    $("#alert-cart").toggleClass("hidden");
-                    setTimeout(() => {
-                        $("#alert-cart").toggleClass("hidden");
-                    }, 3000);
-                }
-                else {
-                    $("#alert-size").toggleClass("hidden");
-                    setTimeout(() => {
-                        $("#alert-size").toggleClass("hidden");
-                    }, 3000);
-
-                }
-            }
-            else {
+            if (btnText === "Go to Cart") {
                 window.location.replace("/cart");
+                return;
             }
+
+            if (size !== "") {
+                dispatch(addCartAsync({ userId: uid, product: { product: product, selectedSize: size, quantity: value } }))
+                setBtnText("Go to Cart")
+                $("#alert-cart").toggleClass("hidden");
+                setTimeout(() => {
+                    $("#alert-cart").toggleClass("hidden");
+                }, 3000);
+                return;
+            }
+            $("#alert-size").toggleClass("hidden");
+            setTimeout(() => {
+                $("#alert-size").toggleClass("hidden");
+            }, 3000);
+            return;
+
         }
         else {
             window.location.replace("/signup");
@@ -92,12 +91,15 @@ export default function ProductPage(props) {
 
     function AddToWishlist() {
         if (isUser) {
-            //dispatch add to cart
-            dispatch(addWishlistAsync({ userId: uid, product: { product: product, selectedSize: size, quantity: value } }));
+            dispatch(addWishlistAsync({
+                userId: uid,
+                product: { product: product, selectedSize: size, quantity: value }
+            }));
+
             $("#alert-wish").toggleClass("hidden");
             setTimeout(() => {
-                        $("#alert-wish").toggleClass("hidden");
-                    }, 3000);
+                $("#alert-wish").toggleClass("hidden");
+            }, 3000);
         }
     }
 
@@ -105,39 +107,16 @@ export default function ProductPage(props) {
 
     return (
         <div className='mt-[8vw] md:mt-[5vw] p-4 overflow-x-hidden'>
-            <div id="alert-cart" className='hidden fixed top-[5rem] animate-scale right-[2rem] border-2 border-secondary text-center p-4 rounded-md z-50 w-[15rem] bg-base shadow-xl'>Added to cart</div>
-            <div id="alert-size" className='hidden fixed top-[5rem] animate-scale right-[2rem] border-2 border-secondary text-center p-4 rounded-md z-50 w-[15rem] bg-base shadow-xl'>Please select Size</div>
-            <div id="alert-wish" className='hidden fixed top-[5rem] animate-scale right-[2rem] border-2 border-secondary text-center p-4 rounded-md z-50 w-[15rem] bg-base shadow-xl'>Added to wishlist</div>
-            
+            <Popup id="alert-cart" text="Added to Cart" />
+            <Popup id="alert-size" text="Please Select Size" />
+            <Popup id="alert-wish" text="Added to Wishlist" />
+
             <div className='flex flex-wrap justify-around'>
-                
+
                 <div className='overflow-hidden w-[90vw] h-[80vh] md:h-[100vw] sm:w-[40rem] sm:h-[40rem]'>
-                    {/* <section className='object-fill'> */}
-                    {/* <Carousel
-                transitionTime={1000}
-                autoPlay={true}
-                centerMode={true}
-                showStatus={false}
-                showIndicators={true}
-                centerSlidePercentage={100}
-                showArrows={true}
-                interval={3000}
-                stopOnHover={true}
-                            showThumbs={false}
-                            width={"100%"}
-                        infiniteLoop={true}>
-                        {product.images.map((img, index) => {
-                        return (
-                            
-                            <img src={img} className='object-cover h-[100%] cursor-pointer' alt="Product"/>
-                            <EnlargeImage key={String(index)} src={img} id={String(index)} />
-                        )
-                    })}
-                </Carousel> */}
-                <div className='overflow-hidden object-fill h-[auto] w-[100%]'>
-                <img src={product.images[0]} className='object-cover w-[100%] h-[100%] cursor-pointer' alt="Product"/>
-                        </div>
-                    {/* </section> */}
+                    <div className='overflow-hidden object-fill h-[auto] w-[100%]'>
+                        <img src={product.images[0]} className='object-cover w-[100%] h-[100%] cursor-pointer' alt="Product" />
+                    </div>
                 </div>
 
                 <div className='w-[90vw] sm:w-[40rem]'>
@@ -146,16 +125,20 @@ export default function ProductPage(props) {
                         <h1 className='text-[2.5rem] leading-tight my-4'>{product.name}</h1>
                         <p className='text-[1rem] text-[grey]'>{product.desc}</p>
                         <p className='text-[1rem] text-[grey]'>{product.brand}</p>
+
                         <br />
+
                         <div className='flex items-center bg-[white] rounded-sm my-1 py-1 justify-left'>
                             <span className='flex items-center border-r-2 px-2 border-r-base'>
                                 {CalculateRating()}
-                                <img className='w-[5vw] sm:w-[2.5vw] md:w-[2vw] lg:w-[1.2vw] m-1' src={Star} alt="" /> Rating
+                                <img className='w-[5vw] sm:w-[2.5vw] md:w-[2vw] lg:w-[1.2vw] m-1'
+                                    src={Star} alt="" /> Rating
                             </span>
                             <span className='px-2'>
                                 {product.noOfPurchases}k Purchases
                             </span>
                         </div>
+
                     </div>
 
                     <br />
@@ -166,35 +149,45 @@ export default function ProductPage(props) {
                         <h1 className='text-[2.1rem] mb-2'>Price: Rs {product.price}</h1>
 
                         <div className='sm:flex items-center justify-between'>
-                        <div className='w-[100%] text-center sm:text-left sm:w-[40%] mx-2'>
-                        <h2 className='text-left'>Available Sizes(select one): </h2>
-                        <div id="sizebox" className='flex justify-start items-center mb-4'>
-                            {product.size.map((size) => {
-                                return <SizeBox key={size} text={size} setSize={setSize} />
-                            })}
-                        </div>
+                            <div className='w-[100%] text-center sm:text-left sm:w-[40%] mx-2'>
+                                <h2 className='text-left'>Available Sizes(select one): </h2>
+                                <div id="sizebox" className='flex justify-start items-center mb-4'>
+                                    {product.size.map((size) => {
+                                        return <SizeBox key={size} text={size} setSize={setSize} />
+                                    })}
+                                </div>
                             </div>
-                            
+
                             <div className='w-[90%] text-center sm:text-left sm:w-[40%] mx-2'>
-                            <h2 className='text-left'>Select Quantity: </h2>
-                            <div className='flex justify-start items-center w-[100%] sm:w-[40%] mb-4 m-2'>
-                            <div className='flex justify-center items-center'>
-                                        <button className='mx-2 border border-secondary rounded-sm h-[30px] w-[30px] sm:h-[30px] sm:w-[30px] flex items-center justify-center' onClick={() => changeQty("-")}>-</button>
+                                <h2 className='text-left'>Select Quantity: </h2>
+                                <div className='flex justify-start items-center w-[100%] sm:w-[40%] mb-4 m-2'>
+                                    <div className='flex justify-center items-center'>
+                                        <button
+                                            className='mx-2 border border-secondary rounded-sm h-[30px] w-[30px] sm:h-[30px] sm:w-[30px] flex items-center justify-center'
+                                            onClick={() => changeQty("-")}
+                                        >
+                                            -
+                                        </button>
                                         <label>{value}</label>
-                                        <button className='mx-2 border border-secondary rounded-sm h-[30px] w-[30px] sm:h-[30px] sm:w-[30px] flex items-center justify-center' onClick={() => changeQty("+")}>+</button>
-                            </div>
-                        </div> 
+                                        <button
+                                            className='mx-2 border border-secondary rounded-sm h-[30px] w-[30px] sm:h-[30px] sm:w-[30px] flex items-center justify-center'
+                                            onClick={() => changeQty("+")}
+                                        >
+                                            +
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+
                         <div className='flex justify-start items-center'>
-                            {/* <button onClick={()=>AddToCart("buynow")} className='bg-secondary text-[white] sm:text-[1.5rem] font-bold px-2 py-1 w-[50%] mx-4  rounded-md'>
-                                Buy Now
-                            </button> */}
                             <button onClick={AddToCart} className='bg-secondary text-[white] sm:text-[1.5rem] font-bold p-2 md:p-2 w-[100%] sm:w-[50%] mx-4  rounded-md'>
                                 {btnText}
                             </button>
                         </div>
+
                         <br />
+
                         <label onClick={AddToWishlist} className='cursor-pointer'>Add to Wishlist</label>
                     </div>
 
@@ -213,7 +206,7 @@ function SizeBox(props) {
         const children = parent.children;
         for (var i = 0; i < children.length; i++) {
             children[i].classList.remove("bg-secondary");
-          }
+        }
         $("#" + props.text).toggleClass("bg-secondary")
     }
 
@@ -223,15 +216,3 @@ function SizeBox(props) {
         </div>
     )
 }
-
-// function EnlargeImage(props) {
-//     return (
-//         <div id={props.id} onClick={()=>{$("#"+props.id).toggleClass("hidden");}} className='hidden cursor-pointer fixed top-[5vw]'>
-//             <div id="fixed" className='shadow-lg flex justify-center w-[100vw] h-[40rem] z-50 bg-base opacity-100'>
-//             <div className='overflow-scroll'>
-//             <img src={props.src} alt="" />
-//         </div> 
-//         </div>
-//         </div>
-//     )
-// }
