@@ -5,8 +5,10 @@ const getProducts = async (req, res) => {
     try {
         const products = await Product.find();
         if (!products) {
-        res.status(400).send({ message: "Products fetching failed", success: false });
+            res.status(400).send({ message: "Products fetching failed", success: false });
+            return;
         }
+        
         res.status(200).send({ message: "Products fetched", products: products, success: true });
     } catch (error) {
         console.log(err);

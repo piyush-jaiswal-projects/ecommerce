@@ -1,9 +1,9 @@
-const Payment = require('../../models/payments')
 const dotenv = require('dotenv');
-dotenv.config();
 const Razorpay = require('razorpay')
 const crypto = require('crypto');
+const Payment = require('../../models/payments')
 
+dotenv.config();
 
 const instance = new Razorpay({
     key_id: process.env.RZP_KEY_ID,
@@ -14,7 +14,7 @@ const checkout = function(req, res) {
     const { userId, orderDetails, paymentAmt } = req.body;
 
     var options = {
-        amount: (Number(paymentAmt) * 100),  // amount in the smallest currency unit
+        amount: (Number(paymentAmt) * 100),  
         currency: "INR"
     };
     
@@ -32,16 +32,15 @@ const checkout = function(req, res) {
 const paymentVerfication = function (req, res) {
     const { razorpay_payment_id, razorpay_order_id, razorpay_signature } = req.body;
     const body = razorpay_order_id + "|" + razorpay_payment_id;
+
     const generated_signature = crypto
         .createHmac("sha256", process.env.RZP_KEY_SECRET)
         .update(body.toString())
         .digest("hex");
     
     if (generated_signature == razorpay_signature) {
-        
         const redirectSuccessurl = process.env.FRONTEND_REDIRECT + `paymentsuccess/?reference=${razorpay_payment_id}`;
         res.redirect(redirectSuccessurl);
-        // res.status(200).send({ rzpPaymentId: razorpay_payment_id, rzpOrderId: razorpay_order_id, paymentSuccess: true }).redirect();
   }
   else {
     const redirectFailureurl = process.env.FRONTEND_REDIRECT + `paymentfailed/?reference=${razorpay_payment_id}`;

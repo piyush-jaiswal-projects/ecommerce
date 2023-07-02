@@ -4,49 +4,19 @@ const User = require('../../models/user');
 const dotenv = require('dotenv');
 dotenv.config();
 
-const accountSid = process.env.Twilio_SID;
-const authToken = process.env.Twilio_Auth_Token;
-const twiliophonenumber = process.env.Twilio_Phone_Number;
-
-const client = require('twilio')(accountSid, authToken);
-
-const sendOtp = async function (phoneNumber, otp) {
-    const message = `Greetings from 1610 Collections. Your OTP is: ${otp}`;
-  
-    client.messages
-      .create({
-        body: message,
-        from: twiliophonenumber,
-        to: phoneNumber
-      })
-      .then(message => console.log(message.sid))
-      .catch(error => console.log("Error: " + error));
-}
-
-const generateOtp = function (length) {
-    const digits = '0123456789';
-    let otp = '';
-  
-    for (let i = 0; i < length; i++) {
-      const randomIndex = Math.floor(Math.random() * digits.length);
-      otp += digits[randomIndex];
-    }
-  
-    return otp;
-}
 
 const otp = async function (req, res) {
     try {
         const { name, username, password } = req.body;
         const existingUser = await User.findOne({ userName: username });
 
-    // if (existingUser) {
-    //     res.status(400).send({ message: "User Already Exists", success: false})
-    //     return;
-    // }
+    if (existingUser) {
+        res.status(400).send({ message: "User Already Exists", success: false})
+        return;
+    }
         //create otp 
         const otp = generateOtp(4);
-        console.log(otp);
+        //handle promise properly
         await sendOtp(username, otp);
     
         res.status(200).send({otp: "", message: "OTP Sent", success: true});
@@ -60,8 +30,8 @@ const otp = async function (req, res) {
 const signup = async function (req, res) {
     try {
         const { name, username, password } = req.body;
-        const existingUser = await User.findOne({ userName: username });
 
+        const existingUser = await User.findOne({ userName: username });
     if (existingUser) {
         res.status(400).send({ message: "User Already Exists", success: false})
         return;
@@ -89,6 +59,7 @@ const signup = async function (req, res) {
 const login = async function (req, res) {
     try {
         const { username, password } = req.body;
+
         const user = await User.findOne({ userName: username });
         if (!user) {
             res.status(400).send({ message: "User doesn't exist!", success: false });
