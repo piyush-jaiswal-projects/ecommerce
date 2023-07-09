@@ -12,7 +12,9 @@ export default function WishCard(props) {
             product: {
                 product: item.product,
                 selectedSize: item.selectedSize,
-                quantity: item.quantity
+                quantity: item.quantity,
+                    orderStatus: item.orderStatus,
+                    expectedDelivery: item.expectedDelivery 
             }
         }))
 
