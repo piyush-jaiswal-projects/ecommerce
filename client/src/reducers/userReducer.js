@@ -144,79 +144,6 @@ export const placeOrderAsync = createAsyncThunk('/users/placeOrder', async (payl
     }
 })
 
-export const cancelOrderAsync = createAsyncThunk('/users/cancelOrder', async (payload, { rejectWithValue }) => {
-    const uri = process.env.REACT_APP_SERVER_URL + "/api/user/cancelOrder"
-    const uid = useSelector((state) => state.user.userId);
-    const data = {
-        userId: uid,
-        orderId: payload.orderId
-    }
-    try {
-        const response = await axios.post(uri, data);
-        console.log(response);
-        return response.data;
-    }
-    catch (error) {
-        console.log("Error: "+error);
-        return rejectWithValue(error.response.data);
-    }
-})
-
-// export const getUserAddressAsync = createAsyncThunk('/users/getAddresses', async (payload, { rejectWithValue }) => {
-//     const uri = process.env.REACT_APP_SERVER_URL + "/api/user/getAddresses"
-//     const uid = useSelector((state) => state.user.userId);
-//     const data = {
-//         userId: uid
-//     }
-//     try {
-//         const response = await axios.post(uri, data);
-//         return response.data;
-//     }
-//     catch (error) {
-//         console.log(error);
-//         return rejectWithValue(error.response.data);
-//     }
-// })
-
-// export const getUserCartAsync = createAsyncThunk('/users/getCart', async (payload, { rejectWithValue }) => {
-//     const uri = process.env.REACT_APP_SERVER_URL + "/api/user/getCart"
-//     const uid = useSelector((state) => state.user.userId);
-//     const data = {
-//         userId: uid
-//     }
-//     try {
-//         const response = await axios.post(uri, data);
-//         return {
-//             cart: response.data
-//         };
-//     }
-//     catch (error) {
-//         console.log(error);
-//         return rejectWithValue(error.response.data);
-//     }
-// })
-
-// export const getUserWishlistAsync = createAsyncThunk('/users/getWishlist',
-//     async (payload, { rejectWithValue }) => {
-//     console.log("2-3.1. Async Call");
-//     const uri = process.env.REACT_APP_SERVER_URL + "/api/user/getWishlist"
-//     const uid = useSelector((state) => state.user.userId);
-//     const data = {
-//         userId: uid
-//     }
-//         try {
-//             console.log("2-3.2. Api Call");
-//         const response = await axios.post(uri, data);
-//         return response.data;
-
-//     }
-//     catch (error) {
-//         console.log(error);
-//         return rejectWithValue(error.response.data);
-//     }
-// })
-
-
 
 const userReducer = createSlice({
     name: "users",
@@ -388,23 +315,6 @@ const userReducer = createSlice({
                 state.isError = true;
                 state.message = "Some error occurred";
                     
-            })
-            .addCase(cancelOrderAsync.pending, (state) => {
-                state.isLoading = true;
-                state.isError = false;
-                state.message = "processing..."
-                    
-            })
-            .addCase(cancelOrderAsync.fulfilled, (state, action) => {
-                state.isLoading = false;
-                state.isError = false;
-                state.message = "";
-                window.location.reload();
-            })
-            .addCase(cancelOrderAsync.rejected, (state, action) => {
-                state.isLoading = false;
-                state.isError = true;
-                state.message = "Some error occurred";
             });
       },
 })

@@ -1,15 +1,27 @@
-import { useDispatch } from "react-redux";
-import { cancelOrderAsync } from "../../reducers/userReducer";
+import { useSelector } from "react-redux";
+import axios from 'axios'
 
 
 export default function Card(props) {
     const item = props.item;
-    const dispatch = useDispatch();
+    const uid = useSelector((state) => state.user.userId);
 
-    function cancelOrder(id, type) {
+    async function cancelOrder(id, type) {
         if (type === "cancel") {
-            console.log("clicked: " + id);
-            dispatch(cancelOrderAsync({ orderId: id }));
+            const uri = process.env.REACT_APP_SERVER_URL + "/api/user/cancelOrder"
+            const data = {
+                userId: uid,
+                orderId: id
+            }
+            try {
+                const response = await axios.post(uri, data);
+                console.log(response);
+                return response.data;
+            }
+            catch (error) {
+                console.log("Error: " + error);
+                return;
+            }
         }
     }
 
