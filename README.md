@@ -14,19 +14,19 @@
 ## Environment Variables
 
 ### Frontend
-REACT_APP_SERVER_URL =  // server URL
-REACT_APP_PAYMENT_CALLBACK= // razorpay payment callback server URL
+REACT_APP_SERVER_URL =  // server URL \
+REACT_APP_PAYMENT_CALLBACK= // razorpay payment callback server URL \
 
 
 ### Backend
-DB_URI= // mongodb url
-Twilio_Phone_Number= // twilio phone number
-Twilio_SID= // twilio SID
-Twilio_Auth_Token=  // twilio auth token
-RZP_KEY_ID= //razorpay key id
-RZP_KEY_SECRET= //razorpay key secret
-FRONTEND_REDIRECT= // frontend deployed URL (development or production mode)
-BACKEND_URL= // backend deployed URL (development or production mode)
+DB_URI= // mongodb url \
+Twilio_Phone_Number= // twilio phone number\
+Twilio_SID= // twilio SID\
+Twilio_Auth_Token=  // twilio auth token\
+RZP_KEY_ID= //razorpay key id\
+RZP_KEY_SECRET= //razorpay key secret\
+FRONTEND_REDIRECT= // frontend deployed URL (development or production mode)\
+BACKEND_URL= // backend deployed URL (development or production mode)\
 
 
 ## Available Scripts - Frontend
