@@ -24,7 +24,9 @@ const userSchema = new mongoose.Schema({
     wishlist: [{
         product: {},
         selectedSize: { type: String },
-        quantity: {type: Number}
+        quantity: {type: Number},
+        orderStatus: { type: String },
+        expectedDelivery: {type: String}
     }]
 })
 

@@ -118,7 +118,10 @@ export default function ProductPage(props) {
                 setWishBtnText(()=> "processing ...")
             await dispatch(addWishlistAsync({
                 userId: uid,
-                product: { product: product, selectedSize: size, quantity: value,
+                product: {
+                    product: product,
+                    selectedSize: size,
+                    quantity: value,
                     orderStatus: "processing",
                     expectedDelivery: delDate }
             }));
