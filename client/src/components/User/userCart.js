@@ -5,8 +5,6 @@ import axios from 'axios';
 import AddressCard from './address';
 import Card from './cartProduct';
 
-const clb = process.env.REACT_APP_SERVER_URL + "/api/payment/verification";
-
 export default function UserCart(props) {
 
     //selector functions
@@ -16,7 +14,10 @@ export default function UserCart(props) {
     const userId = useSelector((state) => state.user.userId);
     const msg = useSelector((state) => state.user.message);
 
-    const [currDelCharge, setDelCharge] = useState(40);
+    const [currDelCharge, setDelCharge] = useState(0);
+    const [delAddress, setDelAddress] = useState("");
+
+    const clb = process.env.REACT_APP_SERVER_URL + `/api/payment/verification?id=${userId}`;
 
     function calculatePrice() {
         var price = 0;
@@ -30,6 +31,7 @@ export default function UserCart(props) {
         const currAdr = $('#address :selected').val()
         const adr = addresses.find((item) => item.location === currAdr);
         setDelCharge(() => adr.delCharge);
+        setDelAddress(() => adr.pincode);
     }
 
     async function PlaceOrder() {
@@ -48,7 +50,8 @@ export default function UserCart(props) {
         const { data } = await axios.post(process.env.REACT_APP_SERVER_URL + "/api/payment/checkout", {
             userId: userId,
             orderDetails: cart,
-            paymentAmt: amt
+            paymentAmt: amt,
+            address: delAddress
         });
 
         var options = {

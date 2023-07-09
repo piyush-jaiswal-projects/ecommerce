@@ -29,10 +29,7 @@ export default function SmallIconBar(props) {
                     :
                     <>
                     <div className='my-4'>
-                    <NavLink text="Signup" url="/signup" />
-                    </div>
-                    <div className='my-4'>
-                    <NavLink text="Login" url="/login" />
+                    <NavLink text="Signin" url="/login" />
                     </div>
                     </>
                 }

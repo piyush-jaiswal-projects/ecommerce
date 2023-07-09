@@ -11,7 +11,7 @@ const getProducts = async (req, res) => {
         
         res.status(200).send({ message: "Products fetched", products: products, success: true });
     } catch (error) {
-        console.log(err);
+        console.log(error);
         res.status(500).send({message: "Some Error Occurred!", success: false});
     }
 }

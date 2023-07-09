@@ -7,14 +7,14 @@ export default function CardTop(props) {
     const uid = useSelector((state) => state.user.userId);
     const dispatch = useDispatch();
 
-    function CalculateRating() {
-        const reviews = props.props.product.reviews;
-        var rating = 0;
-        for (let index = 0; index < reviews.length; index++) {
-            rating = rating + reviews[index].rating;
-        }
-        return rating / reviews.length;
-    }
+    // function CalculateRating() {
+    //     const reviews = props.props.product.reviews;
+    //     var rating = 0;
+    //     for (let index = 0; index < reviews.length; index++) {
+    //         rating = rating + reviews[index].rating;
+    //     }
+    //     return rating / reviews.length;
+    // }
 
     function OpenProductPage() {
         window.open("/product/" + props.props.product.id, '_blank')
@@ -60,7 +60,7 @@ export default function CardTop(props) {
                     </div>
                 </div>
 
-                <div className='flex items-center bg-[white] rounded-sm shadow w-[30%] m-1 px-1 py-1 justify-center'>
+                {/* <div className='flex items-center bg-[white] rounded-sm shadow w-[30%] m-1 px-1 py-1 justify-center'>
 
                     <span className='flex items-center border-r-2 border-r-base'>
                         {CalculateRating()}
@@ -75,7 +75,7 @@ export default function CardTop(props) {
                         {props.props.product.noOfPurchases}k
                     </span>
 
-                </div>
+                </div> */}
 
             </div>
         </>

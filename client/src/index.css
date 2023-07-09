@@ -34,6 +34,20 @@ code {
   }
 }
 
+.animate-enlarge{
+  transform: scale(1);
+  animation: enlarge 0.5s ease;
+}
+
+@keyframes enlarge {
+  from{
+    transform: scale(1);
+  }
+  to{
+    transform: scale(1.2);
+  }
+}
+
 .navbar{
   z-index: 100;
 }

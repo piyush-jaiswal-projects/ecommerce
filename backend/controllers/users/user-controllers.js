@@ -1,5 +1,9 @@
+const dotenv = require('dotenv')
+dotenv.config()
+
 const User = require('../../models/user')
 const calculateDelCharge = require('../../utils/calculateDelCharge')
+const { ObjectId } = require('mongodb')
 
 
 const getDetails = async (req, res) => {
@@ -96,19 +100,65 @@ const getWishlist = async (req, res) => {
 
 
 const placeOrder = async (req, res) => {
-    const { userId, cart } = req.body;
-    const user = await User.findOne({ _id: userId });
-    if (!user) {
-        res.status(400).send({ message: "User doesn't exist", success: false });
-        return;
+    try {
+        const { userId, refNum } = req.body;
+            
+        const user = await User.findOne({ _id: userId });
+        if (!user) {
+            res.status(400).send({ message: "User doesn't exist", success: false });
+            return;
+        }
+        const newOrders = [...user.placedOrders.items, ...user.cart];
+        const newRefNum = [...user.placedOrders.refNum, refNum];
+        const status = await User.updateOne({ _id: userId }, { $set: { placedOrders: { items: newOrders, refNum: newRefNum }, cart: [] } });
+
+        if (!status.acknowledged) {
+            res.status(400).send({ message: "Order Not Placed", success: false });
+            return;
+        } 
+
+        res.status(200).send({message: "Order Placed", success: true})
+        
+    } catch (error) {
+        console.log(error);
+        res.status(400).send({ message: "Order Not Placed", success: false });
     }
-    const newCart = [...user.placedOrders, ...cart];
-    const status = await User.updateOne({ _id: userId }, { $set: { placedOrders: newCart, cart: [] } });
-    if (status.acknowledged) {
-        res.status(200).send({ message: "Order placed", success: true });
-        return;
+}
+
+const cancelOrder = async (req, res) => {
+    console.log("Got a call");
+    try {
+        const { userId, orderId } = req.body;
+            
+        const user = await User.findOne({ _id: userId });
+        if (!user) {
+            res.status(400).send({ message: "User doesn't exist", success: false });
+            return;
+        }
+        const orders = user.placedOrders;
+        const oid = new ObjectId(orderId)
+        for (let i = 0; i < orders.items.length; i++){
+            if (oid.equals(orders.items[i]._id)) {
+                console.log("inside");
+                orders.items[i].expectedDelivery = "---"
+                orders.items[i].orderStatus = "CANCELLED"
+            }
+        }
+
+        const status = await User.updateOne({ _id: userId },
+            { $set: { placedOrders: { items: orders.items, refNum: user.placedOrders.refNum }, cart: [] } });
+
+        if (!status.acknowledged) {
+            res.status(400).send({ message: "Order Cancellation Failure", success: false });
+            return;
+        } 
+
+        res.status(200).send({message: "Order Cancelled", success: true})
+        
+    } catch (error) {
+        console.log(error);
+        res.status(400).send({ message: "Order Cancellation Failure", success: false });
     }
-    res.status(400).send({ message: "Order not placed", success: false});
 }
 
 
@@ -188,6 +238,23 @@ const setAddress = async (req, res) => {
     res.status(400).send({ message: "Address Not Added",addresses:[], success: false });
 }
 
+const getOrders = async (req, res) => {
+    const { userId } = req.body;
+    if (!userId) {
+        res.status(400).send({ message: "Invalid User ID", cart: [], success: false });
+        return;
+    }
+    else {
+        const user = await User.findOne({ _id: userId });
+        if (!user) {
+            res.status(400).send({ message: "User doesn't exist", placedOrders: [], success: false });
+        }
+        else {
+            res.status(200).send({ message: "Orders Received", placedOrders: user.placedOrders, success: true });
+        }   
+    }
+}
+
 
 module.exports = {
     getDetails,
@@ -199,5 +266,7 @@ module.exports = {
     removeFromCart,
     removeFromWishlist,
     getAddresses,
-    setAddress
+    setAddress,
+    getOrders,
+    cancelOrder
 }

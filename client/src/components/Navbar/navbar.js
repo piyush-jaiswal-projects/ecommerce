@@ -49,7 +49,7 @@ export default function Navbar(props) {
             {path === "/signup" || path === "/login" ? "" :
             <header className='fixed navbar top-0 bg-base w-[100vw] flex items-center justify-between py-2 px-2'>
             
-                    <section className='flex items-center justify-around'>
+                    <section className='flex items-center justify-center'>
                         <div className="">
                             <a href='/'>
                                 <img
@@ -59,7 +59,6 @@ export default function Navbar(props) {
                                 />
                             </a>
                         </div>
-                        {width >= 700 ? <Categories links={links} /> : ""} 
                     </section>
 
             {width >= 950 ?
@@ -71,7 +70,7 @@ export default function Navbar(props) {
                 />
                 :
                 <div className='flex justify-between items-center'>
-                    {width >= 700 ? "" : <label className='cursor-pointer' onClick={openCategories}>Categories</label>} 
+                    {width >= 700 ? "" : <label className='cursor-pointer' onClick={()=>window.location.replace('/products')}>Products</label>} 
                     <img onClick={openIcons} className='cursor-pointer w-[15px] mx-4' src={Menu} alt="" />
                 </div>
             }
@@ -85,7 +84,7 @@ export default function Navbar(props) {
             search={search}
                 />
             
-            <SmallCategories links={links} />
+            {/* <SmallCategories links={links} /> */}
 
         </Fragment>
     )

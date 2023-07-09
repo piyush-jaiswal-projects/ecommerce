@@ -22,7 +22,7 @@ export default function Footer() {
                         <h1 className='text-secondary text-[1.2rem] font-bold'>Payments</h1>
                         - 100% Secure Payment
                         <br />
-                        - Cash on delivery available
+                        - All cards are accepted
                     </div>
 
                     <div>

@@ -1,15 +1,14 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import setCookie from '../functions/setCookie'
-import getAllCookies from '../functions/getAllCookies'
-import getUserCart from '../api/getUserCart';
-import getUserAddress from '../api/getUserAddresses';
-import getUserWishlist from '../api/getUserWishlist';
 import axios from 'axios';
 import { useSelector } from 'react-redux'
+
+import { setCookie, getAllCookies } from '../functions'
+import {getUserCart, getUserAddress, getUserWishlist, getUserOrders} from '../api'
     
 
 const userData = getAllCookies();
 const cart = getUserCart;
+const placedOrders = getUserOrders;
 const wishlist = getUserWishlist;
 const addresses = getUserAddress;
 
@@ -18,7 +17,7 @@ const initialState = {
     userId: userData.userId,
     userName: userData.userName,
     addresses: [...addresses],
-    placedOrder: [],
+    placedOrder: placedOrders,
     cart: cart,
     currAddressCharge: 0,
     wishlist: wishlist,
@@ -131,7 +130,8 @@ export const placeOrderAsync = createAsyncThunk('/users/placeOrder', async (payl
     const cart = useSelector((state) => state.user.cart);
     const data = {
         userId: uid,
-        cart: cart
+        cart: cart,
+        refNum: payload.refNum
     }
     try {
         const response = await axios.post(uri, data);
@@ -139,6 +139,25 @@ export const placeOrderAsync = createAsyncThunk('/users/placeOrder', async (payl
     }
     catch (error) {
         console.log(error);
+        window.location.replace("http://localhost:3000/error");
+        return rejectWithValue(error.response.data);
+    }
+})
+
+export const cancelOrderAsync = createAsyncThunk('/users/cancelOrder', async (payload, { rejectWithValue }) => {
+    const uri = process.env.REACT_APP_SERVER_URL + "/api/user/cancelOrder"
+    const uid = useSelector((state) => state.user.userId);
+    const data = {
+        userId: uid,
+        orderId: payload.orderId
+    }
+    try {
+        const response = await axios.post(uri, data);
+        console.log(response);
+        return response.data;
+    }
+    catch (error) {
+        console.log("Error: "+error);
         return rejectWithValue(error.response.data);
     }
 })
@@ -369,6 +388,23 @@ const userReducer = createSlice({
                 state.isError = true;
                 state.message = "Some error occurred";
                     
+            })
+            .addCase(cancelOrderAsync.pending, (state) => {
+                state.isLoading = true;
+                state.isError = false;
+                state.message = "processing..."
+                    
+            })
+            .addCase(cancelOrderAsync.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isError = false;
+                state.message = "";
+                window.location.reload();
+            })
+            .addCase(cancelOrderAsync.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.message = "Some error occurred";
             });
       },
 })

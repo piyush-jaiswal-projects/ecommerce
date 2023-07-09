@@ -14,6 +14,7 @@ export default function ProductPage(props) {
     const [value, setValue] = useState(1);
     const [size, setSize] = useState("");
     const [btnText, setBtnText] = useState("Add to Cart")
+    const [wishBtnText, setWishBtnText] = useState("Add to Wishlist")
 
     const isUser = useSelector((state) => state.user.userLoggedIn);
     const uid = useSelector((state) => state.user.userId);
@@ -51,6 +52,17 @@ export default function ProductPage(props) {
         return rating / reviews.length;
     }
 
+    function CalDelDate() {
+        var today = new Date();
+        var dayAfterTomorrow = new Date();
+        dayAfterTomorrow.setDate(today.getDate() + 7);
+        return dayAfterTomorrow.toLocaleDateString('en-US', {
+            day: '2-digit',
+            month: 'short',
+            year: 'numeric'
+          });
+    }
+
     function changeQty(symbol) {
         if (symbol === "-" && value > 1) {
             setValue(() => value - 1)
@@ -61,7 +73,6 @@ export default function ProductPage(props) {
     }
 
     async function AddToCart(cta) {
-        console.log(isUser);
         if (isUser === "true") {
             if (btnText === "Go to Cart") {
                 window.location.replace("/cart");
@@ -69,7 +80,19 @@ export default function ProductPage(props) {
             }
 
             if (size !== "") {
-                dispatch(addCartAsync({ userId: uid, product: { product: product, selectedSize: size, quantity: value } }))
+                const delDate = CalDelDate();
+                console.log(delDate);
+                setBtnText("processing ...")
+                await dispatch(addCartAsync({
+                    userId: uid,
+                    product: {
+                        product: product,
+                        selectedSize: size,
+                        quantity: value,
+                        orderStatus: "processing",
+                        expectedDelivery: delDate
+                    }
+                }))
                 setBtnText("Go to Cart")
                 $("#alert-cart").toggleClass("hidden");
                 setTimeout(() => {
@@ -89,13 +112,15 @@ export default function ProductPage(props) {
         }
     }
 
-    function AddToWishlist() {
+    async function AddToWishlist() {
         if (isUser) {
-            dispatch(addWishlistAsync({
+            setWishBtnText(()=> "processing ...")
+            await dispatch(addWishlistAsync({
                 userId: uid,
                 product: { product: product, selectedSize: size, quantity: value }
             }));
 
+            setWishBtnText(()=>"Add to Wishlist")
             $("#alert-wish").toggleClass("hidden");
             setTimeout(() => {
                 $("#alert-wish").toggleClass("hidden");
@@ -188,7 +213,7 @@ export default function ProductPage(props) {
 
                         <br />
 
-                        <label onClick={AddToWishlist} className='cursor-pointer'>Add to Wishlist</label>
+                        <label onClick={AddToWishlist} className='cursor-pointer'>{wishBtnText}</label>
                     </div>
 
                 </div>
@@ -211,7 +236,7 @@ function SizeBox(props) {
     }
 
     return (
-        <div id={props.text} onClick={selectSize} className='rounded-md border border-secondary h-[30px] w-[30px] text-center cursor-pointer m-2'>
+        <div id={props.text} onClick={selectSize} className='rounded-md border border-secondary h-[30px] w-[30px] flex items-center justify-center cursor-pointer m-2'>
             {props.text}
         </div>
     )

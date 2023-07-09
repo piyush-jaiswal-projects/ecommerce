@@ -13,9 +13,14 @@ const userSchema = new mongoose.Schema({
     cart: [{
         product: {},
         selectedSize: { type: String },
-        quantity: {type: Number}
+        quantity: { type: Number },
+        orderStatus: { type: String },
+        expectedDelivery: {type: String}
     }],
-    placedOrders: [],
+    placedOrders: {
+        items: [],
+        refNum: []
+    },
     wishlist: [{
         product: {},
         selectedSize: { type: String },

@@ -1,13 +1,13 @@
 import React, { Fragment } from 'react'
 import Heroslider from './hero-slider'
-import Trending from './trending'
 import Banner from './banner'
+import Categories from './categories'
 
 export default function Home() {
     return (
         <>
             <Heroslider />
-            <Trending />
+            <Categories />
             <Banner />
         </>
      )

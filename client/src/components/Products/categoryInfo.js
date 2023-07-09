@@ -7,7 +7,7 @@ export default function CategoryInfo() {
     const message = useSelector((state)=>state.product.message)
 
     return (
-        <div className='mt-[8vw] md:mt-[5vw] p-4'>
+        <div className=''>
             <h2>Clothing / {category} <label> {message} </label></h2>
             <label>Total Items: {totalItems}</label>
         </div>
