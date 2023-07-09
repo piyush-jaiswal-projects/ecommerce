@@ -21,8 +21,8 @@ export default function Categories() {
 function Card(props) {
     return (
         <a className='' href={props.url}>
-            <div className='h-[250px] w-[200px] flex justify-center items-center m-2 mx-5 border border-secondary rounded-md'>
-                <h1 className='text-[1.3rem] font-semibold uppercase text-secondary'>{props.name}</h1>
+            <div className='soft-bg h-[50px] text-secondary hover:text-base hover:bg-secondary w-[200px] flex justify-center items-center m-2 mx-5 border border-secondary rounded-md'>
+                <h1 className='text-[1.3rem] font-semibold uppercase'>{props.name}</h1>
         </div>
         </a>
     )

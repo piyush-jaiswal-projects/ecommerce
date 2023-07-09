@@ -52,3 +52,7 @@ code {
   z-index: 100;
 }
 
+.soft-bg{
+  transition: background-color 0.5s ease;
+}
+
