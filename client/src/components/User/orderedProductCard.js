@@ -16,7 +16,7 @@ export default function Card(props) {
             try {
                 const response = await axios.post(uri, data);
                 console.log(response);
-                return response.data;
+                window.location.reload();
             }
             catch (error) {
                 console.log("Error: " + error);
