@@ -81,7 +81,6 @@ export default function ProductPage(props) {
 
             if (size !== "") {
                 const delDate = await CalDelDate();
-                console.log(delDate);
                 setBtnText("processing ...")
                 await dispatch(addCartAsync({
                     userId: uid,
@@ -115,10 +114,13 @@ export default function ProductPage(props) {
     async function AddToWishlist() {
         if (isUser) {
             if (size !== "") {
+                const delDate = await CalDelDate();
                 setWishBtnText(()=> "processing ...")
             await dispatch(addWishlistAsync({
                 userId: uid,
-                product: { product: product, selectedSize: size, quantity: value }
+                product: { product: product, selectedSize: size, quantity: value,
+                    orderStatus: "processing",
+                    expectedDelivery: delDate }
             }));
 
             setWishBtnText(()=>"Add to Wishlist")
