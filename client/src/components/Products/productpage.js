@@ -80,7 +80,7 @@ export default function ProductPage(props) {
             }
 
             if (size !== "") {
-                const delDate = CalDelDate();
+                const delDate = await CalDelDate();
                 console.log(delDate);
                 setBtnText("processing ...")
                 await dispatch(addCartAsync({

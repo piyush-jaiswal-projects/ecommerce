@@ -26,7 +26,7 @@ export default function CardTop(props) {
                 userId: uid,
                 product: {
                     product: props.props.product,
-                    selectedSize: "",
+                    selectedSize: "L",
                     quantity: 1
                 }
             }));
@@ -48,7 +48,7 @@ export default function CardTop(props) {
 
             <div className='h-[300px] flex flex-col justify-between'>
 
-                <div className='flex justify-end m-2'>
+                {/* <div className='flex justify-end m-2'>
                     <div
                         onClick={AddToWishlist}
                         className='shadow flex justify-center rounded-full p-2 lg:p-1 bg-[white] h-[12vw] w-[12vw] sm:h-[6vw] sm:w-[6vw] md:h-[4.5vw] md:w-[4.5vw] lg:h-[3vw] lg:w-[3vw]'>
@@ -58,7 +58,7 @@ export default function CardTop(props) {
                             alt="❤️" 
                         />
                     </div>
-                </div>
+                </div> */}
 
                 {/* <div className='flex items-center bg-[white] rounded-sm shadow w-[30%] m-1 px-1 py-1 justify-center'>
 

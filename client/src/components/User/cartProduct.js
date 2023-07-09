@@ -23,6 +23,7 @@ export default function Card(props) {
                     <p className='text-[1.2rem]'>Price: {item.product.price}</p>
                     <p className='text-[1.2rem]'>Quantity: {item.quantity}</p>
                     <p className='text-[1.2rem]'>Size: {item.selectedSize}</p>
+                    <p className='text-[1.2rem]'>Expected delivery: {item.expectedDelivery}</p>
                 </div>
                 <div className='text-center sm:text-left'>
                     <button className='text-secondary text-[1.1rem]' onClick={() => RemoveProduct(item._id)}>Remove from cart</button>
