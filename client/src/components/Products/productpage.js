@@ -114,7 +114,8 @@ export default function ProductPage(props) {
 
     async function AddToWishlist() {
         if (isUser) {
-            setWishBtnText(()=> "processing ...")
+            if (size !== "") {
+                setWishBtnText(()=> "processing ...")
             await dispatch(addWishlistAsync({
                 userId: uid,
                 product: { product: product, selectedSize: size, quantity: value }
@@ -125,6 +126,12 @@ export default function ProductPage(props) {
             setTimeout(() => {
                 $("#alert-wish").toggleClass("hidden");
             }, 3000);
+            }
+            $("#alert-size").toggleClass("hidden");
+            setTimeout(() => {
+                $("#alert-size").toggleClass("hidden");
+            }, 3000);
+            return;
         }
     }
 

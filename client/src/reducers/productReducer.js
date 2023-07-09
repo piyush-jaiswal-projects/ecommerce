@@ -127,7 +127,7 @@ const productReducer = createSlice({
         },
         changePriceRange(state, action) {
             var productList;
-            
+
             productList = state.products.filter(
                 (item) => item.price >= action.payload.minPrice && item.price <= action.payload.maxPrice
             );
@@ -150,7 +150,13 @@ const productReducer = createSlice({
                 ...state,
                 currentProducts: state.products,
                 categoryItemsCount: state.products.length,
-                prodMsg: ""
+                prodMsg: "",
+                currentCategory: "",
+                currentSubCategory: "",
+                currentBrand: "",
+                currentRating: 0,
+                currentMaxPrice: 0,
+                currentMinPrice: 0,
             }
         },
         fetchProducts(state, action) {

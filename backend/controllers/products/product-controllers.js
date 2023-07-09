@@ -43,5 +43,4 @@ const getProductsFromId = async (req, res) => {
         res.status(500).send({message: "Some Error Occurred!", success: false});
     }
 }
-
 module.exports = { getProducts, addProduct, getProductsFromId };
