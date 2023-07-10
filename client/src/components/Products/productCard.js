@@ -9,8 +9,8 @@ export default function ProductCard(props) {
 
     return (
         <div key={props.id} className='justify-self-center m-2 h-[420px] w-[300px] border border-primary rounded-lg'>
-            <div className='h-[300px]'>
-                <CardTop props={props} />
+            <div className='h-[300px] cursor-pointer' onClick={OpenProductPage}>
+                <CardTop props={props} function={OpenProductPage} />
             </div>
 
 

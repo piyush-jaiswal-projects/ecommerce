@@ -192,7 +192,7 @@ const productReducer = createSlice({
                 state.isLoading = false;
                 state.isError = true;
                 console.log(action.payload);
-                state.message = "Some error occurred";
+                state.message = "";
 
             })
     }

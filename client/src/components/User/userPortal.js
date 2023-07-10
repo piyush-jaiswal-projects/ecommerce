@@ -2,14 +2,17 @@ import React from 'react'
 
 import getCookie from '../../functions/getCookie'
 import PrevOrders from './prevOrders'
+import ErrorBoundary from '../../error-boundary/handler'
 
 export default function UserPortal() {
-    if (getCookie("userLoggedIn") === "false") window.location.replace("/")
+    if (getCookie("userLoggedIn") === "false" || getCookie("userLoggedIn") === "" ) window.location.replace("/")
 
 
     return (
-        <div className='mt-[12vw] md:mt-[8vw]'>
-            <PrevOrders />
-        </div>
+        <ErrorBoundary>
+            <div className='mt-[12vw] md:mt-[8vw]'>
+                <PrevOrders />
+            </div>
+        </ErrorBoundary>
     )
 }

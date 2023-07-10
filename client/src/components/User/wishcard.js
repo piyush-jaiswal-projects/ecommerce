@@ -6,7 +6,7 @@ export default function WishCard(props) {
     const dispatch = useDispatch();
     const uid = useSelector((state) => state.user.userId);
 
-    function AddToCart() {
+    async function AddToCart() {
         dispatch(addCartAsync({
             userId: uid,
             product: {
@@ -21,7 +21,7 @@ export default function WishCard(props) {
         dispatch(removeWishlistAsync({ userId: uid, productId: item._id }))
     }
 
-    function RemoveProduct(productId) {
+    async function RemoveProduct(productId) {
         dispatch(removeWishlistAsync({ userId: uid, productId: productId }))
     }
 

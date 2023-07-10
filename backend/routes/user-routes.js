@@ -2,20 +2,21 @@ const express = require('express');
 
 const router = express.Router();
 const userControllers = require('../controllers/users/user-controllers')
+const {verifyUser} = require('../middleware/verify-user')
 
-router.post("/getUser", userControllers.getDetails);
-router.post("/addToCart", userControllers.addToCart);
-router.post("/addToWishlist", userControllers.addToWishlist);
-router.post("/placeOrder", userControllers.placeOrder);
-router.post("/getCart", userControllers.getCart);
-router.post("/getWishlist", userControllers.getWishlist);
-router.post("/removeFromCart", userControllers.removeFromCart);
-router.post("/removeFromWishlist", userControllers.removeFromWishlist);
-router.post("/placeOrders", userControllers.placeOrder);
-router.post("/getAddresses", userControllers.getAddresses);
-router.post("/addAddress", userControllers.setAddress);
-router.post("/getOrders", userControllers.getOrders);
-router.post("/cancelOrder", userControllers.cancelOrder);
+router.post("/getUser", verifyUser, userControllers.getDetails);
+router.post("/addToCart", verifyUser, userControllers.addToCart);
+router.post("/addToWishlist", verifyUser, userControllers.addToWishlist);
+router.post("/placeOrder", verifyUser, userControllers.placeOrder);
+router.post("/getCart", verifyUser, userControllers.getCart);
+router.post("/getWishlist", verifyUser, userControllers.getWishlist);
+router.post("/removeFromCart", verifyUser, userControllers.removeFromCart);
+router.post("/removeFromWishlist", verifyUser, userControllers.removeFromWishlist);
+router.post("/placeOrders", verifyUser, userControllers.placeOrder);
+router.post("/getAddresses", verifyUser, userControllers.getAddresses);
+router.post("/addAddress", verifyUser, userControllers.setAddress);
+router.post("/getOrders", verifyUser, userControllers.getOrders);
+router.post("/cancelOrder", verifyUser, userControllers.cancelOrder);
 
 
 module.exports = router;

@@ -45,7 +45,11 @@ export default function Grid() {
 
     return (
         <>
-            <div className='w-[100%] flex justify-center'><label className='text-[1.5rem] w-[100%] text-center text-secondary mx-auto my-4 px-4'>{prodMsg}</label></div>
+            <div className='w-[100%] flex justify-center'>
+                <label className='text-[1.5rem] w-[100%] text-center text-secondary mx-auto my-4 px-4'>
+                    {prodMsg}
+                </label>
+            </div>
         <div
             className='w-[100%] min-h-[500px] border-l-2 border-base grid gap-y-2 grid-cols-1 min-[600px]:grid-cols-2 min-[1130px]:grid-cols-3'>
             {products.slice(start, end).map((product) =>

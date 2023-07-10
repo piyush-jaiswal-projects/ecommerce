@@ -4,8 +4,11 @@ import $ from 'jquery'
 import axios from 'axios';
 import AddressCard from './address';
 import Card from './cartProduct';
+import ErrorBoundary from '../../error-boundary/handler';
+import { getCookie } from '../../functions';
 
 export default function UserCart(props) {
+    if (getCookie("userLoggedIn") === "false" || getCookie("userLoggedIn") === "" ) window.location.replace("/")
 
     //selector functions
     const cart = useSelector((state) => state.user.cart)
@@ -79,7 +82,8 @@ export default function UserCart(props) {
     }
 
     return (
-        <div className={props.embed === true ? "p-4 bg-white" : "mt-[8vw] md:mt-[5vw] p-4 bg-white"}>
+        <ErrorBoundary>
+            <div className={props.embed === true ? "p-4 bg-white" : "mt-[8vw] md:mt-[5vw] p-4 bg-white"}>
             <br />
             <AddressCard />
 
@@ -128,5 +132,6 @@ export default function UserCart(props) {
                 </div>
             </div>
         </div>
+        </ErrorBoundary>
     )
 }

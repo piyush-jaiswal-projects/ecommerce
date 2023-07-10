@@ -45,6 +45,10 @@ export default function Signup() {
     }
 
     function signup() {
+        if (formData.name === "" || formData.password === "" || formData.username === "") {
+            alert("Please fill complete details")
+            return;
+        }
             dispatch(signupAsync({ userData: formData }))
     }
 

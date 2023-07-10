@@ -1,10 +1,12 @@
 import { useSelector } from "react-redux";
 import axios from 'axios'
+import { useState } from "react";
 
 
 export default function Card(props) {
     const item = props.item;
     const uid = useSelector((state) => state.user.userId);
+    const [status, setStatus] = useState("");
 
     async function cancelOrder(id, type) {
         if (type === "cancel") {
@@ -14,8 +16,9 @@ export default function Card(props) {
                 orderId: id
             }
             try {
-                const response = await axios.post(uri, data);
-                console.log(response);
+                setStatus(() => "processing...");
+                await axios.post(uri, data);
+                setStatus(() => "");
                 window.location.reload();
             }
             catch (error) {
@@ -52,6 +55,8 @@ export default function Card(props) {
                     <p className="my-2 text-[1.2rem]">
                         Order Status : <label className="text-secondary">{item.orderStatus}</label>
                     </p>
+                    {status}
+                    <br />
                     {item.orderStatus !== "CANCELLED" ?
                         <button
                             className='text-[grey] text-[1.2rem]'

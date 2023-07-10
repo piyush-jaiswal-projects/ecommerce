@@ -82,6 +82,7 @@ export const removeWishlistAsync = createAsyncThunk('/users/removeFromWishlist',
         userId: payload.userId,
         productId: payload.productId
     }
+    console.log('inside async');
     try {
         const response = await axios.post(uri, data);
         return response.data;
@@ -202,7 +203,7 @@ const userReducer = createSlice({
             .addCase(signupAsync.rejected, (state, action) => {
                 state.isLoading = false;
                 state.isError = true;
-                state.message = "Some error occurred";
+                state.message = action.payload.message;
 
             })
             .addCase(loginAsync.pending, (state) => {
@@ -223,7 +224,7 @@ const userReducer = createSlice({
             .addCase(loginAsync.rejected, (state, action) => {
                 state.isLoading = false;
                 state.isError = true;
-                state.message = "Some error occurred";
+                state.message = action.payload.message;
     
             })
             .addCase(removeCartAsync.pending, (state) => {
@@ -241,16 +242,18 @@ const userReducer = createSlice({
             .addCase(removeCartAsync.rejected, (state, action) => {
                 state.isLoading = false;
                 state.isError = true;
-                state.message = "Some error occurred";
+                state.message = action.payload.message;
         
             })
             .addCase(removeWishlistAsync.pending, (state) => {
+                console.log('inside pending async');
                 state.isLoading = true;
                 state.isError = false;
                 state.message = "processing..."
             
             })
             .addCase(removeWishlistAsync.fulfilled, (state, action) => {
+                console.log('inside fulfilled async');
                 state.isLoading = false;
                 state.isError = false;
                 state.message = "";
@@ -259,7 +262,7 @@ const userReducer = createSlice({
             .addCase(removeWishlistAsync.rejected, (state, action) => {
                 state.isLoading = false;
                 state.isError = true;
-                state.message = "Some error occurred";
+                state.message = action.payload.message;
             
             })
             .addCase(addCartAsync.pending, (state) => {
@@ -277,7 +280,7 @@ const userReducer = createSlice({
             .addCase(addCartAsync.rejected, (state, action) => {
                 state.isLoading = false;
                 state.isError = true;
-                state.message = "Some error occurred";
+                state.message = action.payload.message;
             
             })
             .addCase(addWishlistAsync.pending, (state) => {
@@ -295,7 +298,7 @@ const userReducer = createSlice({
             .addCase(addWishlistAsync.rejected, (state, action) => {
                 state.isLoading = false;
                 state.isError = true;
-                state.message = "Some error occurred";
+                state.message = action.payload.message;
                 
             })
             .addCase(placeOrderAsync.pending, (state) => {
@@ -313,7 +316,7 @@ const userReducer = createSlice({
             .addCase(placeOrderAsync.rejected, (state, action) => {
                 state.isLoading = false;
                 state.isError = true;
-                state.message = "Some error occurred";
+                state.message = action.payload.message;
                     
             });
       },

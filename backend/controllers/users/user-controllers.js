@@ -7,26 +7,15 @@ const { ObjectId } = require('mongodb')
 
 
 const getDetails = async (req, res) => {
-    const { userId } = req.body;
-
-    const user = await User.findOne({ _id: userId });
-    if (!user) {
-        res.status(400).send({ message: "User doesn't exist", success: false });
-        return;
-    }
-
+    const { userId} = req.body;
+    const user = res.locals.user;
     res.status(200).send({ message: "Details Received", user: user, success: true });
 }
 
 
 const addToCart = async (req, res) => {
-    const { userId, product } = req.body;
-
-    const user = await User.findOne({ _id: userId });
-    if (!user) {
-        res.status(400).send({ message: "User doesn't exist" });
-        return;
-    }
+    const { userId, product} = req.body;
+    const user = res.locals.user;
 
     const newCart = [...user.cart, product];
 
@@ -43,13 +32,8 @@ const addToCart = async (req, res) => {
 
 
 const addToWishlist = async (req, res) => {
-    const { userId, product } = req.body;
-
-    const user = await User.findOne({ _id: userId });
-    if (!user) {
-        res.status(400).send({ message: "User doesn't exist", success: false });
-        return;
-    }
+    const { userId, product} = req.body;
+    const user = res.locals.user;
 
     const newWishlist = [...user.wishlist, product];
     const status = await User.updateOne({ _id: userId }, { $set: { wishlist: newWishlist } });
@@ -66,48 +50,36 @@ const addToWishlist = async (req, res) => {
 
 const getCart = async (req, res) => {
     const { userId } = req.body;
-    if (!userId) {
-        res.status(400).send({ message: "Invalid User ID", cart: [], success: false });
-        return;
-    }
-    else {
-        const user = await User.findOne({ _id: userId });
+    const user = res.locals.user;
+ 
         if (!user) {
             res.status(400).send({ message: "User doesn't exist", cart: [], success: false });
         }
         else {
             res.status(200).send({ message: "Cart Received", cart: user.cart, success: true });
         }   
-    }
+
 }
 
 
 const getWishlist = async (req, res) => {
     const { userId } = req.body;
-    if (!userId) {
-        res.status(400).send({ message: "Invalid User ID", cart: [], success: false });
-    }
-    else {
-        const user = await User.findOne({ _id: userId });
+    const user = res.locals.user;
         if (!user) {
             res.status(400).send({ message: "User doesn't exist", wishlist: [], success: false });
         }
         else {
             res.status(200).send({ message: "Wishlist Received", wishlist: user.wishlist, success: true });
         }
-    }
+    
 }
 
 
 const placeOrder = async (req, res) => {
     try {
         const { userId, refNum } = req.body;
-            
-        const user = await User.findOne({ _id: userId });
-        if (!user) {
-            res.status(400).send({ message: "User doesn't exist", success: false });
-            return;
-        }
+        const user = res.locals.user;
+
         const newOrders = [...user.placedOrders.items, ...user.cart];
         const newRefNum = [...user.placedOrders.refNum, refNum];
         const status = await User.updateOne({ _id: userId }, { $set: { placedOrders: { items: newOrders, refNum: newRefNum }, cart: [] } });
@@ -126,15 +98,10 @@ const placeOrder = async (req, res) => {
 }
 
 const cancelOrder = async (req, res) => {
-    console.log("Got a call");
     try {
         const { userId, orderId } = req.body;
-            
-        const user = await User.findOne({ _id: userId });
-        if (!user) {
-            res.status(400).send({ message: "User doesn't exist", success: false });
-            return;
-        }
+        const user = res.locals.user;
+
         const orders = user.placedOrders;
         const oid = new ObjectId(orderId)
         for (let i = 0; i < orders.items.length; i++){
@@ -164,15 +131,10 @@ const cancelOrder = async (req, res) => {
 
 const removeFromCart = async (req, res) => {
     const { userId, productId } = req.body;
-    const user = await User.findOne({ _id: userId });
-    if (!user) {
-        res.status(400).send({ message: "Can't Remove From Cart (User doesn't exists)", success: false });
-        return;
-    }
+    const user = res.locals.user;
 
     const status = await User.updateOne({ _id: userId }, { $pull: { cart: { _id: productId } } });
     if (status.acknowledged === true) {
-        const user = await User.findOne({ _id: userId });
         if (user) {
             res.status(200).send({ message: "Item Removed", cart: user.cart, success: true });
         }
@@ -186,18 +148,11 @@ const removeFromCart = async (req, res) => {
 
 const removeFromWishlist = async (req, res) => {
     const { userId, productId } = req.body;
-    const user = await User.findOne({ _id: userId });
-    if (!user) {
-        res.status(400).send({ message: "Can't Remove From Wishlist (User doesn't exists)", success: false });
-        return;
-    }
+    const user = res.locals.user;
 
     const status = await User.updateOne({ _id: userId }, { $pull: { wishlist: { _id: productId } } });
     if (status.acknowledged === true) {
-        const user = await User.findOne({ _id: userId });
-        if (user) {
             res.status(200).send({ message: "Item Removed", wishlist: user.wishlist, success: true });
-        }
     }
     else {
         res.status(400).send({ message: "Item Not Removed",wishlist:[], success: false});
@@ -208,27 +163,15 @@ const removeFromWishlist = async (req, res) => {
 
 const getAddresses = async (req, res) => {
     const { userId } = req.body;
-    if (!userId) {
-        res.status(400).send({ message: "User doesn't exists", success: false });
-        return;
-    }
-    const user = await User.findOne({ _id: userId });
-    if (!user) {
-        res.status(400).send({ message: "User doesn't exists", success: false });
-        return;
-    }
+    const user = res.locals.user;
     res.status(200).send({ message: "Addresses", addresses: user.addresses, success: true });
-
 }
 
 
 const setAddress = async (req, res) => {
     const { userId, address, pincode } = req.body;
-    const user = await User.findOne({ _id: userId });
-    if (!user) {
-        res.status(400).send({ message: "User doesn't exists",addresses:[], success: false });
-        return;
-    }
+    const user = res.locals.user;
+
     const delCharge = calculateDelCharge(pincode);
     const status = await User.updateOne({ _id: userId }, { $set: { addresses: [...user.addresses, {location: address, pincode: pincode, delCharge: delCharge}] } });
     if (status.acknowledged) {
@@ -240,19 +183,8 @@ const setAddress = async (req, res) => {
 
 const getOrders = async (req, res) => {
     const { userId } = req.body;
-    if (!userId) {
-        res.status(400).send({ message: "Invalid User ID", cart: [], success: false });
-        return;
-    }
-    else {
-        const user = await User.findOne({ _id: userId });
-        if (!user) {
-            res.status(400).send({ message: "User doesn't exist", placedOrders: [], success: false });
-        }
-        else {
-            res.status(200).send({ message: "Orders Received", placedOrders: user.placedOrders, success: true });
-        }   
-    }
+    const user = res.locals.user;
+    res.status(200).send({ message: "Orders Received", placedOrders: user.placedOrders, success: true });
 }
 
 

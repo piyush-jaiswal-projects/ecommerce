@@ -64,6 +64,10 @@ export default function Login() {
     }
 
     function Login() {
+        if (formData.username === "" || formData.password === "") {
+            alert("Please fill complete details")
+            return;
+        }
         dispatch(loginAsync({ userData: {username: formData.username, password: formData.password} }))
     }
 
@@ -105,7 +109,7 @@ export default function Login() {
                     <div className='my-4'>
                         <span className='flex justify-between'>
                             <label>Password</label>
-                            <label onClick={forgetPassword}>Forgot Password?</label>
+                            <label onClick={forgetPassword}>Forget Password?</label>
                 
                         </span>
 

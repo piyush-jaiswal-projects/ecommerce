@@ -6,6 +6,11 @@ import UserPanel from './userPanel';
 
 export default function PrevOrders() {
     const orders = useSelector((state) => state.user.placedOrder.items);
+    const reverseOrders = orders.map((value, index, array) => {
+        const reverseIndex = array.length - 1 - index;
+        return array[reverseIndex];
+    });
+    
     const msg = useSelector((state) => state.user.message);
 
     return (
@@ -19,7 +24,7 @@ export default function PrevOrders() {
                     </h1>
                     <label>{msg}</label>
 
-                    {orders.map((item, index) => {
+                    {reverseOrders.map((item, index) => {
                         return (
                             <Card item={item} />
                         )

@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { addCartAsync, addWishlistAsync } from '../../reducers/userReducer';
 import axios from 'axios'
 import Popup from '../Popup/popup';
+import ErrorBoundary from '../../error-boundary/handler';
 
 export default function ProductPage(props) {
     const params = useParams();
@@ -143,7 +144,8 @@ export default function ProductPage(props) {
 
 
     return (
-        <div className='mt-[8vw] md:mt-[5vw] p-4 overflow-x-hidden'>
+        <ErrorBoundary>
+            <div className='mt-[8vw] md:mt-[5vw] p-4 overflow-x-hidden'>
             <Popup id="alert-cart" text="Added to Cart" />
             <Popup id="alert-size" text="Please Select Size" />
             <Popup id="alert-wish" text="Added to Wishlist" />
@@ -233,6 +235,7 @@ export default function ProductPage(props) {
 
             <Reviews />
         </div>
+        </ErrorBoundary>
     )
 }
 

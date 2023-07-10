@@ -40,6 +40,7 @@ export default function CardTop(props) {
                 className='cursor-pointer h-[300px] w-[300px] rounded-t-lg absolute -z-10 p-1'
                 onClick={OpenProductPage}>
                 <img
+                    onClick={OpenProductPage}
                     className='h-[100%] w-[100%] object-cover rounded-t-lg'
                     src={props.props.product.images[0]}
                     alt="" 
