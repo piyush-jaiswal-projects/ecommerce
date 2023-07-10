@@ -17,6 +17,8 @@ const initialState = {
     isLoading: false,
     message: "",
     prodMsg: "",
+    start: 0,
+    end: 9,
     productDetails: {
         images: [],
         size: [],
@@ -72,7 +74,9 @@ const productReducer = createSlice({
                 currentProducts: productList,
                 currentCategory: (action.payload.type === "common") ? "" : (action.payload.categoryName === "f1") ? "" : action.payload.categoryName,
                 categoryItemsCount: newCount,
-                prodMsg: newCount === 0 ? "Item Not Found" : ""
+                prodMsg: newCount === 0 ? "Item Not Found" : "",
+                start: 0,
+                end: 9
             }
         },
         changeSubCategory(state, action) {
@@ -97,7 +101,9 @@ const productReducer = createSlice({
                 currentProducts: productList,
                 currentSubCategory: (action.payload.type === "common") ? "" : (action.payload.subCategoryName === "f2") ? "" : action.payload.subCategoryName,
                 categoryItemsCount: productList.length,
-                prodMsg: productList.length === 0 ? "Item Not Found" : ""
+                prodMsg: productList.length === 0 ? "Item Not Found" : "",
+                start: 0,
+                end: 9
             }
         },
         changeBrand(state, action) {
@@ -122,7 +128,9 @@ const productReducer = createSlice({
                 currentProducts: productList,
                 currentBrand: (action.payload.type === "common") ? "" : (action.payload.brand === "f3") ? "" : action.payload.brand,
                 categoryItemsCount: productList.length,
-                prodMsg: productList.length === 0 ? "Item Not Found" : ""
+                prodMsg: productList.length === 0 ? "Item Not Found" : "",
+                start: 0,
+                end: 9
             }
         },
         changePriceRange(state, action) {
@@ -142,7 +150,9 @@ const productReducer = createSlice({
                 currentMaxPrice: action.payload.maxPrice,
                 currentMinPrice: action.payload.minPrice,
                 categoryItemsCount: productList.length,
-                prodMsg: productList.length === 0 ? "Item Not Found" : ""
+                prodMsg: productList.length === 0 ? "Item Not Found" : "",
+                start: 0,
+                end: 9
             }
         },
         resetFilters(state, action) {
@@ -166,6 +176,13 @@ const productReducer = createSlice({
                 products: productList,
                 currentCategory: productList,
                 categoryItemsCount: productList.length
+            }
+        },
+        changePage(state, action) {
+            return {
+                ...state,
+                start: action.payload.start,
+                end: action.payload.end
             }
         }
     },
@@ -205,7 +222,8 @@ export const {
     changeBrand,
     changeRating,
     changePriceRange,
-    resetFilters
+    resetFilters,
+    changePage
 } = productReducer.actions;
 
 export default productReducer.reducer;

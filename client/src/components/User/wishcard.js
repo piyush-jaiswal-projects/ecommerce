@@ -7,7 +7,7 @@ export default function WishCard(props) {
     const uid = useSelector((state) => state.user.userId);
 
     async function AddToCart() {
-        dispatch(addCartAsync({
+        await dispatch(addCartAsync({
             userId: uid,
             product: {
                 product: item.product,
@@ -18,11 +18,13 @@ export default function WishCard(props) {
             }
         }))
 
-        dispatch(removeWishlistAsync({ userId: uid, productId: item._id }))
+        await dispatch(removeWishlistAsync({ userId: uid, productId: item._id }))
+        // window.location.reload();
     }
 
     async function RemoveProduct(productId) {
-        dispatch(removeWishlistAsync({ userId: uid, productId: productId }))
+        await dispatch(removeWishlistAsync({ userId: uid, productId: productId }))
+        // window.location.reload();
     }
 
     return (
