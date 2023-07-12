@@ -46,42 +46,42 @@ const otp = async function (req, res) {
         //         res.status(400).send({message: "OTP not sent", success: false});
         //     });
 
-        var data = JSON.stringify({
-            "messages": [
-                {
-                "channel": "sms",
-                "recipients": [
-                    username
-                ],
-                "content": message,
-                "msg_type": "text",
-                "data_coding": "text"
-                }
-            ],
-            "message_globals": {
-                "originator": "SignOTP",
-                "report_url": "https://the_url_to_recieve_delivery_report.com"
-            }
-            });
+        // var data = JSON.stringify({
+        //     "messages": [
+        //         {
+        //         "channel": "sms",
+        //         "recipients": [
+        //             username
+        //         ],
+        //         "content": message,
+        //         "msg_type": "text",
+        //         "data_coding": "text"
+        //         }
+        //     ],
+        //     "message_globals": {
+        //         "originator": "SignOTP",
+        //         "report_url": "https://the_url_to_recieve_delivery_report.com"
+        //     }
+        //     });
             
-            var config = {
-            method: 'post',
-            url: 'https://api.d7networks.com/messages/v1/send',
-            headers: { 
-                'Content-Type': 'application/json', 
-                'Accept': 'application/json', 
-                'Authorization': `Bearer`
-            },
-            data : data
-            };
+        //     var config = {
+        //     method: 'post',
+        //     url: 'https://api.d7networks.com/messages/v1/send',
+        //     headers: { 
+        //         'Content-Type': 'application/json', 
+        //         'Accept': 'application/json', 
+        //         'Authorization': `Bearer`
+        //     },
+        //     data : data
+        //     };
         
-            axios(config)
-            .then(function (response) {
-            console.log(JSON.stringify(response.data));
-            })
-            .catch(function (error) {
-            console.log(error);
-            });
+        //     axios(config)
+        //     .then(function (response) {
+        //     console.log(JSON.stringify(response.data));
+        //     })
+        //     .catch(function (error) {
+        //     console.log(error);
+        //     });
 
     }
     catch (err) {
