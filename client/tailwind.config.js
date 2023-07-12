@@ -22,6 +22,9 @@ module.exports = {
         base: '#FAF0E4',
         primary: '#FFE569',
         secondary: '#F79327'
+      },
+      animation: {
+        'spin-slow': 'spin 3s linear infinite',
       }
     },
     plugins: [],

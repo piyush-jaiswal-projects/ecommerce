@@ -1,10 +1,21 @@
 import React, {useState} from 'react'
+import { useDispatch } from 'react-redux'
+import { signupAsync} from '../../reducers/userReducer'
 
 export default function OtpValidator(props) {
     const [otpData, setOTPData] = useState();
+    const [label, setLabel] = useState("");
+    const dispatch = useDispatch();
 
-    function ValidateOTP() {
-        window.location.replace("/");
+    async function ValidateOTP() {
+        if (props.otp === otpData) {
+            await dispatch(signupAsync({ userData: props.formData }))
+            setLabel("Signup Success")
+            window.location.replace('/')
+            return
+        }
+        setLabel("Invalid OTP");
+        setOTPData();
     }
 
     return (
@@ -19,8 +30,7 @@ export default function OtpValidator(props) {
                 </div>
 
                 <label>Please enter OTP sent on {props.username}</label>
-
-
+                {label}
                 <div className='my-2'>
                     <label>Enter OTP</label>
                     <br />
@@ -43,8 +53,6 @@ export default function OtpValidator(props) {
                 <div className='flex justify-center'>
                     <label>Go back? <a href="/signup" className='underline'>Signup</a></label>
                 </div>
-
-
             </div>
         </div>
     )

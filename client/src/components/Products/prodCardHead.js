@@ -41,9 +41,10 @@ export default function CardTop(props) {
                 onClick={OpenProductPage}>
                 <img
                     onClick={OpenProductPage}
-                    className='h-[100%] w-[100%] object-cover rounded-t-lg'
+                    className='skeleton h-[100%] w-[100%] object-cover rounded-t-lg'
                     src={props.props.product.images[0]}
                     alt="" 
+                    loading='lazy'
                 />
             </div>
 

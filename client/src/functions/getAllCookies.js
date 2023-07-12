@@ -6,7 +6,8 @@ export default function getAllCookies() {
         userId: getCookie("userId"),
         userName: getCookie("userName"),
         cart: getCookie("cart"),
-        wishlist: getCookie("wishlist")
+        wishlist: getCookie("wishlist"),
+        contact: getCookie("contact")
     }
 
     return data;

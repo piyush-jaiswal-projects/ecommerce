@@ -58,7 +58,7 @@ export default function Filters() {
 
     return (
         <div className='border-t-2 border-base w-[100%] py-4'>
-            <label className='my-4' onClick={dropFilter}>{width < 976 ? "Tap to expand/collapse filters" : "Filters:"} </label>
+            <label className='my-4 font-bold text-secondary border border-secondary p-1 rounded-md shadow-lg' onClick={dropFilter}>{width < 976 ? "Tap to expand/collapse filters" : "Filters:"} </label>
             <br />
 
             <div id="dropFilter" className={width<976? "hidden" : ""}>

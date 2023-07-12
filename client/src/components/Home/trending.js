@@ -82,8 +82,8 @@ function Card(props) {
             <div id={id} className='cursor-pointer overflow-hidden w-[100%] h-[300px] rounded-sm'>
             <div id={nameId} className='hidden absolute z-50'>
             <h1 className='text-[white]'>{props.item.name}</h1>
-            </div>
-                <img className='object-cover blur-1 h-[100%] w-[100%]' src={props.item.img} alt="" />
+                </div>
+                <img className='skeleton object-cover blur-1 h-[100%] w-[100%]' src={props.item.img} loading='lazy' alt="" />
         </div>
         </a>
     )

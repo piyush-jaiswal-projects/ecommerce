@@ -191,7 +191,7 @@ const productReducer = createSlice({
             .addCase(getProductsAsync.pending, (state) => {
                 state.isLoading = true;
                 state.isError = false;
-                state.message = "processing..."
+                state.message = "Loading..."
 
             })
             .addCase(getProductsAsync.fulfilled, (state, action) => {

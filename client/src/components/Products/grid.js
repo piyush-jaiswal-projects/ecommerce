@@ -3,10 +3,11 @@ import { useSelector, useDispatch } from 'react-redux'
 import { changePage } from '../../reducers/productReducer'
 import ProductCard from './productCard'
 import $ from 'jquery'
+import Spin from '../../constants/spin.svg'
 
 export default function Grid() {
     const products = useSelector((state) => state.product.currentProducts)
-    const prodMsg = useSelector((state) => state.product.prodMsg)
+    const prodMsg = useSelector((state) => state.product.message)
     const start = useSelector((state) => state.product.start)
     const end = useSelector((state) => state.product.end)
     
@@ -35,9 +36,11 @@ export default function Grid() {
     return (
         <>
             <div className='w-[100%] flex justify-center'>
-                <label className='text-[1.5rem] w-[100%] text-center text-secondary mx-auto my-4 px-4'>
+                <p className='text-[1.5rem] w-[100%] text-center text-secondary mx-auto my-4 px-4'>
                     {prodMsg}
-                </label>
+                    <br />
+                {prodMsg === "Loading..." ? <img src={Spin} alt="" className='mx-auto spin w-[30px]' /> : ""}
+                </p>
             </div>
         <div
             className='w-[100%] min-h-[500px] border-l-2 border-base grid gap-y-2 grid-cols-1 min-[600px]:grid-cols-2 min-[1130px]:grid-cols-3'>

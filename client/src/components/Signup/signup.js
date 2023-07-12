@@ -1,26 +1,31 @@
 import React, {useState} from 'react'
 import { Logo1, Show, Hide } from '../../constants/images'
-import { useDispatch, useSelector } from 'react-redux'
-import { signupAsync} from '../../reducers/userReducer'
+import { useSelector, useDispatch } from 'react-redux'
 import getCookie from '../../functions/getCookie'
 import OtpValidator from './otp-validator'
+import $ from 'jquery'
+import axios from 'axios'
+import { signupAsync } from '../../reducers/userReducer'
 
 export default function Signup() {
     if (getCookie("userLoggedIn") === "true") window.location.replace("/")
-    
-    const dispatch = useDispatch();
     const message = useSelector((state) => state.user.message);
 
     const [formData, setFormData] = useState({
         name: "",
         username: "",
-        password: ""
+        password: "",
+        countryCode: "+91"
     })
+
+    const [otp, setOtp] = useState(0);
 
     const [pass, setPass] = useState({
         type: "password",
         img: Show
     })
+
+    const dispatch = useDispatch();
 
     function handleChange(e) {
         setFormData({
@@ -44,12 +49,40 @@ export default function Signup() {
         }
     }
 
-    function signup() {
-        if (formData.name === "" || formData.password === "" || formData.username === "") {
+    async function signup() {
+        if (formData.name === "" || formData.password === "" || formData.username === "" || formData.countryCode === "") {
             alert("Please fill complete details")
             return;
         }
-            dispatch(signupAsync({ userData: formData }))
+
+        if (formData.username.length !== 10) {
+            alert("Please enter valid phone number")
+            return;
+        }
+
+        const data = {
+            name: formData.name,
+            username: formData.countryCode+formData.username,
+            password: formData.password
+        }
+
+        dispatch(signupAsync({ userData: data }));
+        
+
+        // $("#signup").toggleClass("hidden");
+        // $("#otp").toggleClass("hidden");
+
+        // //send otp //set otp
+        // const uri = process.env.REACT_APP_SERVER_URL + "/api/auth/otp"
+        // await axios.post(uri, {
+        //     name: formData.name,
+        //     username: formData.countryCode+formData.username,
+        //     password: formData.password
+        // }).then((res) => {
+        //     if (res.data.success) {
+        //         setOtp(res.data.otp);
+        //     }
+        // });
     }
 
     return (
@@ -88,12 +121,21 @@ export default function Signup() {
                     <div className='my-2'>
                         <label>Phone Number(with country code)</label>
                         <br />
+                        <div className='flex justify-center items-center'>
                         <input
-                            className='bg-base border w-[100%] rounded-md p-2 outline-secondary'
+                            className='bg-base border border-r-0 w-[20%] rounded-l-md p-2 outline-secondary'
                             type='text'
+                            name='countryCode'
+                            value={formData.countryCode}
+                                onChange={handleChange} />
+                            <input
+                            className='bg-base border w-[80%] rounded-r-md p-2 outline-secondary'
+                                type='tel'
+                                maxLength={10}
                             name='username'
                             value={formData.username}
                             onChange={handleChange} />
+                        </div>
                     </div>
 
                     <div className='my-2'>
@@ -130,7 +172,7 @@ export default function Signup() {
             
 
             <div id="otp" className='hidden'>
-                <OtpValidator username={formData.username} />
+                <OtpValidator otp={otp} formData={formData} username={formData.countryCode+formData.username} />
             </div>
         </div>
     )

@@ -16,6 +16,7 @@ const initialState = {
     userLoggedIn: userData.userLoggedIn,
     userId: userData.userId,
     userName: userData.userName,
+    contact: userData.contact,
     addresses: [...addresses],
     placedOrder: placedOrders,
     cart: cart,
@@ -198,7 +199,7 @@ const userReducer = createSlice({
                 const user = action.payload.user;
                 state.userLoggedIn = true;
                 state.userName = user.name;
-                setCookie(true, user.name, user._id, user.cart, user.wishlist);
+                setCookie(true, user.name, user._id, user.cart, user.wishlist, user.userName);
             })
             .addCase(signupAsync.rejected, (state, action) => {
                 state.isLoading = false;
@@ -219,7 +220,7 @@ const userReducer = createSlice({
                 const user = action.payload.user;
                 state.userLoggedIn = true;
                 state.userName = user.name;
-                setCookie(true, user.name, user._id, user.cart, user.wishlist);
+                setCookie(true, user.name, user._id, user.cart, user.wishlist, user.userName);
             })
             .addCase(loginAsync.rejected, (state, action) => {
                 state.isLoading = false;

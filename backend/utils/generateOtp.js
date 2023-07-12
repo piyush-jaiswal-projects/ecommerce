@@ -6,7 +6,7 @@ const generateOtp = function () {
       const randomIndex = Math.floor(Math.random() * digits.length);
       otp += digits[randomIndex];
     }
-  
+
     return otp;
 }
 

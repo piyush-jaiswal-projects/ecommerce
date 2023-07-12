@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
 import Reviews from './reviews';
 import $ from 'jquery'
@@ -34,18 +34,32 @@ export default function ProductPage(props) {
     }
     const [product, setProduct] = useState(data);
 
-    axios.post(
-        process.env.REACT_APP_SERVER_URL + "/api/product/getProductFromId",
-        { id: params.productId })
-        .then((res) => {
-            const [data] = res.data.products;
-            setProduct(() => data);
-        });
+
+    useEffect(() => {
+        axios.post(
+            process.env.REACT_APP_SERVER_URL + "/api/product/getProductFromId",
+            { id: params.productId })
+            .then((res) => {
+                const [data] = res.data.products;
+                setProduct(() => data);
+                const template = document.getElementById("prod-template")
+                template.querySelector('h1').innerHTML = ''
+                template.querySelector('p').innerHTML = ''
+                template.querySelector('label').innerHTML = ''
+                document.getElementById('price').innerHTML = ''
+
+                template.querySelector('h1').textContent = data.name
+                template.querySelector('p').textContent = data.desc
+                template.querySelector('label').textContent = "Brand: " + data.brand
+                document.getElementById('price').textContent = data.price
+            });
+    }, [params.productId])
 
 
 
     function CalculateRating() {
         const reviews = product.reviews;
+        if (reviews.length === 0) return "";
         var rating = 0;
         for (let index = 0; index < reviews.length; index++) {
             rating = rating + reviews[index].rating;
@@ -65,12 +79,7 @@ export default function ProductPage(props) {
     }
 
     function changeQty(symbol) {
-        if (symbol === "-" && value > 1) {
-            setValue(() => value - 1)
-        }
-        else if (symbol === "+" && value < 10) {
-            setValue(() => value + 1)
-        }
+        (symbol === "-" && value > 1) ? setValue(() => value - 1) : value < 10 ? setValue(() => value + 1) : setValue(value);
     }
 
     async function AddToCart(cta) {
@@ -141,56 +150,74 @@ export default function ProductPage(props) {
         }
     }
 
+    function togglePreview() {
+        $("#preview").toggleClass("hidden");
+    }
 
 
     return (
         <ErrorBoundary>
             <div className='mt-[8vw] md:mt-[5vw] p-4 overflow-x-hidden'>
             <Popup id="alert-cart" text="Added to Cart" />
-            <Popup id="alert-size" text="Please Select Size" />
+            <Popup id="alert-size" text="Please Select Size" /> 
             <Popup id="alert-wish" text="Added to Wishlist" />
 
-            <div className='flex flex-wrap justify-around'>
-
-                <div className='overflow-hidden w-[90vw] h-[80vh] md:h-[100vw] sm:w-[40rem] sm:h-[40rem]'>
-                    <div className='overflow-hidden object-fill h-[auto] w-[100%]'>
-                        <img src={product.images[0]} className='object-cover w-[100%] h-[100%] cursor-pointer' alt="Product" />
+                <div className='flex flex-wrap justify-around'>
+                    
+                    <div id="preview" onClick={togglePreview} className=' hidden fixed z-[200] overflow-scroll w-[99vw] mx-auto shadow-3xl h-[100vh] sm:h-[85vh] p-5 my-0 bg-base border border-secondary rounded-lg'>
+                        <label className='font-bold bg-[black] text-secondary fixed mx-auto'>Click image to close preview | Scroll to view complete image</label>
+                        <img src={product.images[0]} loading='lazy' className='skeleton mx-auto w-[100%] h-[95%] sm:h-[auto] cursor-pointer' alt="Product" />
                     </div>
+
+                <div className='w-[90vw] md:w-[50vw] flex items-center justify-center flex-wrap overflow-hidden h-[80vh]'>
+                    <div className='overflow-hidden object-fill h-[100%] w-[100%]'>
+                            <img src={product.images[0]} onClick={togglePreview} loading='lazy' className='skeleton object-cover w-[100%] h-[95%] cursor-pointer' alt="Product" />
+                            <label className='mx-auto font-bold text-secondary'>CLICK ON IMAGE TO ZOOM</label>
+                        </div>
                 </div>
 
-                <div className='w-[90vw] sm:w-[40rem]'>
+                <div className='w-[90vw] md:w-[40vw] mx-5'>
 
-                    <div className='w-[90vw] sm:w-[35rem]'>
-                        <h1 className='text-[2.5rem] leading-tight my-4'>{product.name}</h1>
-                        <p className='text-[1rem] text-[grey]'>{product.desc}</p>
-                        <p className='text-[1rem] text-[grey]'>{product.brand}</p>
+                            <div id='prod-template'>
+                                <h1 className='text-[2.5rem] leading-tight my-4'>
+                                    <div className='skeleton w-[60%] mb-[0.25rem] rounded-md h-[4rem]'></div>
+                                </h1>
+                                <p className='text-[1rem] text-[grey]'>
+                                    <div className='skeleton w-[100%] mb-[0.25rem] rounded-md h-[0.7rem]'></div>
+                                    <div className='skeleton w-[100%] mb-[0.25rem] rounded-md h-[0.7rem]'></div>
+                                    <div className='skeleton w-[100%] mb-[0.25rem] rounded-md h-[0.7rem]'></div>
+                                    <div className='skeleton w-[100%] mb-[0.25rem] rounded-md h-[0.7rem]'></div>
+                                    <div className='skeleton w-[100%] mb-[0.25rem] rounded-md h-[0.7rem]'></div>
+                                    <div className='skeleton w-[80%] mb-[0.25rem] rounded-md h-[0.7rem]'></div>
+                                </p>
+                                <br />
+                                <label className='text-[1.2rem] my-4 font-bold text-[grey]'>
+                                    <div className='skeleton w-[20%] mb-[0.25rem] rounded-md h-[0.7rem]'></div>
+                                </label>
+                                <div className='flex items-center border-r-base'>
+                                    Rating: {CalculateRating()} <img
+                                        className='w-[5vw] sm:w-[2.5vw] md:w-[2vw] lg:w-[1.2vw] m-1'
+                                        src={Star}
+                                        alt="" 
+                                        /> 
+                                </div>
+                            </div>
 
-                        <br />
-
-                        <div className='flex items-center bg-[white] rounded-sm my-1 py-1 justify-left'>
-                            <span className='flex items-center border-r-2 px-2 border-r-base'>
-                                {CalculateRating()}
-                                <img className='w-[5vw] sm:w-[2.5vw] md:w-[2vw] lg:w-[1.2vw] m-1'
-                                    src={Star} alt="" /> Rating
-                            </span>
-                            <span className='px-2'>
-                                {product.noOfPurchases}k Purchases
-                            </span>
-                        </div>
-
-                    </div>
+                    
 
                     <br />
                     <hr className=' text-primary' />
                     <br />
 
                     <div className='w-[90vw] sm:w-[35rem]'>
-                        <h1 className='text-[2.1rem] mb-2'>Price: Rs {product.price}</h1>
+                            <h1 className='text-[2.1rem] mb-2 inline-flex items-center justify-center'>
+                            Price Rs: <label id="price"><div className='skeleton w-[80%] mb-[0.25rem] rounded-md h-[0.7rem]'></div></label>
+                            </h1>
 
-                        <div className='sm:flex items-center justify-between'>
+                        <div className='sm:fle items-center justify-between'>
                             <div className='w-[100%] text-center sm:text-left sm:w-[40%] mx-2'>
-                                <h2 className='text-left'>Available Sizes(select one): </h2>
-                                <div id="sizebox" className='flex justify-start items-center mb-4'>
+                                <h2 className='text-left'>Available Sizes: </h2>
+                                <div id="sizebox" className='border border-primary rounded-md h-[50px] flex justify-start items-center mb-2'>
                                     {product.size.map((size) => {
                                         return <SizeBox key={size} text={size} setSize={setSize} />
                                     })}
@@ -199,17 +226,17 @@ export default function ProductPage(props) {
 
                             <div className='w-[90%] text-center sm:text-left sm:w-[40%] mx-2'>
                                 <h2 className='text-left'>Select Quantity: </h2>
-                                <div className='flex justify-start items-center w-[100%] sm:w-[40%] mb-4 m-2'>
-                                    <div className='flex justify-center items-center'>
+                                <div className='flex justify-start items-center w-[100%] sm:w-[40%] mb-2'>
+                                    <div className='border border-primary h-[50px] rounded-md p-2 flex justify-between items-center'>
                                         <button
-                                            className='mx-2 border border-secondary rounded-sm h-[30px] w-[30px] sm:h-[30px] sm:w-[30px] flex items-center justify-center'
+                                            className='mx-2 border border-primary rounded-full hover:bg-secondary hover:text-[white] h-[35px] w-[35px] flex items-center justify-center'
                                             onClick={() => changeQty("-")}
                                         >
                                             -
                                         </button>
-                                        <label>{value}</label>
+                                        <label className='mx-1'>{value}</label>
                                         <button
-                                            className='mx-2 border border-secondary rounded-sm h-[30px] w-[30px] sm:h-[30px] sm:w-[30px] flex items-center justify-center'
+                                            className='mx-2 border border-primary rounded-full hover:bg-secondary hover:text-[white] h-[35px] w-[35px] flex items-center justify-center'
                                             onClick={() => changeQty("+")}
                                         >
                                             +
@@ -219,16 +246,13 @@ export default function ProductPage(props) {
                             </div>
                         </div>
 
-                        <div className='flex justify-start items-center'>
-                            <button onClick={AddToCart} className='bg-secondary text-[white] sm:text-[1.5rem] font-bold p-2 md:p-2 w-[100%] sm:w-[50%] mx-4  rounded-md'>
+                        <div className='flex justify-start flex-wrap items-center'>
+                            <button onClick={AddToCart} className='bg-secondary m-2 text-[white] sm:text-[1.5rem] font-bold p-2 md:p-2 w-[200px] rounded-md'>
                                 {btnText}
-                            </button>
+                                </button>
+                                <button onClick={AddToWishlist} className='m-2 cursor-pointer bg-secondary text-[white] sm:text-[1.5rem] w-[200px] font-bold p-2 md:p-2 rounded-md'>{wishBtnText}</button>
                         </div>
-
-                        <br />
-
-                        <label onClick={AddToWishlist} className='cursor-pointer'>{wishBtnText}</label>
-                    </div>
+                        </div>
 
                 </div>
             </div>
@@ -251,7 +275,7 @@ function SizeBox(props) {
     }
 
     return (
-        <div id={props.text} onClick={selectSize} className='rounded-md border border-secondary h-[30px] w-[30px] flex items-center justify-center cursor-pointer m-2'>
+        <div id={props.text} onClick={selectSize} className='rounded-full hover:bg-secondary hover:text-[white] border border-primary h-[35px] w-[45px] flex items-center justify-center cursor-pointer m-2'>
             {props.text}
         </div>
     )

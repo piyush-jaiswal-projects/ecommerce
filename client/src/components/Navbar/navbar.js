@@ -56,6 +56,7 @@ export default function Navbar(props) {
                                     className="w-[25vw] sm:w-[18vw] md:w-[13vw] lg:w-[8vw]"
                                     src={Logo1}
                                     alt="16Ten" 
+                                    loading='lazy'
                                 />
                             </a>
                         </div>
@@ -70,7 +71,7 @@ export default function Navbar(props) {
                 />
                 :
                 <div className='flex justify-between items-center'>
-                    {width >= 700 ? "" : <label className='cursor-pointer' onClick={()=>window.location.replace('/products')}>Products</label>} 
+                                <label className='cursor-pointer' onClick={() => window.location.replace('/products')}>Products</label>
                     <img onClick={openIcons} className='cursor-pointer w-[15px] mx-4' src={Menu} alt="" />
                 </div>
             }
