@@ -3,6 +3,10 @@ const User = require('../models/user')
 const verifyUser = async (req, res, next) => {
     try {
         const { userId } = req.body;
+        if (userId === "") {
+            res.status(400).send({ message: "Wrong User ID", success: false });
+            return;
+        }
 
         const user = await User.findOne({ _id: userId });
 
