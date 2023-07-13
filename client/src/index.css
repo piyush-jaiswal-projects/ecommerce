@@ -27,10 +27,10 @@ code {
 
 @keyframes scale {
   from{
-    transform: scale(1);
+    transform: scale(0);
   }
   to{
-    transform: scale(1.2);
+    transform: scale(1);
   }
 }
 

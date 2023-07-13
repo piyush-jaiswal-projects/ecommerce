@@ -37,6 +37,12 @@ export default function UserPanel() {
 
             <div className='bg-secondary my-2 w-[80%] lg:w-[100%] rounded-xl lg:rounded-e-none p-4'>
                 <button onClick={() => {
+                    window.location.replace("/products");
+                }} className='mx-4 font-bold hover:text-primary'>Continue Shopping</button>
+            </div>
+
+            <div className='bg-secondary my-2 w-[80%] lg:w-[100%] rounded-xl lg:rounded-e-none p-4'>
+                <button onClick={() => {
                     window.location.replace("/cart");
                 }} className='mx-4 font-bold hover:text-primary'>Cart</button>
             </div>

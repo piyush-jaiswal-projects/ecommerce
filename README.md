@@ -6,9 +6,8 @@
 3. Product Details Page
 4. User Authentication
 5. User Cart and Wishlist
-6. Razorpay Payment Gateway 
-7. OTP Validation
-8. Pagination
+6. Razorpay Payment Gateway
+7. Pagination
 
 
 ## Environment Variables
