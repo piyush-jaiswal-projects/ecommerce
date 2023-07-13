@@ -2,9 +2,6 @@ import React, {useState} from 'react'
 import { Logo1, Show, Hide } from '../../constants/images'
 import { useSelector, useDispatch } from 'react-redux'
 import getCookie from '../../functions/getCookie'
-import OtpValidator from './otp-validator'
-import $ from 'jquery'
-import axios from 'axios'
 import { signupAsync } from '../../reducers/userReducer'
 
 export default function Signup() {
@@ -18,7 +15,7 @@ export default function Signup() {
         countryCode: "+91"
     })
 
-    const [otp, setOtp] = useState(0);
+    // const [otp, setOtp] = useState(0);
 
     const [pass, setPass] = useState({
         type: "password",
@@ -49,13 +46,18 @@ export default function Signup() {
         }
     }
 
+    function isStringNumeric(inputString) {
+        return /^\d+$/.test(inputString);
+      }
+
     async function signup() {
         if (formData.name === "" || formData.password === "" || formData.username === "" || formData.countryCode === "") {
             alert("Please fill complete details")
             return;
         }
 
-        if (formData.username.length !== 10) {
+        var cleanedNumber = formData.username.replace(/\D/g, '');
+        if (cleanedNumber.length !== 10 || !isStringNumeric(formData.username)) {
             alert("Please enter valid phone number")
             return;
         }
@@ -133,7 +135,7 @@ export default function Signup() {
                                 type='tel'
                                 maxLength={10}
                             name='username'
-                            value={formData.username}
+                            value={formData.username }
                             onChange={handleChange} />
                         </div>
                     </div>
@@ -172,7 +174,7 @@ export default function Signup() {
             
 
             <div id="otp" className='hidden'>
-                <OtpValidator otp={otp} formData={formData} username={formData.countryCode+formData.username} />
+                {/* <OtpValidator otp={otp} formData={formData} username={formData.countryCode+formData.username} /> */}
             </div>
         </div>
     )
