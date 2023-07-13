@@ -6,7 +6,7 @@ import { Logo1, Show, Hide } from '../../constants/images'
 import getCookie from '../../functions/getCookie'
 
 export default function Login() {
-    if (getCookie("userLoggedIn") === "true") { window.location.replace("/"); }
+    if (getCookie("userLoggedIn") === "true") { window.location.replace("/products"); }
 
     const dispatch = useDispatch();
     const message = useSelector((state) => state.user.message);

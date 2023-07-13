@@ -15,9 +15,9 @@ export default function UserPanel() {
             <div className='bg-base mb-5 border overflow-x-scroll flex flex-wrap items-center border-secondary my-2 p-2 w-[80%] lg:w-[100%] h-[auto] rounded-lg'>
                 <p className='text-[0.7rem] text-center w-[100%]'>USER DETAILS</p>
                 <hr className='text-secondary w-[90%] mx-auto' />
-                <h1 className='w-[100%] text-[0.8rem] my-1'>Name: <label className='font-bold text-[1.2rem] text-secondary'>{user.userName}</label></h1>
-                <p className='w-[100%] text-[0.8rem] my-1'>UserID: <label className='font-bold text-secondary'>{user.userId}</label></p>
-                <p className='w-[100%] text-[0.8rem] my-1'>Contact: <label className='font-bold text-secondary'>{user.contact}</label></p>
+                <h1 className='w-[100%] text-left text-[0.8rem] my-1'>Name: <label className='font-bold text-[1.2rem] text-secondary'>{user.userName}</label></h1>
+                <p className='w-[100%] text-left text-[0.8rem] my-1'>UserID: <label className='font-bold text-secondary'>{user.userId}</label></p>
+                <p className='w-[100%] text-left text-[0.8rem] my-1'>Contact: <label className='font-bold text-secondary'>{user.contact}</label></p>
             </div>
 
             <div className='bg-secondary my-2 w-[80%] lg:w-[100%] rounded-xl lg:rounded-e-none p-4'>

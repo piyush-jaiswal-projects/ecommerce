@@ -83,7 +83,7 @@ function Card(props) {
             <div id={nameId} className='hidden absolute z-50'>
             <h1 className='text-[white]'>{props.item.name}</h1>
                 </div>
-                <img className='skeleton object-cover blur-1 h-[100%] w-[100%]' src={props.item.img} loading='lazy' alt="" />
+                <img className='skeleton object-cover blur-1 h-[100%] w-[100%]' src={props.item.img} loading="lazy" alt="" />
         </div>
         </a>
     )

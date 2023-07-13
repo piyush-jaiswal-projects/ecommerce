@@ -103,17 +103,19 @@ export default function UserCart(props) {
                     })}
                 </div>
 
-                <div className='w-[100%] lg:w-[30%] bg-base my-10 lg:my-0 lg:mx-5 p-5 h-[50vh] lg:h-[40vh] rounded-lg'>
-                    <h1 className='text-[1.3rem] mb-2'>
+                <div className='w-[100%] lg:w-[30%]'>
+                    
+                        <div className='bg-base my-10 lg:my-0 lg:mx-5 p-5 h-[50vh] lg:h-[40vh] rounded-lg'>
+                        <h1 className='text-[1.3rem] mb-2'>
                         Total Price: Rs. {calculatePrice()}
                     </h1>
 
                     <select id="address" onChange={() => handleAddressChange()} className='w-[100%] h-[30px]'>
                         {addresses.map((item) => <option>{item.location}</option>)}
                     </select>
-                    <button onClick={() => {
+                    <button className='underline' onClick={() => {
                         $("#newAddress").toggleClass("hidden");}}>
-                        Add New Address
+                        Click To Add New Address
                     </button>
 
                     <p className='text-[1.1rem] my-2'>Delivery Charges: Rs. {currDelCharge}</p>
@@ -127,7 +129,26 @@ export default function UserCart(props) {
                         >
                             Place Order
                         </button>
+                        </div>
+                        </div>
+                        
+                        <div className='p-5 h-[50vh] lg:h-[40vh] rounded-lg'>
+                        <div className='bg-secondary my-2 w-[80%] lg:w-[100%] rounded-xl lg:rounded-e-none p-4'>
+                <button onClick={() => {
+                    window.location.replace("/wishlist");
+                }} className='mx-4 font-bold hover:text-primary'>Wishlist</button>
                     </div>
+                    <div className='bg-secondary my-2 w-[80%] lg:w-[100%] rounded-xl lg:rounded-e-none p-4'>
+                <button onClick={() => {
+                    window.location.replace("/userportal");
+                }} className='mx-4 font-bold hover:text-primary'>Dashboard</button>
+                        </div>
+                        <div className='bg-secondary my-2 w-[80%] lg:w-[100%] rounded-xl lg:rounded-e-none p-4'>
+                <button onClick={() => {
+                    window.location.replace("/products");
+                }} className='mx-4 font-bold hover:text-primary'>Continue Shopping</button>
+            </div>
+                        </div>
 
                 </div>
             </div>

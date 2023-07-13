@@ -31,12 +31,14 @@ export default function Heroslider() {
 
                 {images.map((item) => {
                     return (
+                        <div className='w-[100vw] h-[80vh] md:h-[82vh]'>
                         <img
-                            className='skeleton object-cover md:object-fill w-[100vw] h-[80vh] md:h-[60vw]'
+                            className='skeleton object-cover md:object-fill'
                             src={item}
                             alt='' 
                             loading='lazy'
                             />
+                        </div>
                     )
                 })}
 

@@ -8,7 +8,7 @@ import axios from 'axios'
 import { signupAsync } from '../../reducers/userReducer'
 
 export default function Signup() {
-    if (getCookie("userLoggedIn") === "true") window.location.replace("/")
+    if (getCookie("userLoggedIn") === "true") window.location.replace("/products")
     const message = useSelector((state) => state.user.message);
 
     const [formData, setFormData] = useState({

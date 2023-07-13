@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function Categories() {
     return (
-        <div className='my-10 w-[100%] flex justify-center flex-wrap'>
+        <div className='my-5 w-[100%] flex justify-center flex-wrap'>
             <h1 className='text-center w-[100%] text-secondary text-[1.2rem] sm:text-[1.5rem] font-semibold'>
                 CATEGORIES
             </h1>

@@ -208,9 +208,7 @@ const productReducer = createSlice({
             .addCase(getProductsAsync.rejected, (state, action) => {
                 state.isLoading = false;
                 state.isError = true;
-                console.log(action.payload);
-                state.message = "";
-
+                state.message = "Something Went Wrong. Please refresh";
             })
     }
 })
