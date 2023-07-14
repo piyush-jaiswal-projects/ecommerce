@@ -32,30 +32,30 @@ const initialState = {
     }
 }
 
-export const getProductsAsync = createAsyncThunk('/users/getProducts', async (payload, { rejectWithValue }) => {
-    const uri = process.env.REACT_APP_SERVER_URL + "/api/product/getProducts"
-    try {
-        const response = await axios.get(uri);
-        return {
-            arr: response.data
-        };
-    }
-    catch (error) {
-        console.log(error);
-        return rejectWithValue(error.response.data);
-    }
-})
+export const getProductsAsync = createAsyncThunk('/users/getProducts',
+    async (payload, { rejectWithValue }) => {
+        const uri = process.env.REACT_APP_SERVER_URL + "/api/product/getProducts"
+        try {
+            const response = await axios.get(uri);
+            return {
+                arr: response.data
+            };
+        }
+        catch (error) {
+            console.log(error);
+            return rejectWithValue(error.response.data);
+        }
+    })
 
 const productReducer = createSlice({
     name: "product",
     initialState,
     reducers: {
         changeCategory(state, action) {
-            var productList, newCount;
+            var productList;
 
             if (action.payload.type === "common" || action.payload.categoryName === "f1") {
                 productList = state.products;
-                newCount = productList.length;
             }
             else {
                 productList = state.products.filter(
@@ -63,18 +63,22 @@ const productReducer = createSlice({
                 );
             }
 
-            if (state.currentSubCategory !== "") productList = productList.filter((item) => item.subCategory === state.currentSubCategory)
-            if (state.currentBrand !== "") productList = productList.filter((item) => item.brand === state.currentBrand)
-            if (state.currentMinPrice !== 0) productList = productList.filter((item) => item.price >= state.currentMinPrice)
-            if (state.currentMaxPrice !== 0) productList = productList.filter((item) => item.price <= state.currentMaxPrice)
-            newCount = productList.length;
+            if (state.currentSubCategory !== "")
+                productList = productList.filter((item) => item.subCategory === state.currentSubCategory)
+            if (state.currentBrand !== "")
+                productList = productList.filter((item) => item.brand === state.currentBrand)
+            if (state.currentMinPrice !== 0)
+                productList = productList.filter((item) => item.price >= state.currentMinPrice)
+            if (state.currentMaxPrice !== 0)
+                productList = productList.filter((item) => item.price <= state.currentMaxPrice)
+
 
             return {
                 ...state,
                 currentProducts: productList,
                 currentCategory: (action.payload.type === "common") ? "" : (action.payload.categoryName === "f1") ? "" : action.payload.categoryName,
-                categoryItemsCount: newCount,
-                prodMsg: newCount === 0 ? "Item Not Found" : "",
+                categoryItemsCount: productList.length,
+                prodMsg: productList.length === 0 ? "Item Not Found" : "",
                 start: 0,
                 end: 9
             }
@@ -91,11 +95,15 @@ const productReducer = createSlice({
                 );
             }
 
-            if (state.currentCategory !== "") productList = productList.filter((item) => item.category === state.currentCategory)
-            if (state.currentBrand !== "") productList = productList.filter((item) => item.brand === state.currentBrand)
-            if (state.currentMinPrice !== 0) productList = productList.filter((item) => item.price >= state.currentMinPrice)
-            if (state.currentMaxPrice !== 0) productList = productList.filter((item) => item.price <= state.currentMaxPrice)
-            
+            if (state.currentCategory !== "")
+                productList = productList.filter((item) => item.category === state.currentCategory)
+            if (state.currentBrand !== "")
+                productList = productList.filter((item) => item.brand === state.currentBrand)
+            if (state.currentMinPrice !== 0)
+                productList = productList.filter((item) => item.price >= state.currentMinPrice)
+            if (state.currentMaxPrice !== 0)
+                productList = productList.filter((item) => item.price <= state.currentMaxPrice)
+
             return {
                 ...state,
                 currentProducts: productList,
@@ -108,7 +116,7 @@ const productReducer = createSlice({
         },
         changeBrand(state, action) {
             var productList;
-           
+
             if (action.payload.type === "common" || action.payload.brand === "f3") {
                 productList = state.products;
             }
@@ -118,11 +126,15 @@ const productReducer = createSlice({
                 );
             }
 
-            if (state.currentSubCategory !== "") productList = productList.filter((item) => item.subCategory === state.currentSubCategory)
-            if (state.currentCategory !== "") productList = productList.filter((item) => item.category === state.currentCategory)
-            if (state.currentMinPrice !== 0) productList = productList.filter((item) => item.price >= state.currentMinPrice)
-            if (state.currentMaxPrice !== 0) productList = productList.filter((item) => item.price <= state.currentMaxPrice)
-            
+            if (state.currentSubCategory !== "")
+                productList = productList.filter((item) => item.subCategory === state.currentSubCategory)
+            if (state.currentCategory !== "")
+                productList = productList.filter((item) => item.category === state.currentCategory)
+            if (state.currentMinPrice !== 0)
+                productList = productList.filter((item) => item.price >= state.currentMinPrice)
+            if (state.currentMaxPrice !== 0)
+                productList = productList.filter((item) => item.price <= state.currentMaxPrice)
+
             return {
                 ...state,
                 currentProducts: productList,
@@ -140,9 +152,12 @@ const productReducer = createSlice({
                 (item) => item.price >= action.payload.minPrice && item.price <= action.payload.maxPrice
             );
 
-            if (state.currentSubCategory !== "") productList = productList.filter((item) => item.subCategory === state.currentSubCategory)
-            if (state.currentBrand !== "") productList = productList.filter((item) => item.brand === state.currentBrand)
-            if (state.currentCategory !== "") productList = productList.filter((item) => item.category === state.currentCategory)
+            if (state.currentSubCategory !== "")
+                productList = productList.filter((item) => item.subCategory === state.currentSubCategory)
+            if (state.currentBrand !== "")
+                productList = productList.filter((item) => item.brand === state.currentBrand)
+            if (state.currentCategory !== "")
+                productList = productList.filter((item) => item.category === state.currentCategory)
 
             return {
                 ...state,

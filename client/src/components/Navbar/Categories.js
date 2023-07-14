@@ -9,7 +9,7 @@ export default function Categories(props) {
         if (path.substring(1, 9) !== "products") {
             window.location.replace(`/products/${item}`);
         }
-        dispatch(changeCategory({categoryName: item}))
+        dispatch(changeCategory({ categoryName: item }))
     }
 
     return (

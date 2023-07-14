@@ -40,11 +40,11 @@ const addToWishlist = async (req, res) => {
     if (status.acknowledged) {
         const user = await User.findOne({ _id: userId });
         if (user) {
-            res.status(200).send({ message: "Product added",wishlist: user.wishlist, success: true });
+            res.status(200).send({ message: "Product added", wishlist: user.wishlist, success: true });
             return;
         }
     }
-    res.status(400).send({ message: "Can't add product to wishlist",wishlist:[], success: false });
+    res.status(400).send({ message: "Can't add product to wishlist", wishlist: [], success: false });
 }
 
 
@@ -61,7 +61,7 @@ const getCart = async (req, res) => {
         }
         else {
             res.status(200).send({ message: "Cart Received", cart: user.cart, success: true });
-        }   
+        }
     }
 }
 
@@ -95,10 +95,10 @@ const placeOrder = async (req, res) => {
         if (!status.acknowledged) {
             res.status(400).send({ message: "Order Not Placed", success: false });
             return;
-        } 
+        }
 
-        res.status(200).send({message: "Order Placed", success: true})
-        
+        res.status(200).send({ message: "Order Placed", success: true })
+
     } catch (error) {
         console.log(error);
         res.status(400).send({ message: "Order Not Placed", success: false });
@@ -112,7 +112,7 @@ const cancelOrder = async (req, res) => {
 
         const orders = user.placedOrders;
         const oid = new ObjectId(orderId)
-        for (let i = 0; i < orders.items.length; i++){
+        for (let i = 0; i < orders.items.length; i++) {
             if (oid.equals(orders.items[i]._id)) {
                 console.log("inside");
                 orders.items[i].expectedDelivery = "---"
@@ -126,10 +126,10 @@ const cancelOrder = async (req, res) => {
         if (!status.acknowledged) {
             res.status(400).send({ message: "Order Cancellation Failure", success: false });
             return;
-        } 
+        }
 
-        res.status(200).send({message: "Order Cancelled", success: true})
-        
+        res.status(200).send({ message: "Order Cancelled", success: true })
+
     } catch (error) {
         console.log(error);
         res.status(400).send({ message: "Order Cancellation Failure", success: false });
@@ -149,7 +149,7 @@ const removeFromCart = async (req, res) => {
         }
     }
     else {
-        res.status(400).send({ message: "Item Not Removed",cart:[], success: false});
+        res.status(400).send({ message: "Item Not Removed", cart: [], success: false });
     }
 
 }
@@ -167,7 +167,7 @@ const removeFromWishlist = async (req, res) => {
         }
     }
     else {
-        res.status(400).send({ message: "Item Not Removed",wishlist:[], success: false});
+        res.status(400).send({ message: "Item Not Removed", wishlist: [], success: false });
     }
 
 }
@@ -188,15 +188,16 @@ const getAddresses = async (req, res) => {
 const setAddress = async (req, res) => {
     const { userId, address, pincode } = req.body;
     const user = res.locals.user;
-    
+
     const delCharge = calculateDelCharge(pincode);
-    const status = await User.updateOne({ _id: userId }, { $set: { addresses: [...user.addresses, {location: address, pincode: pincode, delCharge: delCharge}] } });
+    const status = await User.updateOne({ _id: userId }, { $set: { addresses: [...user.addresses, { location: address, pincode: pincode, delCharge: delCharge }] } });
     if (status.acknowledged) {
-        res.status(200).send({ message: "Addresses", addresses: [...user.addresses, {location: address, pincode: pincode, delCharge: delCharge}], success: true });
+        res.status(200).send({ message: "Addresses", addresses: [...user.addresses, { location: address, pincode: pincode, delCharge: delCharge }], success: true });
         return;
     }
-    res.status(400).send({ message: "Address Not Added",addresses:[], success: false });
+    res.status(400).send({ message: "Address Not Added", addresses: [], success: false });
 }
+
 
 const getOrders = async (req, res) => {
     const { userId } = req.body;
@@ -211,7 +212,7 @@ const getOrders = async (req, res) => {
         }
         else {
             res.status(200).send({ message: "Orders Received", placedOrders: user.placedOrders, success: true });
-        }   
+        }
     }
 }
 

@@ -11,5 +11,5 @@ export default function Home() {
             <Categories />
             <Banner />
         </ErrorBoundary>
-     )
+    )
 }

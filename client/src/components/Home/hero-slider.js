@@ -1,19 +1,10 @@
 import React from 'react'
-
+import { heroImages as images } from '../../constants/data';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
 
-const images = [
-    "http://res.cloudinary.com/deo80u7qs/image/upload/v1688166240/innumwhyuwydtcsia3q0.jpg",
-    "http://res.cloudinary.com/deo80u7qs/image/upload/v1688166300/opn1jmrbcq6uxfgz00en.jpg",
-    "http://res.cloudinary.com/deo80u7qs/image/upload/v1688166344/f1ixwxv2oxrngfwgak7u.jpg",
-    "http://res.cloudinary.com/deo80u7qs/image/upload/v1688166370/vhjrsrujah2vszemxqs0.jpg",
-    "http://res.cloudinary.com/deo80u7qs/image/upload/v1688166399/bchaskxexutj9aogx7er.jpg",
-    "http://res.cloudinary.com/deo80u7qs/image/upload/v1688166419/tnmmj0onluaxazx3pfq4.jpg"
-];
-
 export default function Heroslider() {
- 
+
     return (
         <div className='w-[100vw] h-[70vh] md:h-[100%] overflow-hidden mt-[8vw] md:mt-[5vw] mx-auto border border-t-0 border-b-0 border-primary'>
             <Carousel
@@ -32,17 +23,17 @@ export default function Heroslider() {
                 {images.map((item) => {
                     return (
                         <div className='w-[100vw] h-[80vh] md:h-[82vh]'>
-                        <img
-                            className='skeleton object-cover md:object-fill'
-                            src={item}
-                            alt='' 
-                            loading='lazy'
+                            <img
+                                className='skeleton object-cover md:object-fill'
+                                src={item}
+                                alt=''
+                                loading='lazy'
                             />
                         </div>
                     )
                 })}
 
-                </Carousel>
-         </div>
+            </Carousel>
+        </div>
     )
 }

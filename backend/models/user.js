@@ -7,15 +7,15 @@ const userSchema = new mongoose.Schema({
     addresses: [{
         location: { type: String },
         pincode: { type: Number },
-        delCharge: {type: Number}
+        delCharge: { type: Number }
     }],
-    password: { type: String, requires: true},
+    password: { type: String, requires: true },
     cart: [{
         product: {},
         selectedSize: { type: String },
         quantity: { type: Number },
         orderStatus: { type: String },
-        expectedDelivery: {type: String}
+        expectedDelivery: { type: String }
     }],
     placedOrders: {
         items: [],
@@ -24,9 +24,9 @@ const userSchema = new mongoose.Schema({
     wishlist: [{
         product: {},
         selectedSize: { type: String },
-        quantity: {type: Number},
+        quantity: { type: Number },
         orderStatus: { type: String },
-        expectedDelivery: {type: String}
+        expectedDelivery: { type: String }
     }]
 })
 

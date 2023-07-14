@@ -12,7 +12,7 @@ export default function Categories() {
                 <Card name="Women" url="/products/Women" />
                 <Card name="Kids" url="/products/Kids" />
                 <Card name="Sports" url="/products/Sports" />
-                <Card name="Casual" url="/products/Casual"  />
+                <Card name="Casual" url="/products/Casual" />
             </div>
         </div>
     )
@@ -23,7 +23,7 @@ function Card(props) {
         <a className='' href={props.url}>
             <div className='soft-bg h-[50px] text-secondary hover:text-base hover:bg-secondary w-[200px] flex justify-center items-center m-2 mx-5 border border-secondary rounded-md'>
                 <h1 className='text-[1.3rem] font-semibold uppercase'>{props.name}</h1>
-        </div>
+            </div>
         </a>
     )
 }

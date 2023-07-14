@@ -20,7 +20,7 @@ export default function ProductCard(props) {
                 <p className=''><label className='text-[grey]'>SubCategory:</label> {props.product.subCategory}</p>
                 <p>Rs. {props.product.price}</p>
             </div>
-            
+
         </div>
     )
 }

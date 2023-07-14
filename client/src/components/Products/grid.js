@@ -3,14 +3,14 @@ import { useSelector, useDispatch } from 'react-redux'
 import { changePage } from '../../reducers/productReducer'
 import ProductCard from './productCard'
 import $ from 'jquery'
-import Spin from '../../constants/spin.svg'
+import { Spin } from '../../constants/images'
 
 export default function Grid() {
     const products = useSelector((state) => state.product.currentProducts)
     const prodMsg = useSelector((state) => state.product.message)
     const start = useSelector((state) => state.product.start)
     const end = useSelector((state) => state.product.end)
-    
+
     const dispatch = useDispatch();
 
     function goPrevious() {
@@ -19,8 +19,8 @@ export default function Grid() {
             return;
         }
         $("#next").removeClass("text-[grey]");
-        dispatch(changePage({start: start-9<0 ? 0: start - 9 , end: end % 9 !== 0 ? end - 5 : end - 9}))
-        
+        dispatch(changePage({ start: start - 9 < 0 ? 0 : start - 9, end: end % 9 !== 0 ? end - 5 : end - 9 }))
+
     }
 
     function goNext() {
@@ -29,8 +29,8 @@ export default function Grid() {
             return;
         }
         $("#prev").removeClass("text-[grey]");
-        dispatch(changePage({start: start+9 , end: end+9>products.length ? products.length : end + 9}))
-        
+        dispatch(changePage({ start: start + 9, end: end + 9 > products.length ? products.length : end + 9 }))
+
     }
 
     return (
@@ -39,26 +39,26 @@ export default function Grid() {
                 <p className='text-[1.5rem] w-[100%] text-center text-secondary mx-auto my-4 px-4'>
                     {prodMsg}
                     <br />
-                {prodMsg === "Loading..." ? <img src={Spin} alt="" className='mx-auto spin w-[30px]' /> : ""}
+                    {prodMsg === "Loading..." ? <img src={Spin} alt="" className='mx-auto spin w-[30px]' /> : products.length === 0 ? "No Items In This Category" : ""}
                 </p>
             </div>
-        <div
-            className='w-[100%] min-h-[500px] border-l-2 border-base grid gap-y-2 grid-cols-1 min-[600px]:grid-cols-2 min-[1130px]:grid-cols-3'>
+            <div
+                className='w-[100%] min-h-[500px] border-l-2 border-base grid gap-y-2 grid-cols-1 min-[600px]:grid-cols-2 min-[1130px]:grid-cols-3'>
                 {products.length < 9
                     ?
                     products.map((product) =>
-                <ProductCard key={product.id} product={product} />
-            )
+                        <ProductCard key={product.id} product={product} />
+                    )
                     :
                     products.slice(start, end).map((product) =>
-                <ProductCard key={product.id} product={product} />
-            )}
+                        <ProductCard key={product.id} product={product} />
+                    )}
             </div>
             {products.length < 9 ? "" :
-            <div className='w-[90%] sticky bg-base p-3 my-2 mx-auto flex justify-center items-center'>
-                <button className='mx-4 flex items-center w-[50px] justify-center hover:shadow-xl bg-base outline outline-secondary p-1 rounded-md ' id="prev" onClick={goPrevious} >prev</button>
-                <button className='mx-4 flex items-center w-[50px] justify-center hover:shadow-xl bg-base outline outline-secondary p-1 rounded-md ' id="next" onClick={goNext}>next</button>
-            </div>}
+                <div className='w-[90%] sticky bg-base p-3 my-2 mx-auto flex justify-center items-center'>
+                    <button className='mx-4 flex items-center w-[50px] justify-center hover:shadow-xl bg-base outline outline-secondary p-1 rounded-md ' id="prev" onClick={goPrevious} >prev</button>
+                    <button className='mx-4 flex items-center w-[50px] justify-center hover:shadow-xl bg-base outline outline-secondary p-1 rounded-md ' id="next" onClick={goNext}>next</button>
+                </div>}
         </>
     )
 }

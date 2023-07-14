@@ -1,5 +1,6 @@
-import { useSelector, useDispatch } from 'react-redux'
-import { removeWishlistAsync, addCartAsync } from '../../reducers/userReducer'
+import { useDispatch } from 'react-redux'
+import { removeWishlistAsync, addCartAsync } from '../../reducers/userAsyncThunks'
+import { useSelector } from 'react-redux';
 
 export default function WishCard(props) {
     const item = props.item;
@@ -13,8 +14,8 @@ export default function WishCard(props) {
                 product: item.product,
                 selectedSize: item.selectedSize,
                 quantity: item.quantity,
-                    orderStatus: item.orderStatus,
-                    expectedDelivery: item.expectedDelivery 
+                orderStatus: item.orderStatus,
+                expectedDelivery: item.expectedDelivery
             }
         }))
 
@@ -29,7 +30,7 @@ export default function WishCard(props) {
 
     return (
         <div key={item} className='flex flex-wrap justify-between bg-[white] m-2 my-5 lg:m-4 mx-auto p-2 lg:p-4 items-center w-[100%] lg:w-[90%] shadow-lg rounded-lg'>
-            
+
             <div className='w-[100%] sm:w-[20%]'>
                 <a href={"/product/" + item.product._id} target='_blank' rel="noreferrer">
                     <img

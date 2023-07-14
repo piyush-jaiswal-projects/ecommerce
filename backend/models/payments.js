@@ -5,9 +5,9 @@ const paymentSchema = new mongoose.Schema({
     orderDetails: {},
     paymentAmt: { type: Number, required: true },
     paymentSuccess: { type: Boolean, required: true },
-    rzpPaymentId: {type: String},
-    rzpOrderId: {type: String},
-    rzpSignature: {type: String}
-}); 
+    rzpPaymentId: { type: String },
+    rzpOrderId: { type: String },
+    rzpSignature: { type: String }
+});
 
 module.exports = paymentSchema;

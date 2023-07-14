@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import ErrorBoundary from '../../error-boundary/handler';
 

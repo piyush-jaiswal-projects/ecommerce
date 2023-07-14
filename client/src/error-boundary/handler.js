@@ -1,7 +1,7 @@
 import React from 'react'
 import ErrorComponent from './errorComponent';
 
-class ErrorBoundary extends React.Component{
+class ErrorBoundary extends React.Component {
     state = { hasError: false };
 
     static getDerivedStateFromError(error) {

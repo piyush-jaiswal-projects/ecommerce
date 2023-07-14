@@ -8,11 +8,11 @@ const getProducts = async (req, res) => {
             res.status(400).send({ message: "Products fetching failed", success: false });
             return;
         }
-        
+
         res.status(200).send({ message: "Products fetched", products: products, success: true });
     } catch (error) {
         console.log(error);
-        res.status(500).send({message: "Some Error Occurred!", success: false});
+        res.status(500).send({ message: "Some Error Occurred!", success: false });
     }
 }
 
@@ -25,7 +25,7 @@ const addProduct = async (req, res) => {
     }
     catch (err) {
         console.log(err);
-        res.status(500).send({message: "Inventory Updation Failed!", success: false});
+        res.status(500).send({ message: "Inventory Updation Failed!", success: false });
     }
 }
 
@@ -40,7 +40,7 @@ const getProductsFromId = async (req, res) => {
         res.status(200).send({ message: "Received a Product", products: product, success: true });
     } catch (error) {
         console.log(error);
-        res.status(500).send({message: "Some Error Occurred!", success: false});
+        res.status(500).send({ message: "Some Error Occurred!", success: false });
     }
 }
 module.exports = { getProducts, addProduct, getProductsFromId };

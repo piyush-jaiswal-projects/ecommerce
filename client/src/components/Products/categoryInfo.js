@@ -1,10 +1,10 @@
 import React from 'react'
-import {useSelector} from 'react-redux'
+import { useSelector } from 'react-redux'
 
 export default function CategoryInfo() {
     const category = useSelector((state) => state.product.currentCategory);
     const totalItems = useSelector((state) => state.product.categoryItemsCount);
-    const message = useSelector((state)=>state.product.message)
+    const message = useSelector((state) => state.product.message)
 
     return (
         <div className=''>

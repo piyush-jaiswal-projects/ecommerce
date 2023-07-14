@@ -2,7 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 const userControllers = require('../controllers/users/user-controllers')
-const {verifyUser} = require('../middleware/verify-user')
+const { verifyUser } = require('../middleware/verify-user')
 
 router.post("/getUser", verifyUser, userControllers.getDetails);
 router.post("/addToCart", verifyUser, userControllers.addToCart);

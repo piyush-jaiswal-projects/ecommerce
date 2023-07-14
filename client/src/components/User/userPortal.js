@@ -5,7 +5,8 @@ import PrevOrders from './prevOrders'
 import ErrorBoundary from '../../error-boundary/handler'
 
 export default function UserPortal() {
-    if (getCookie("userLoggedIn") === "false" || getCookie("userLoggedIn") === "" ) window.location.replace("/")
+    if (getCookie("userLoggedIn") === "false" || getCookie("userLoggedIn") === "")
+        window.location.replace("/")
 
 
     return (

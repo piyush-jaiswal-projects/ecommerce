@@ -10,7 +10,7 @@ export default function SmallCategories(props) {
         if (path.substring(1, 9) !== "products") {
             window.location.replace(`/products/${item}`);
         }
-        dispatch(changeCategory({categoryName: item}))
+        dispatch(changeCategory({ categoryName: item }))
         $("#CategoriesBar").toggleClass("hidden");
     }
 
@@ -26,7 +26,7 @@ export default function SmallCategories(props) {
                     {item}
                 </p>
             })}
-            
+
         </div>
     )
 }

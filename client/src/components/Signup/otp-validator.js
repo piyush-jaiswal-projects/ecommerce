@@ -1,6 +1,6 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { signupAsync} from '../../reducers/userReducer'
+import { signupAsync } from '../../reducers/userAsyncThunks'
 
 export default function OtpValidator(props) {
     const [otpData, setOTPData] = useState();

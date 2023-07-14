@@ -29,7 +29,7 @@ export default function Footer() {
                         <h1 className='text-secondary text-[1.2rem] font-bold'>Return & Refund</h1>
                         - 15 days Return Policy
                         <br />
-                        - 100% Refund 
+                        - 100% Refund
                     </div>
 
                     <div>

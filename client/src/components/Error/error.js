@@ -8,7 +8,7 @@ export default function ErrorPage() {
             <br />
             <button className='underline' onClick={() => { window.location.replace("/") }}>Go to home</button>
             <br />
-            <button className='underline' onClick={()=>{window.location.replace("/userportal")}}>Go to UserPortal</button>
+            <button className='underline' onClick={() => { window.location.replace("/userportal") }}>Go to UserPortal</button>
         </div>
     )
 }

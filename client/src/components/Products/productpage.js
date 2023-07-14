@@ -4,7 +4,7 @@ import Reviews from './reviews';
 import $ from 'jquery'
 import { Star } from '../../constants/images';
 import { useSelector, useDispatch } from 'react-redux';
-import { addCartAsync, addWishlistAsync } from '../../reducers/userReducer';
+import { addCartAsync, addWishlistAsync } from '../../reducers/userAsyncThunks';
 import axios from 'axios'
 import Popup from '../Popup/popup';
 import ErrorBoundary from '../../error-boundary/handler';
@@ -18,7 +18,7 @@ export default function ProductPage(props) {
     const [wishBtnText, setWishBtnText] = useState("Add to Wishlist")
 
     const isUser = useSelector((state) => state.user.userLoggedIn);
-    const uid = useSelector((state) => state.user.userId);
+    const uid = useSelector((state) => state.user.userId);;
     const dispatch = useDispatch();
 
     const data = {
@@ -75,7 +75,7 @@ export default function ProductPage(props) {
             day: '2-digit',
             month: 'short',
             year: 'numeric'
-          });
+        });
     }
 
     function changeQty(symbol) {
@@ -117,7 +117,7 @@ export default function ProductPage(props) {
 
         }
         else {
-            window.location.replace("/signup");
+            window.location.replace("/login");
         }
     }
 
@@ -125,28 +125,32 @@ export default function ProductPage(props) {
         if (isUser) {
             if (size !== "") {
                 const delDate = await CalDelDate();
-                setWishBtnText(()=> "processing ...")
-            await dispatch(addWishlistAsync({
-                userId: uid,
-                product: {
-                    product: product,
-                    selectedSize: size,
-                    quantity: value,
-                    orderStatus: "processing",
-                    expectedDelivery: delDate }
-            }));
+                setWishBtnText(() => "processing ...")
+                await dispatch(addWishlistAsync({
+                    userId: uid,
+                    product: {
+                        product: product,
+                        selectedSize: size,
+                        quantity: value,
+                        orderStatus: "processing",
+                        expectedDelivery: delDate
+                    }
+                }));
 
-            setWishBtnText(()=>"Add to Wishlist")
-            $("#alert-wish").toggleClass("hidden");
-            setTimeout(() => {
+                setWishBtnText(() => "Add to Wishlist")
                 $("#alert-wish").toggleClass("hidden");
-            }, 3000);
+                setTimeout(() => {
+                    $("#alert-wish").toggleClass("hidden");
+                }, 3000);
             }
             $("#alert-size").toggleClass("hidden");
             setTimeout(() => {
                 $("#alert-size").toggleClass("hidden");
             }, 3000);
             return;
+        }
+        else {
+            window.location.replace("/login");
         }
     }
 
@@ -158,107 +162,107 @@ export default function ProductPage(props) {
     return (
         <ErrorBoundary>
             <div className='mt-[8vw] md:mt-[5vw] p-4 overflow-x-hidden'>
-            <Popup id="alert-cart" text="Added to Cart" />
-            <Popup id="alert-size" text="Please Select Size" /> 
-            <Popup id="alert-wish" text="Added to Wishlist" />
+                <Popup id="alert-cart" text="Added to Cart" />
+                <Popup id="alert-size" text="Please Select Size" />
+                <Popup id="alert-wish" text="Added to Wishlist" />
 
                 <div className='flex flex-wrap justify-around'>
-                    
+
                     <div id="preview" onClick={togglePreview} className=' hidden fixed z-[200] overflow-scroll w-[99vw] mx-auto shadow-3xl h-[100vh] sm:h-[85vh] p-5 my-0 bg-base border border-secondary rounded-lg'>
                         <label className='font-bold bg-[black] text-secondary fixed mx-auto'>Click image to close preview | Scroll to view complete image</label>
                         <img src={product.images[0]} loading='lazy' className='skeleton mx-auto w-[100%] h-[95%] sm:h-[auto] cursor-pointer' alt="Product" />
                     </div>
 
-                <div className='w-[90vw] md:w-[50vw] flex items-center justify-center flex-wrap overflow-hidden h-[80vh]'>
-                    <div className='overflow-hidden object-fill h-[100%] w-[100%]'>
+                    <div className='w-[90vw] md:w-[50vw] flex items-center justify-center flex-wrap overflow-hidden h-[80vh]'>
+                        <div className='overflow-hidden object-fill h-[100%] w-[100%]'>
                             <img src={product.images[0]} onClick={togglePreview} loading='lazy' className='skeleton object-cover w-[100%] h-[95%] cursor-pointer' alt="Product" />
                             <label className='mx-auto font-bold text-secondary'>CLICK ON IMAGE TO ZOOM</label>
                         </div>
-                </div>
+                    </div>
 
-                <div className='w-[90vw] md:w-[40vw] mx-5'>
+                    <div className='w-[90vw] md:w-[40vw] mx-5'>
 
-                            <div id='prod-template'>
-                                <h1 className='text-[2.5rem] leading-tight my-4'>
-                                    <div className='skeleton w-[60%] mb-[0.25rem] rounded-md h-[4rem]'></div>
-                                </h1>
-                                <p className='text-[1rem] text-[grey]'>
-                                    <div className='skeleton w-[100%] mb-[0.25rem] rounded-md h-[0.7rem]'></div>
-                                    <div className='skeleton w-[100%] mb-[0.25rem] rounded-md h-[0.7rem]'></div>
-                                    <div className='skeleton w-[100%] mb-[0.25rem] rounded-md h-[0.7rem]'></div>
-                                    <div className='skeleton w-[100%] mb-[0.25rem] rounded-md h-[0.7rem]'></div>
-                                    <div className='skeleton w-[100%] mb-[0.25rem] rounded-md h-[0.7rem]'></div>
-                                    <div className='skeleton w-[80%] mb-[0.25rem] rounded-md h-[0.7rem]'></div>
-                                </p>
-                                <br />
-                                <label className='text-[1.2rem] my-4 font-bold text-[grey]'>
-                                    <div className='skeleton w-[20%] mb-[0.25rem] rounded-md h-[0.7rem]'></div>
-                                </label>
-                                <div className='flex items-center border-r-base'>
-                                    Rating: {CalculateRating()} <img
-                                        className='w-[5vw] sm:w-[2.5vw] md:w-[2vw] lg:w-[1.2vw] m-1'
-                                        src={Star}
-                                        alt="" 
-                                        /> 
-                                </div>
+                        <div id='prod-template'>
+                            <h1 className='text-[2.5rem] leading-tight my-4'>
+                                <div className='skeleton w-[60%] mb-[0.25rem] rounded-md h-[4rem]'></div>
+                            </h1>
+                            <p className='text-[1rem] text-[grey]'>
+                                <div className='skeleton w-[100%] mb-[0.25rem] rounded-md h-[0.7rem]'></div>
+                                <div className='skeleton w-[100%] mb-[0.25rem] rounded-md h-[0.7rem]'></div>
+                                <div className='skeleton w-[100%] mb-[0.25rem] rounded-md h-[0.7rem]'></div>
+                                <div className='skeleton w-[100%] mb-[0.25rem] rounded-md h-[0.7rem]'></div>
+                                <div className='skeleton w-[100%] mb-[0.25rem] rounded-md h-[0.7rem]'></div>
+                                <div className='skeleton w-[80%] mb-[0.25rem] rounded-md h-[0.7rem]'></div>
+                            </p>
+                            <br />
+                            <label className='text-[1.2rem] my-4 font-bold text-[grey]'>
+                                <div className='skeleton w-[20%] mb-[0.25rem] rounded-md h-[0.7rem]'></div>
+                            </label>
+                            <div className='flex items-center border-r-base'>
+                                Rating: {CalculateRating()} <img
+                                    className='w-[5vw] sm:w-[2.5vw] md:w-[2vw] lg:w-[1.2vw] m-1'
+                                    src={Star}
+                                    alt=""
+                                />
                             </div>
+                        </div>
 
-                    
 
-                    <br />
-                    <hr className=' text-primary' />
-                    <br />
 
-                    <div className='w-[90vw] sm:w-[35rem]'>
+                        <br />
+                        <hr className=' text-primary' />
+                        <br />
+
+                        <div className='w-[90vw] sm:w-[35rem]'>
                             <h1 className='text-[2.1rem] mb-2 inline-flex items-center justify-center'>
-                            Price Rs: <label id="price"><div className='skeleton w-[80%] mb-[0.25rem] rounded-md h-[0.7rem]'></div></label>
+                                Price Rs: <label id="price"><div className='skeleton w-[80%] mb-[0.25rem] rounded-md h-[0.7rem]'></div></label>
                             </h1>
 
-                        <div className='sm:fle items-center justify-between'>
-                            <div className='w-[100%] text-center sm:text-left sm:w-[40%] mx-2'>
-                                <h2 className='text-left'>Available Sizes: </h2>
-                                <div id="sizebox" className='border border-primary rounded-md h-[50px] flex justify-start items-center mb-2'>
-                                    {product.size.map((size) => {
-                                        return <SizeBox key={size} text={size} setSize={setSize} />
-                                    })}
+                            <div className='sm:fle items-center justify-between'>
+                                <div className='w-[100%] text-center sm:text-left sm:w-[40%] mx-2'>
+                                    <h2 className='text-left'>Available Sizes: </h2>
+                                    <div id="sizebox" className='border border-primary rounded-md h-[50px] flex justify-start items-center mb-2'>
+                                        {product.size.map((size) => {
+                                            return <SizeBox key={size} text={size} setSize={setSize} />
+                                        })}
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div className='w-[90%] text-center sm:text-left sm:w-[40%] mx-2'>
-                                <h2 className='text-left'>Select Quantity: </h2>
-                                <div className='flex justify-start items-center w-[100%] sm:w-[40%] mb-2'>
-                                    <div className='border border-primary h-[50px] rounded-md p-2 flex justify-between items-center'>
-                                        <button
-                                            className='mx-2 border border-primary rounded-full hover:bg-secondary hover:text-[white] h-[35px] w-[35px] flex items-center justify-center'
-                                            onClick={() => changeQty("-")}
-                                        >
-                                            -
-                                        </button>
-                                        <label className='mx-1'>{value}</label>
-                                        <button
-                                            className='mx-2 border border-primary rounded-full hover:bg-secondary hover:text-[white] h-[35px] w-[35px] flex items-center justify-center'
-                                            onClick={() => changeQty("+")}
-                                        >
-                                            +
-                                        </button>
+                                <div className='w-[90%] text-center sm:text-left sm:w-[40%] mx-2'>
+                                    <h2 className='text-left'>Select Quantity: </h2>
+                                    <div className='flex justify-start items-center w-[100%] sm:w-[40%] mb-2'>
+                                        <div className='border border-primary h-[50px] rounded-md p-2 flex justify-between items-center'>
+                                            <button
+                                                className='mx-2 border border-primary rounded-full hover:bg-secondary hover:text-[white] h-[35px] w-[35px] flex items-center justify-center'
+                                                onClick={() => changeQty("-")}
+                                            >
+                                                -
+                                            </button>
+                                            <label className='mx-1'>{value}</label>
+                                            <button
+                                                className='mx-2 border border-primary rounded-full hover:bg-secondary hover:text-[white] h-[35px] w-[35px] flex items-center justify-center'
+                                                onClick={() => changeQty("+")}
+                                            >
+                                                +
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div className='flex justify-start flex-wrap items-center'>
-                            <button onClick={AddToCart} className='bg-secondary m-2 text-[white] sm:text-[1.5rem] font-bold p-2 md:p-2 w-[200px] rounded-md'>
-                                {btnText}
+                            <div className='flex justify-start flex-wrap items-center'>
+                                <button onClick={AddToCart} className='bg-secondary m-2 text-[white] sm:text-[1.5rem] font-bold p-2 md:p-2 w-[200px] rounded-md'>
+                                    {btnText}
                                 </button>
                                 <button onClick={AddToWishlist} className='m-2 cursor-pointer bg-secondary text-[white] sm:text-[1.5rem] w-[200px] font-bold p-2 md:p-2 rounded-md'>{wishBtnText}</button>
-                        </div>
+                            </div>
                         </div>
 
+                    </div>
                 </div>
-            </div>
 
-            <Reviews />
-        </div>
+                <Reviews />
+            </div>
         </ErrorBoundary>
     )
 }

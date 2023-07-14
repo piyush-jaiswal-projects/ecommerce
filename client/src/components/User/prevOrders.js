@@ -1,23 +1,23 @@
 import React from 'react'
-import { useSelector } from "react-redux";
-
 import Card from './orderedProductCard';
 import UserPanel from './userPanel';
+import { useSelector } from 'react-redux';
 
 export default function PrevOrders() {
     const orders = useSelector((state) => state.user.placedOrder.items);
+    const msg = useSelector((state) => state.user.message);
+
     const reverseOrders = orders.map((value, index, array) => {
         const reverseIndex = array.length - 1 - index;
         return array[reverseIndex];
     });
-    
-    const msg = useSelector((state) => state.user.message);
+
 
     return (
         <div className='my-10'>
             <div className='flex justify-center flex-wrap'>
 
-                <div className='w-[100%] lg:w-[70%] h-[auto] lg:h-[auto] bg-base lg:mx-5 px-5 rounded-lg'>
+                <div className='w-[100%] lg:w-[70%] h-[auto] lg:h-[auto] min-h-[200px] bg-base lg:mx-5 px-5 rounded-lg'>
                     <h1
                         className='text-secondary text-[1.5rem] lg:text-[2rem] text-center lg:text-left font-bold'>
                         Your Orders

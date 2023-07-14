@@ -58,7 +58,7 @@ const paymentVerfication = async function (req, res) {
         .createHmac("sha256", process.env.RZP_KEY_SECRET)
         .update(body.toString())
         .digest("hex");
-    
+
     const redirectFailureurl = process.env.FRONTEND_REDIRECT + `paymentfailed/?reference=0`;
     const redirectSuccessurl = process.env.FRONTEND_REDIRECT + `paymentsuccess/?reference=${razorpay_payment_id}`;
 

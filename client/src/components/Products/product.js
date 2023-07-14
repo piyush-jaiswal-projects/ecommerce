@@ -12,7 +12,7 @@ export default function Product(props) {
     const dispatch = useDispatch();
 
     async function getData() {
-        await dispatch(getProductsAsync({categoryName: category, type: props.type}));
+        await dispatch(getProductsAsync({ categoryName: category, type: props.type }));
         await dispatch(changeCategory({ categoryName: category, type: props.type }));
     }
     getData();
