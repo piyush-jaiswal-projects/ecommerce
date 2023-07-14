@@ -223,7 +223,7 @@ const productReducer = createSlice({
             .addCase(getProductsAsync.rejected, (state, action) => {
                 state.isLoading = false;
                 state.isError = true;
-                state.message = "Something Went Wrong. Please refresh";
+                state.message = "Facing Connectivity Issues. Please Reload";
             })
     }
 })

@@ -24,7 +24,7 @@ export default function Product(props) {
                     <CategoryInfo />
                     <Filters />
                 </div>
-                <div className='w-[100vw] lg:w-[80vw] mt-[2rem]'>
+                <div className='w-[100vw] lg:w-[80vw] mt-[0rem]'>
                     <Grid />
                 </div>
             </div>

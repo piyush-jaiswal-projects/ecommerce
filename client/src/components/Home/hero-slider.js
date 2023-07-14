@@ -6,7 +6,7 @@ import { Carousel } from 'react-responsive-carousel';
 export default function Heroslider() {
 
     return (
-        <div className='w-[100vw] h-[70vh] md:h-[100%] overflow-hidden mt-[8vw] md:mt-[5vw] mx-auto border border-t-0 border-b-0 border-primary'>
+        <div className='w-[100vw] h-[auto] md:h-[100%] overflow-hidden mt-[8vw] md:mt-[5vw] mx-auto border border-t-0 border-b-0 border-primary'>
             <Carousel
                 transitionTime={1000}
                 autoPlay={true}
@@ -22,9 +22,9 @@ export default function Heroslider() {
 
                 {images.map((item) => {
                     return (
-                        <div className='w-[100vw] h-[80vh] md:h-[82vh]'>
+                        <div className='w-[100vw] h-[auto] md:h-[82vh]'>
                             <img
-                                className='skeleton object-cover md:object-fill'
+                                className='skeleton object-cover lg:object-fill'
                                 src={item}
                                 alt=''
                                 loading='lazy'

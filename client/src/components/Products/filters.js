@@ -63,7 +63,7 @@ export default function Filters() {
     }
 
     return (
-        <div className='border-t-2 border-base w-[100%] py-4'>
+        <div className='border-t-2 border-base w-[100%] pt-4'>
             <label className='my-4 font-bold text-secondary border border-secondary p-1 rounded-md shadow-lg' onClick={dropFilter}>{width < 976 ? "Tap to expand/collapse filters" : "Filters:"} </label>
             <br />
 
@@ -122,7 +122,7 @@ export default function Filters() {
                     <button onClick={priceChange} className='w-[100%] rounded-full'>Apply</button>
                 </div>
 
-                <div className='my-4 w-[100%] border-t-4 border-base'>
+                <div className='mt-4 w-[100%] border-t-4 border-base'>
                     <button onClick={clearFilters} className='underline cursor-pointer rounded-full mx-2 w-[100%]'>Clear Filters</button>
                 </div>
             </div>
