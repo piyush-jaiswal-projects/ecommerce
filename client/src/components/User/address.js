@@ -71,12 +71,12 @@ export default function AddressCard() {
                 <br />
 
                 <button
-                    className='w-[100%] my-4 p-2 bg-secondary  rounded-lg text-[1.8rem]'
+                    className='w-[100%] my-4 p-2 bg-secondary hover:text-primary rounded-lg text-[1.8rem]'
                     onClick={handleSubmit}>
                     Submit
                 </button>
 
-                <label onClick={() => {
+                <label className='cursor-pointer underline' onClick={() => {
                     $("#newAddress").toggleClass("hidden")
                 }}>
                     Close

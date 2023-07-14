@@ -123,7 +123,7 @@ export default function Filters() {
                 </div>
 
                 <div className='my-4 w-[100%] border-t-4 border-base'>
-                    <button onClick={clearFilters} className='rounded-full mx-2 w-[100%]'>Clear Filters</button>
+                    <button onClick={clearFilters} className='underline cursor-pointer rounded-full mx-2 w-[100%]'>Clear Filters</button>
                 </div>
             </div>
         </div>

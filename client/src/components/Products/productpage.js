@@ -122,7 +122,7 @@ export default function ProductPage(props) {
     }
 
     async function AddToWishlist() {
-        if (isUser) {
+        if (isUser === "true") {
             if (size !== "") {
                 const delDate = await CalDelDate();
                 setWishBtnText(() => "processing ...")
